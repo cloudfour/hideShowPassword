@@ -22,7 +22,11 @@ input[type=password], input[type=text] {
   margin: 0;
   padding: 0.5em;
   vertical-align: middle;
+
   -webkit-appearance: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 input[type=password]:focus, input[type=text]:focus {
@@ -31,30 +35,19 @@ input[type=password]:focus, input[type=text]:focus {
   outline: transparent;
 }
 
-.hideShowPassword-wrapper {
-  /*border: 1px solid red;*/
-  display: inline-block;
-  position: relative;
-  vertical-align: middle;
-}
-
 .hideShowPassword-toggle {
-  /*border: 1px solid cyan;*/
   color: #888;
   cursor: pointer;
   font-size: 0.75em;
   font-weight: bold;
   padding: 0.5em 1em;
-  position: absolute;
-  right: 0;
-  text-align: center;
+  text-align: right;
   text-transform: uppercase;
-  top: 50%;
-  min-width: 15%;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+}
+
+.input-block {
+  display: block;
+  width: 100%;
 }
 
   </style>
@@ -71,7 +64,13 @@ input[type=password]:focus, input[type=text]:focus {
 
 <h2>Demo: Inner toggle</h2>
 
-<p><input type="password" id="password-with-toggle" value="hamfisted" /></p>
+<p><input type="password" class="" value="hamfisted" /></p>
+
+<p><input type="password" class="input-block" value="hamfisted" /></p>
+
+<p><input type="password" class="with-toggle" value="hamfisted" /></p>
+
+<p><input type="password" class="with-toggle input-block" value="hamfisted" /></p>
 
 <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
 <script src="jquery.hideShowPassword.js"></script>
@@ -81,7 +80,7 @@ $('#toggle').on('change', function () {
   $('#password').hideShowPassword(this.checked);
 });
 
-$('#password-with-toggle').hideShowPassword({
+$('.with-toggle').hideShowPassword({
   show: true,
   innerToggle: true,
   touchSupport: Modernizr.touch

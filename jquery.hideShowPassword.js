@@ -1,9 +1,8 @@
 (function ($, window, undef) {
 
   // TODO:
-  // - modularize attr, class, text and events more clearly
-  // - only add styles we need to
   // - allow mode where no styles are added? (suppressInnerToggleCSS)?
+  // - comment things
 
   var dataKey = 'hideShowPasswordOptions';
 
@@ -20,13 +19,40 @@
       $this.attr(state.attr);
       $this.trigger(state.eventName);
       if (opts.innerToggle && (!lastOpts || !lastOpts.innerToggle)) {
-        $this.wrap($('<div />').addClass(opts.wrapperClass));
+        $this.wrap(
+          $('<div />').addClass(opts.wrapperClass).css({
+            position: 'relative',
+            display: $this.css('display'),
+            verticalAlign: $this.css('verticalAlign'),
+            marginTop: $this.css('marginTop'),
+            marginRight: $this.css('marginRight'),
+            marginBottom: $this.css('marginBottom'),
+            marginLeft: $this.css('marginLeft')
+          })
+        );
+        $this.css({
+          marginTop: 0,
+          marginRight: 0,
+          marginBottom: 0,
+          marginLeft: 0
+        });
         $wrapper = $this.parent();
-        $toggle = $('<div />').addClass(opts.toggleClass).text(state.toggleText);
+        if ($wrapper.outerWidth() !== $this.outerWidth()) {
+          $wrapper.css('width', $this.outerWidth());
+        }
+        $toggle = $('<div />').addClass(opts.toggleClass).text(state.toggleText).css({
+          position: 'absolute',
+          right: 0,
+          top: '50%',
+          mozUserSelect: 'none',
+          webkitUserSelect: 'none',
+          msUserSelect: 'none',
+          userSelect: 'none'
+        });
         $toggle.appendTo($wrapper);
-        $toggle.css('margin-top', ($toggle.outerHeight() / -2));
+        $toggle.css('marginTop', ($toggle.outerHeight() / -2));
         if (opts.touchSupport) {
-          $toggle.css('pointer-events', 'none');
+          $toggle.css('pointerEvents', 'none');
           $this.on(opts.toggleTouchEvent, function (event) {
             var minX = $toggle.offset().left
               , curX = event.pageX || event.originalEvent.pageX;
