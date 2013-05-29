@@ -1,5 +1,9 @@
 (function ($, undef) {
 
+  // TODO:
+  // - Make instantiation of things cleaner
+  // - Comment code
+
   // outer dimension addition for Zepto
   // https://gist.github.com/pamelafox/1379704
   $.each(['width', 'height'], function (index, dimension) {
@@ -31,12 +35,14 @@
         , lastOpts = $this.data(dataKey)
         , opts = $.extend(true, {}, $.fn.hideShowPassword.defaults, lastOpts, options)
         , state = opts.show ? opts.state.shown : opts.state.hidden
+        , direction
         , $wrapper
         , $toggle;
       $this.data(dataKey, opts);
       $this.attr(state.attr);
       $this.trigger(state.eventName);
       if (opts.innerToggle && (!lastOpts || !lastOpts.innerToggle)) {
+        direction = $this.css('direction');
         $this.wrap(
           $('<div />').addClass(opts.wrapperClass).css({
             position: 'relative',
@@ -54,22 +60,22 @@
         }
         $toggle = $('<div />').addClass(opts.toggleClass).text(state.toggleText).css({
           position: 'absolute',
-          right: 0,
           top: '50%',
           mozUserSelect: 'none',
           webkitUserSelect: 'none',
           msUserSelect: 'none',
           userSelect: 'none'
         });
+        $toggle.css(direction === 'rtl' ? 'left' : 'right', 0);
         $toggle.appendTo($wrapper);
         $toggle.css('marginTop', ($toggle.outerHeight() / -2));
         $this.css({
           marginTop: 0,
           marginRight: 0,
           marginBottom: 0,
-          marginLeft: 0,
-          paddingRight: $toggle.outerWidth()
+          marginLeft: 0
         });
+        $this.css(direction === 'rtl' ? 'paddingLeft' : 'paddingRight', $toggle.outerWidth());
         if (opts.touchSupport) {
           $toggle.css('pointerEvents', 'none');
           $this.on(opts.toggleTouchEvent, function (event) {
