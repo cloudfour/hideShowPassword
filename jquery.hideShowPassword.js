@@ -1,8 +1,28 @@
 (function ($, undef) {
 
-  var dataKey = 'hideShowPasswordOptions';
+  // outer dimension addition for Zepto
+  // https://gist.github.com/pamelafox/1379704
+  $.each(['width', 'height'], function (index, dimension) {
+    var Dimension = dimension.replace(/./, function(m) { return m[0].toUpperCase() })
+      , fnName = 'outer' + Dimension
+      , sides = {'width': ['left', 'right'], 'height': ['top', 'bottom']};
+    if ($.fn[fnName] === undef) {
+      $.fn[fnName] = function (margin) {
+        var elem = this;
+        if (elem) {
+          var size = elem[dimension]();
+          $.each(sides[dimension], function (index, side) {
+            if (margin) size+= parseInt(elem.css('margin-' + side), 10);
+          });
+          return size;
+        }
+        return;
+      }
+    }
+  });
 
   $.fn.hideShowPassword = function (options) {
+    var dataKey = 'hideShowPasswordOptions';
     if (typeof options === 'boolean') {
       options = { show: options };
     }
@@ -124,4 +144,4 @@
     }
   };
 
-})(jQuery);
+})(window.jQuery || window.Zepto);
