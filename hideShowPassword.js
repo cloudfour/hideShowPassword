@@ -48,12 +48,6 @@
             marginLeft: $this.css('marginLeft')
           })
         );
-        $this.css({
-          marginTop: 0,
-          marginRight: 0,
-          marginBottom: 0,
-          marginLeft: 0
-        });
         $wrapper = $this.parent();
         if ($wrapper.outerWidth() !== $this.outerWidth()) {
           $wrapper.css('width', $this.outerWidth());
@@ -69,6 +63,13 @@
         });
         $toggle.appendTo($wrapper);
         $toggle.css('marginTop', ($toggle.outerHeight() / -2));
+        $this.css({
+          marginTop: 0,
+          marginRight: 0,
+          marginBottom: 0,
+          marginLeft: 0,
+          paddingRight: $toggle.outerWidth()
+        });
         if (opts.touchSupport) {
           $toggle.css('pointerEvents', 'none');
           $this.on(opts.toggleTouchEvent, function (event) {
@@ -132,8 +133,10 @@
         eventName: 'passwordShown',
         attr: {
           'type': 'text',
+          'autocapitalize': 'off',
+          'autocomplete': 'off',
           'autocorrect': 'off',
-          'autocapitalize': 'off'
+          'spellcheck': 'false'
         }
       },
       hidden: {
