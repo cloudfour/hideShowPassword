@@ -1,13 +1,11 @@
-(function ($, window, undef) {
-
-  // TODO:
-  // - allow mode where no styles are added? (suppressInnerToggleCSS)?
-  // - comment things
+(function ($, undef) {
 
   var dataKey = 'hideShowPasswordOptions';
 
   $.fn.hideShowPassword = function (options) {
-    if (typeof options === 'boolean') options = { show: options };
+    if (typeof options === 'boolean') {
+      options = { show: options };
+    }
     return this.each(function () {
       var $this = $(this)
         , lastOpts = $this.data(dataKey)
@@ -56,7 +54,7 @@
           $this.on(opts.toggleTouchEvent, function (event) {
             var minX = $toggle.offset().left
               , curX = event.pageX || event.originalEvent.pageX;
-            if (curX >= minX) {
+            if (minX && curX >= minX) {
               event.preventDefault();
               $this.togglePassword();
             }
@@ -71,19 +69,25 @@
             $toggle.text(thisState.toggleText);
           });
         });
+        if (opts.hideToggleUntil) {
+          $toggle.hide();
+          $this.one(opts.hideToggleUntil, function () {
+            $toggle.show();
+          });
+        }
       }
     });
-  }
+  };
 
   $.fn.showPassword = function (options) {
     var opts = $.extend({}, options, { show: true });
     return this.hideShowPassword(opts);
-  }
+  };
 
   $.fn.hidePassword = function (options) {
     var opts = $.extend({}, options, { show: false });
     return this.hideShowPassword(opts);
-  }
+  };
 
   $.fn.togglePassword = function (options) {
     return this.each(function () {
@@ -91,12 +95,13 @@
         , opts = $.extend({}, options, { show: ($this.attr('type') === 'password') });
       $this.hideShowPassword(opts);
     });
-  }
+  };
 
   $.fn.hideShowPassword.defaults = {
     show: false,
     touchSupport: false,
     innerToggle: false,
+    hideToggleUntil: 'focus',
     wrapperClass: 'hideShowPassword-wrapper',
     toggleClass: 'hideShowPassword-toggle',
     toggleEvent: 'click',
@@ -119,4 +124,4 @@
     }
   };
 
-})(jQuery, window);
+})(jQuery);
