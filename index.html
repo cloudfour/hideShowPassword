@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <title>Password Visibility</title>
+  <style>
+
+body {
+  color: #444;
+  font-family: sans-serif;
+}
+
+input {
+  background-color: #f6f6f6;
+  border: 2px solid #ccc;
+  border-radius: 0.25em;
+/*  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;*/
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1em;
+  margin: 0;
+  padding: 0.5em;
+  vertical-align: middle;
+  -webkit-appearance: none;
+}
+
+input:focus {
+  background-color: #fff;
+  border-color: #0088cc;
+  outline: transparent;
+}
+
+.hideShowPassword-wrapper {
+  /*border: 1px solid red;*/
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+}
+
+.hideShowPassword-toggle {
+  /*border: 1px solid cyan;*/
+  color: #888;
+  cursor: pointer;
+  font-size: 0.75em;
+  font-weight: bold;
+  padding: 0.5em 1em;
+  /*pointer-events: none;*/
+  position: absolute;
+  right: 0;
+  text-align: center;
+  text-transform: uppercase;
+  top: 50%;
+  min-width: 15%;
+}
+
+  </style>
+  <script src="modernizr.custom.js"></script>
+</head>
+<body>
+
+<h1>hideShowPassword</h1>
+
+<h2>Simple demo</h2>
+
+<p><input type="password" id="password" value="hamfisted" /></p>
+<!-- <p><input type="checkbox" id="toggle" /> <label for="toggle">Show password</label></p> -->
+
+<script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+<script src="jquery.hideShowPassword.js"></script>
+<script>
+
+$('#password').hideShowPassword({
+  innerToggle: true,
+  touchSupport: Modernizr.touch
+});
+
+// Minimal example
+// $('#toggle-1').on('change', function () {
+//   $('#password-1').hideShowPassword(this.checked);
+// });
+
+</script>
+
+</body>
+</html>
