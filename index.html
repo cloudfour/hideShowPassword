@@ -11,13 +11,10 @@ body {
   font-family: sans-serif;
 }
 
-input {
+input[type=password], input[type=text] {
   background-color: #f6f6f6;
   border: 2px solid #ccc;
   border-radius: 0.25em;
-/*  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;*/
   color: inherit;
   font-family: inherit;
   font-size: inherit;
@@ -28,7 +25,7 @@ input {
   -webkit-appearance: none;
 }
 
-input:focus {
+input[type=password]:focus, input[type=text]:focus {
   background-color: #fff;
   border-color: #0088cc;
   outline: transparent;
@@ -48,13 +45,16 @@ input:focus {
   font-size: 0.75em;
   font-weight: bold;
   padding: 0.5em 1em;
-  /*pointer-events: none;*/
   position: absolute;
   right: 0;
   text-align: center;
   text-transform: uppercase;
   top: 50%;
   min-width: 15%;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
   </style>
@@ -64,24 +64,28 @@ input:focus {
 
 <h1>hideShowPassword</h1>
 
-<h2>Simple demo</h2>
+<h2>Demo: Checkbox</h2>
 
 <p><input type="password" id="password" value="hamfisted" /></p>
-<!-- <p><input type="checkbox" id="toggle" /> <label for="toggle">Show password</label></p> -->
+<p><input type="checkbox" id="toggle" /> <label for="toggle">Show password</label></p>
+
+<h2>Demo: Inner toggle</h2>
+
+<p><input type="password" id="password-with-toggle" value="hamfisted" /></p>
 
 <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
 <script src="jquery.hideShowPassword.js"></script>
 <script>
 
-$('#password').hideShowPassword({
+$('#toggle').on('change', function () {
+  $('#password').hideShowPassword(this.checked);
+});
+
+$('#password-with-toggle').hideShowPassword({
+  show: true,
   innerToggle: true,
   touchSupport: Modernizr.touch
 });
-
-// Minimal example
-// $('#toggle-1').on('change', function () {
-//   $('#password-1').hideShowPassword(this.checked);
-// });
 
 </script>
 
