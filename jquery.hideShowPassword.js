@@ -1,6 +1,7 @@
 (function ($, window, undef) {
 
   // TODO:
+  // - modularize attr, class, text and events more clearly
   // - only add styles we need to
   // - allow mode where no styles are added? (suppressInnerToggleCSS)?
 
@@ -11,24 +12,22 @@
     return this.each(function () {
       var $this = $(this)
         , lastOpts = $this.data(dataKey)
-        , opts = $.extend({}, $.fn.hideShowPassword.defaults, lastOpts, options)
-        , attr = opts.show ? opts.showAttr : opts.hideAttr
+        , opts = $.extend(true, {}, $.fn.hideShowPassword.defaults, lastOpts, options)
+        , state = opts.show ? opts.state.shown : opts.state.hidden
         , $wrapper
         , $toggle;
       $this.data(dataKey, opts);
-      $this.attr(attr);
-      $this.trigger(opts.show ? opts.showEvent : opts.hideEvent);
+      $this.attr(state.attr);
+      $this.trigger(state.eventName);
       if (opts.innerToggle && (!lastOpts || !lastOpts.innerToggle)) {
         $this.wrap($('<div />').addClass(opts.wrapperClass));
         $wrapper = $this.parent();
-        $toggle = $('<div />').addClass(opts.toggleClass).text(
-          opts.show ? opts.hideText : opts.showText
-        );
+        $toggle = $('<div />').addClass(opts.toggleClass).text(state.toggleText);
         $toggle.appendTo($wrapper);
         $toggle.css('margin-top', ($toggle.outerHeight() / -2));
         if (opts.touchSupport) {
           $toggle.css('pointer-events', 'none');
-          $this.on('touchstart mousedown', function (event) {
+          $this.on(opts.toggleTouchEvent, function (event) {
             var minX = $toggle.offset().left
               , curX = event.pageX || event.originalEvent.pageX;
             if (curX >= minX) {
@@ -37,15 +36,14 @@
             }
           });
         } else {
-          $toggle.on('click', function () {
+          $toggle.on(opts.toggleEvent, function () {
             $this.togglePassword();
           });
         }
-        $this.on(opts.showEvent, function () {
-          $toggle.text(opts.hideText);
-        });
-        $this.on(opts.hideEvent, function () {
-          $toggle.text(opts.showText);
+        $.each(opts.state, function (index, thisState) {
+          $this.on(thisState.eventName, function () {
+            $toggle.text(thisState.toggleText);
+          });
         });
       }
     });
@@ -75,18 +73,24 @@
     innerToggle: false,
     wrapperClass: 'hideShowPassword-wrapper',
     toggleClass: 'hideShowPassword-toggle',
-    showText: 'show',
-    hideText: 'hide',
-    showAttr: {
-      'type': 'text',
-      'autocorrect': 'off',
-      'autocapitalize': 'off'
-    },
-    hideAttr: {
-      'type': 'password'
-    },
-    showEvent: 'passwordShown',
-    hideEvent: 'passwordHidden'
+    toggleEvent: 'click',
+    toggleTouchEvent: 'touchstart mousedown',
+    state: {
+      shown: {
+        toggleText: 'Hide',
+        eventName: 'passwordShown',
+        attr: {
+          'type': 'text',
+          'autocorrect': 'off',
+          'autocapitalize': 'off'
+        }
+      },
+      hidden: {
+        toggleText: 'Show',
+        eventName: 'passwordHidden',
+        attr: { 'type': 'password' }
+      }
+    }
   };
 
 })(jQuery, window);
