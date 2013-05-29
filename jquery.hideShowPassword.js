@@ -28,7 +28,7 @@
         $toggle.css('margin-top', ($toggle.outerHeight() / -2));
         if (opts.touchSupport) {
           $toggle.css('pointer-events', 'none');
-          $this.on('touchstart', function (event) {
+          $this.on('touchstart mousedown', function (event) {
             var minX = $toggle.offset().left
               , curX = event.pageX || event.originalEvent.pageX;
             if (curX >= minX) {
