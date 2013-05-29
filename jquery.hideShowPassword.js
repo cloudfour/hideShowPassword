@@ -1,23 +1,24 @@
 (function ($, window, undef) {
 
   // TODO:
-  // - do not wipe out old options if el has already been initialized
-  //   (maybe store in $.data?)
   // - only add styles we need to
-  // - trigger events
   // - allow mode where no styles are added? (suppressInnerToggleCSS)?
+
+  var dataKey = 'hideShowPasswordOptions';
 
   $.fn.hideShowPassword = function (options) {
     if (typeof options === 'boolean') options = { show: options };
-    var opts = $.extend({}, $.fn.hideShowPassword.defaults, options)
-      , attr = opts.show ? opts.showAttr : opts.hideAttr;
     return this.each(function () {
       var $this = $(this)
+        , lastOpts = $this.data(dataKey)
+        , opts = $.extend({}, $.fn.hideShowPassword.defaults, lastOpts, options)
+        , attr = opts.show ? opts.showAttr : opts.hideAttr
         , $wrapper
         , $toggle;
+      $this.data(dataKey, opts);
       $this.attr(attr);
       $this.trigger(opts.show ? opts.showEvent : opts.hideEvent);
-      if (opts.innerToggle) {
+      if (opts.innerToggle && (!lastOpts || !lastOpts.innerToggle)) {
         $this.wrap($('<div />').addClass(opts.wrapperClass));
         $wrapper = $this.parent();
         $toggle = $('<div />').addClass(opts.toggleClass).text(
@@ -85,8 +86,7 @@
       'type': 'password'
     },
     showEvent: 'passwordShown',
-    hideEvent: 'passwordHidden',
-    dataOpts: 'hideShowPasswordOptions'
+    hideEvent: 'passwordHidden'
   };
 
 })(jQuery, window);
