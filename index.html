@@ -3,12 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-  <title>Password Visibility</title>
+  <title>hideShowPassword Demo</title>
   <style>
 
 body {
   color: #444;
-  /*direction: rtl;*/
   font-family: sans-serif;
 }
 
@@ -66,6 +65,10 @@ input[type=password]:focus, input[type=text]:focus {
   background-position: -44px center;
 }
 
+#inner-rtl {
+  direction: rtl;
+}
+
   </style>
   <script src="vendor/modernizr.custom.js"></script>
 </head>
@@ -73,39 +76,72 @@ input[type=password]:focus, input[type=text]:focus {
 
 <h1>hideShowPassword</h1>
 
-<h2>Demo: Checkbox</h2>
+<h2>Show, hide and toggle</h2>
 
-<p><input type="password" id="password" value="hamfisted" class="input-block" /></p>
-<p><input type="checkbox" id="toggle" /> <label for="toggle">Show password</label></p>
-<p><button id="toggle-button">Toggle</button></p>
+<div>
+  <input type="password" id="basic" value="password" class="input-block" />
+  <p><button id="show">Show</button>
+  <button id="hide">Hide</button>
+  <button id="toggle">Toggle</button></p>
+</div>
 
-<h2>Demo: Inner toggle</h2>
+<h2>Based on other element value</h2>
 
-<p><input type="password" class="with-toggle-1 input-block" value="" /></p>
-<p><input type="password" class="with-toggle-2 input-block" value="" /></p>
+<div>
+  <input type="password" id="toggleme" value="password" class="input-block" />
+  <p><input type="checkbox" id="checkme" /> <label for="checkme">Show password</label></p>
+</div>
+
+<h2>Inner toggle</h2>
+
+<p>Focus to see, tap/click to toggle.</p>
+
+<div>
+  <input type="password" id="inner" class="input-block" placeholder="Password" />
+</div>
+
+<p>It also supports right-to-left text direction.</p>
+
+<div>
+  <input type="password" id="inner-rtl" class="input-block" placeholder="Password" />
+</div>
+
+<p>Customize the CSS class names to style the elements as you like.</p>
+
+<div>
+  <input type="password" id="inner-wink" class="input-block" placeholder="Password" />
+</div>
 
 <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
 <!-- <script src="vendor/zepto.min.js"></script> -->
 <script src="hideShowPassword.js"></script>
 <script>
 
-$('#toggle').on('change', function () {
-  $('#password').hideShowPassword(this.checked);
+$('#show').on('click', function () {
+  $('#basic').showPassword();
+});
+$('#hide').on('click', function () {
+  $('#basic').hidePassword();
+});
+$('#toggle').on('click', function () {
+  $('#basic').togglePassword();
 });
 
-$('#toggle-button').on('click', function () {
-  $('#password').togglePassword();
+$('#checkme').on('change', function () {
+  $('#toggleme').hideShowPassword(this.checked);
 });
 
-$('.with-toggle-1').showPassword({
+$('#inner, #inner-rtl').hideShowPassword({
+  show: true,
   innerToggle: true,
   touchSupport: Modernizr.touch
 });
 
-$('.with-toggle-2').hideShowPassword({
+$('#inner-wink').hideShowPassword({
   innerToggle: true,
   touchSupport: Modernizr.touch,
-  toggleClass: 'wink'
+  toggleClass: 'wink',
+  hideToggleUntil: false
 });
 
 </script>
