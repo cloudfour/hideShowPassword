@@ -1,7 +1,8 @@
 (function ($, undef) {
 
   // TODO:
-  // - Make instantiation of things cleaner
+  // - Ability to set insetToggle to `false` to turn off
+  // - Cleanup
   // - Comment code
 
   // outer dimension addition for Zepto
@@ -40,7 +41,16 @@
         , $toggle;
       $this.data(dataKey, opts);
       $this.attr(state.attr);
-      $this.trigger(state.eventName);
+      if (!lastOpts) {
+        $this.on(opts.state.shown.eventName, function () {
+          $this.addClass(opts.state.shown.inputClass);
+          $this.removeClass(opts.state.hidden.inputClass);
+        });
+        $this.on(opts.state.hidden.eventName, function () {
+          $this.addClass(opts.state.hidden.inputClass);
+          $this.removeClass(opts.state.shown.inputClass);
+        });
+      }
       if (opts.innerToggle && (!lastOpts || !lastOpts.innerToggle)) {
         direction = $this.css('direction');
         $this.wrap(
@@ -91,10 +101,15 @@
             $this.togglePassword();
           });
         }
-        $.each(opts.state, function (index, thisState) {
-          $this.on(thisState.eventName, function () {
-            $toggle.text(thisState.toggleText);
-          });
+        $this.on(opts.state.shown.eventName, function () {
+          $toggle.text(opts.state.shown.toggleText);
+          $toggle.addClass(opts.state.shown.toggleClass);
+          $toggle.removeClass(opts.state.hidden.toggleClass);
+        });
+        $this.on(opts.state.hidden.eventName, function () {
+          $toggle.text(opts.state.hidden.toggleText);
+          $toggle.addClass(opts.state.hidden.toggleClass);
+          $toggle.removeClass(opts.state.shown.toggleClass);
         });
         if (opts.hideToggleUntil) {
           $toggle.hide();
@@ -103,6 +118,7 @@
           });
         }
       }
+      $this.trigger(state.eventName);
     });
   };
 
@@ -137,6 +153,8 @@
       shown: {
         toggleText: 'Hide',
         eventName: 'passwordShown',
+        inputClass: 'hideShowPassword-shown',
+        toggleClass: 'hideShowPassword-toggle-hide',
         attr: {
           'type': 'text',
           'autocapitalize': 'off',
@@ -148,6 +166,8 @@
       hidden: {
         toggleText: 'Show',
         eventName: 'passwordHidden',
+        inputClass: 'hideShowPassword-hidden',
+        toggleClass: 'hideShowPassword-toggle-show',
         attr: { 'type': 'password' }
       }
     }
