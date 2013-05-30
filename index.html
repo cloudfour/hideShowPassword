@@ -51,8 +51,19 @@ input[type=password]:focus, input[type=text]:focus {
   width: 100%;
 }
 
-.toggle-wink {
-  border: 1px solid cyan;
+.wink {
+  background-image: url(img/wink.svg);
+  background-position: 0 center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  height: 100%;
+  overflow: hidden;
+  text-indent: -9999em;
+  width: 44px;
+}
+
+.wink.hideShowPassword-toggle-hide {
+  background-position: -44px center;
 }
 
   </style>
@@ -91,11 +102,10 @@ $('.with-toggle-1').showPassword({
   touchSupport: Modernizr.touch
 });
 
-$('.with-toggle-2').showPassword({
+$('.with-toggle-2').hideShowPassword({
   innerToggle: true,
   touchSupport: Modernizr.touch,
-  toggleClass: 'toggle-wink',
-  hideToggleUntil: false
+  toggleClass: 'wink'
 });
 
 </script>
