@@ -8,6 +8,7 @@
 
 body {
   color: #444;
+  /*direction: rtl;*/
   font-family: sans-serif;
 }
 
@@ -50,6 +51,10 @@ input[type=password]:focus, input[type=text]:focus {
   width: 100%;
 }
 
+.toggle-wink {
+  border: 1px solid cyan;
+}
+
   </style>
   <script src="modernizr.custom.js"></script>
 </head>
@@ -65,11 +70,11 @@ input[type=password]:focus, input[type=text]:focus {
 
 <h2>Demo: Inner toggle</h2>
 
-<p><input type="password" class="with-toggle" value="" /></p>
-<p><input type="password" class="with-toggle input-block" value="" /></p>
+<p><input type="password" class="with-toggle-1 input-block" value="" /></p>
+<p><input type="password" class="with-toggle-2 input-block" value="" /></p>
 
 <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-<!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/zepto/1.0/zepto.min.js"></script> -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/zepto/1.0/zepto.min.js"></script>
 <script src="hideShowPassword.js"></script>
 <script>
 
@@ -81,9 +86,16 @@ $('#toggle-button').on('click', function () {
   $('#password').togglePassword();
 });
 
-$('.with-toggle').showPassword({
+$('.with-toggle-1').showPassword({
   innerToggle: true,
   touchSupport: Modernizr.touch
+});
+
+$('.with-toggle-2').showPassword({
+  innerToggle: true,
+  touchSupport: Modernizr.touch,
+  toggleClass: 'toggle-wink',
+  hideToggleUntil: false
 });
 
 </script>

@@ -157,11 +157,24 @@
       if (options.touchSupport) {
         toggle.css('pointerEvents', 'none');
         el.on(options.toggleTouchEvent, $.proxy(function (event) {
-          var minX = toggle.offset().left
-            , curX = event.pageX || event.originalEvent.pageX;
-          if (minX && curX >= minX) {
-            event.preventDefault();
-            this.toggle();
+          var toggleX = toggle.offset().left
+            , eventX
+            , lesser
+            , greater;
+          if (toggleX) {
+            eventX = event.pageX || event.originalEvent.pageX;
+            if (attachment === 'left') {
+              toggleX+= toggle.outerWidth();
+              lesser = eventX;
+              greater = toggleX;
+            } else {
+              lesser = toggleX;
+              greater = eventX;
+            }
+            if (greater >= lesser) {
+              event.preventDefault();
+              this.toggle();
+            }
           }
         }, this));
       } else {
