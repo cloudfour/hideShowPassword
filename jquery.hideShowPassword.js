@@ -1,7 +1,7 @@
 (function ($, undef) {
 
-  var dataKey = 'plugin_hideShowPassword'
-    , defaults = {
+  var dataKey = 'plugin_hideShowPassword' // Where to store instances
+    , defaults = { // Default configuration (see README)
         show: false,
         touchSupport: false,
         innerToggle: false,
@@ -34,6 +34,7 @@
         }
       };
 
+  // Constructor
   function HideShowPassword(element, options) {
     this.element = $(element);
     this.init(options);
@@ -41,6 +42,7 @@
 
   HideShowPassword.prototype = {
 
+    // Initialization logic (only runs first time)
     init: function (options) {
       this.update(options, defaults, (this.element.attr('type') === 'password'));
       if (this.options.innerToggle) {
@@ -48,39 +50,40 @@
       }
     },
 
+    // Processes fresh options and updates the input state
     update: function (options, base, toggleFallback) {
       base = base || this.options;
       toggleFallback = toggleFallback || !this.options.show;
+      // Allow show/hide shorthand
       if (typeof options !== 'object') {
         options = { show: options };
       }
+      // Allow toggle
       if (options.show === 'toggle') {
         options.show = toggleFallback;
       }
+      // Update the options
       this.options = $.extend({}, base, options);
-      this.changeState(this.element, this.currentStateKey(), this.options.states);
+      // Apply and remove attributes based on the new state
+      this.ifCurrentOrNot($.proxy(function (state) {
+        this.element.attr(state.attr).addClass(state.inputClass).trigger(state.eventName);
+      }, this), $.proxy(function (state) {
+        this.element.removeClass(state.inputClass);
+      }, this));
     },
 
-    changeState: function (el, currentKey, states) {
-      this.ifCurrentOrNot(function (state) {
-        el.attr(state.attr).addClass(state.inputClass).trigger(state.eventName);
-      }, function (state) {
-        el.removeClass(state.inputClass);
-      });
-    },
-
+    // Toggle shorthand
     toggle: function () {
       this.update('toggle');
     },
 
-    capitalize: function (str) {
-      return str.replace(/./, function(m) { return m[0].toUpperCase() });
-    },
-
+    // Return the current state key
     currentStateKey: function () {
       return this.options.show ? 'shown' : 'hidden';
     },
 
+    // Loop through all states, perform one action for
+    // the current state and another for others.
     ifCurrentOrNot: function (ifCurrent, ifNot) {
       var currentKey = this.currentStateKey();
       $.each(this.options.states, function (thisKey, state) {
@@ -88,6 +91,7 @@
       });
     },
 
+    // Build the inner toggle, wrapper, and associated events
     initInnerToggle: function (el, options) {
 
       var attachment = (el.css('direction') === 'rtl') ? 'left' : 'right'
@@ -133,7 +137,7 @@
       toggle.appendTo(wrapper);
       toggle.css('marginTop', (toggle.outerHeight() / -2));
 
-      elCSS['padding' + this.capitalize(attachment)] = toggle.outerWidth();
+      elCSS['padding' + attachment.replace(/./, function(m) { return m[0].toUpperCase() })] = toggle.outerWidth();
       el.css(elCSS);
 
       if (options.touchSupport) {
@@ -182,6 +186,7 @@
 
     },
 
+    // Update the inner toggle (text, class, etc.)
     updateInnerToggle: function (el, currentKey, states) {
       this.ifCurrentOrNot(function (state) {
         el.addClass(state.toggleClass).text(state.toggleText);
@@ -192,6 +197,7 @@
 
   };
 
+  // The main function, reuses previous instance if it exists
   $.fn.hideShowPassword = function (options) {
     return this.each(function () {
       var data = $.data(this, dataKey);
@@ -203,16 +209,11 @@
     });
   };
 
-  $.fn.showPassword = function (options) {
-    return this.hideShowPassword($.extend({}, options, { show: true }));
-  };
-
-  $.fn.hidePassword = function (options) {
-    return this.hideShowPassword($.extend({}, options, { show: false }));
-  };
-
-  $.fn.togglePassword = function (options) {
-    return this.hideShowPassword($.extend({}, options, { show: 'toggle' }));
-  };
+  // Shorthand plugins
+  $.each({ 'show':true, 'hide':false, 'toggle':'toggle' }, function (verb, showVal) {
+    $.fn[verb + 'Password'] = function (options) {
+      return this.hideShowPassword($.extend({}, options, { show: showVal }));
+    };
+  });
 
 })(window.jQuery || window.Zepto);
