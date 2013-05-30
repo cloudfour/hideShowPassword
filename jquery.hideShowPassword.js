@@ -31,7 +31,9 @@
             toggleClass: 'hideShowPassword-toggle-show',
             attr: { 'type': 'password' }
           }
-        }
+        },
+        widthMethod: ($.fn.outerWidth === undef) ? 'width' : 'outerWidth',
+        heightMethod: ($.fn.outerHeight === undef) ? 'height' : 'outerHeight'
       };
 
   // Constructor
@@ -95,7 +97,7 @@
     initInnerToggle: function (el, options) {
 
       var attachment = (el.css('direction') === 'rtl') ? 'left' : 'right'
-        , elWidth = el.outerWidth()
+        , elWidth = el[options.widthMethod]()
         , wrapperCSS = {
             position: 'relative',
             display: el.css('display'),
@@ -126,7 +128,7 @@
 
       el.wrap($('<div />').addClass(options.wrapperClass).css(wrapperCSS));
       wrapper = el.parent();
-      if (wrapper.outerWidth() !== elWidth) {
+      if (wrapper[options.widthMethod]() !== elWidth) {
         wrapper.css('width', elWidth);
       }
 
@@ -135,9 +137,9 @@
       toggleCSS[attachment] = 0;
       toggle.css(toggleCSS);
       toggle.appendTo(wrapper);
-      toggle.css('marginTop', (toggle.outerHeight() / -2));
+      toggle.css('marginTop', (toggle[options.heightMethod]() / -2));
 
-      elCSS['padding' + attachment.replace(/./, function(m) { return m[0].toUpperCase() })] = toggle.outerWidth();
+      elCSS['padding' + attachment.replace(/./, function(m) { return m[0].toUpperCase() })] = toggle[options.widthMethod]();
       el.css(elCSS);
 
       if (options.touchSupport) {
@@ -150,7 +152,7 @@
           if (toggleX) {
             eventX = event.pageX || event.originalEvent.pageX;
             if (attachment === 'left') {
-              toggleX+= toggle.outerWidth();
+              toggleX+= toggle[options.widthMethod]();
               lesser = eventX;
               greater = toggleX;
             } else {
@@ -200,11 +202,12 @@
   // The main function, reuses previous instance if it exists
   $.fn.hideShowPassword = function (options) {
     return this.each(function () {
-      var data = $.data(this, dataKey);
+      var $this = $(this)
+        , data = $this.data(dataKey);
       if (data) {
         data.update(options);
       } else {
-        $.data(this, dataKey, new HideShowPassword(this, options));
+        $this.data(dataKey, new HideShowPassword(this, options));
       }
     });
   };
@@ -216,4 +219,4 @@
     };
   });
 
-})(jQuery);
+})(this.jQuery || this.Zepto);
