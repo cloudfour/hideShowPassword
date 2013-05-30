@@ -81,28 +81,14 @@
       return this.options.show ? 'shown' : 'hidden';
     },
 
-    initInnerToggle: function (el, options) {
+    ifCurrentOrNot: function (ifCurrent, ifNot) {
+      var currentKey = this.currentStateKey();
+      $.each(this.options.states, function (thisKey, state) {
+        ((currentKey === thisKey) ? ifCurrent : ifNot)(state);
+      });
+    },
 
-      // outer dimension addition for Zepto
-      // https://gist.github.com/pamelafox/1379704
-      $.each(['width', 'height'], $.proxy(function (index, dimension) {
-        var Dimension = this.capitalize(dimension)
-          , fnName = 'outer' + Dimension
-          , sides = {'width': ['left', 'right'], 'height': ['top', 'bottom']};
-        if ($.fn[fnName] === undef) {
-          $.fn[fnName] = function (margin) {
-            var elem = this;
-            if (elem) {
-              var size = elem[dimension]();
-              $.each(sides[dimension], function (index, side) {
-                if (margin) size+= parseInt(elem.css('margin-' + side), 10);
-              });
-              return size;
-            }
-            return;
-          }
-        }
-      }, this));
+    initInnerToggle: function (el, options) {
 
       var attachment = (el.css('direction') === 'rtl') ? 'left' : 'right'
         , elWidth = el.outerWidth()
@@ -130,6 +116,7 @@
             marginLeft: 0
           }
         , eventName = ''
+        , elWidth
         , wrapper
         , toggle;
 
@@ -200,13 +187,6 @@
         el.addClass(state.toggleClass).text(state.toggleText);
       }, function (state) {
         el.removeClass(state.toggleClass);
-      });
-    },
-
-    ifCurrentOrNot: function (ifCurrent, ifNot) {
-      var currentKey = this.currentStateKey();
-      $.each(this.options.states, function (thisKey, state) {
-        ((currentKey === thisKey) ? ifCurrent : ifNot)(state);
       });
     }
 
