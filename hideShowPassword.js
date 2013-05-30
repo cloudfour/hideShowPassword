@@ -36,41 +36,36 @@
 
   function HideShowPassword(element, options) {
     this.element = $(element);
-    this.options = this.prepOptions(options, defaults, (this.element.attr('type') === 'password'));
-    this.init();
+    this.init(options);
   }
 
   HideShowPassword.prototype = {
 
-    init: function () {
-      this.updateState(this.element, this.currentStateKey(), this.options.states);
+    init: function (options) {
+      this.update(options, defaults, (this.element.attr('type') === 'password'));
       if (this.options.innerToggle) {
         this.initInnerToggle(this.element, this.options);
       }
     },
 
-    prepOptions: function (options, base, toggleFallback) {
+    update: function (options, base, toggleFallback) {
+      base = base || this.options;
+      toggleFallback = toggleFallback || !this.options.show;
       if (typeof options !== 'object') {
         options = { show: options };
       }
       if (options.show === 'toggle') {
         options.show = toggleFallback;
       }
-      return $.extend({}, base, options);
+      this.options = $.extend({}, base, options);
+      this.changeState(this.element, this.currentStateKey(), this.options.states);
     },
 
-    update: function (options) {
-      this.options = this.prepOptions(options, this.options, !this.options.show);
-      this.updateState(this.element, this.currentStateKey(), this.options.states);
-    },
-
-    updateState: function (el, currentKey, states) {
-      $.each(states, function (thisKey, state) {
-        if (currentKey === thisKey) {
-          el.attr(state.attr).addClass(state.inputClass).trigger(state.eventName);
-        } else {
-          el.removeClass(state.inputClass);
-        }
+    changeState: function (el, currentKey, states) {
+      this.ifCurrentOrNot(function (state) {
+        el.attr(state.attr).addClass(state.inputClass).trigger(state.eventName);
+      }, function (state) {
+        el.removeClass(state.inputClass);
       });
     },
 
@@ -201,12 +196,17 @@
     },
 
     updateInnerToggle: function (el, currentKey, states) {
-      $.each(states, function (thisKey, state) {
-        if (currentKey === thisKey) {
-          el.addClass(state.toggleClass).text(state.toggleText);
-        } else {
-          el.removeClass(state.toggleClass);
-        }
+      this.ifCurrentOrNot(function (state) {
+        el.addClass(state.toggleClass).text(state.toggleText);
+      }, function (state) {
+        el.removeClass(state.toggleClass);
+      });
+    },
+
+    ifCurrentOrNot: function (ifCurrent, ifNot) {
+      var currentKey = this.currentStateKey();
+      $.each(this.options.states, function (thisKey, state) {
+        ((currentKey === thisKey) ? ifCurrent : ifNot)(state);
       });
     }
 
