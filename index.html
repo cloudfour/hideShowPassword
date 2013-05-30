@@ -65,6 +65,7 @@ input[type=password]:focus, input[type=text]:focus {
 
 <h2>Demo: Inner toggle</h2>
 
+<p><input type="password" class="with-toggle" value="" /></p>
 <p><input type="password" class="with-toggle input-block" value="" /></p>
 
 <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
@@ -80,8 +81,7 @@ $('#toggle-button').on('click', function () {
   $('#password').togglePassword();
 });
 
-$('.with-toggle').hideShowPassword({
-  show: true,
+$('.with-toggle').showPassword({
   innerToggle: true,
   touchSupport: Modernizr.touch
 });

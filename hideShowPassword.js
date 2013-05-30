@@ -53,7 +53,7 @@
       if (typeof options !== 'object') {
         options = { show: options };
       }
-      if (options.show = 'toggle') {
+      if (options.show === 'toggle') {
         options.show = toggleFallback;
       }
       return $.extend({}, base, options);
