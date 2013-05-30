@@ -36,11 +36,7 @@
 
   function HideShowPassword(element, options) {
     this.element = $(element);
-    if (typeof options !== 'object') options = { show: options };
-    if (options.show === 'toggle') {
-      options.show = (this.element.attr('type') === 'password');
-    }
-    this.options = $.extend({}, defaults, options);
+    this.options = this.prepOptions(options, defaults, (this.element.attr('type') === 'password'));
     this.init();
   }
 
@@ -53,11 +49,18 @@
       }
     },
 
+    prepOptions: function (options, base, toggleFallback) {
+      if (typeof options !== 'object') {
+        options = { show: options };
+      }
+      if (options.show = 'toggle') {
+        options.show = toggleFallback;
+      }
+      return $.extend({}, base, options);
+    },
+
     update: function (options) {
-      var lastOptions = this.options;
-      if (typeof options !== 'object') options = { show: options };
-      if (options.show === 'toggle') options.show = !this.options.show;
-      this.options = $.extend({}, this.options, options);
+      this.options = this.prepOptions(options, this.options, !this.options.show);
       this.updateState(this.element, this.currentStateKey(), this.options.states);
     },
 
