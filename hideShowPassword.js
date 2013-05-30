@@ -1,183 +1,222 @@
 (function ($, undef) {
 
-  // TODO:
-  // - Cleanup
-  // - Comment code
-
-  // outer dimension addition for Zepto
-  // https://gist.github.com/pamelafox/1379704
-  $.each(['width', 'height'], function (index, dimension) {
-    var Dimension = dimension.replace(/./, function(m) { return m[0].toUpperCase() })
-      , fnName = 'outer' + Dimension
-      , sides = {'width': ['left', 'right'], 'height': ['top', 'bottom']};
-    if ($.fn[fnName] === undef) {
-      $.fn[fnName] = function (margin) {
-        var elem = this;
-        if (elem) {
-          var size = elem[dimension]();
-          $.each(sides[dimension], function (index, side) {
-            if (margin) size+= parseInt(elem.css('margin-' + side), 10);
-          });
-          return size;
+  var dataKey = 'plugin_hideShowPassword'
+    , defaults = {
+        show: false,
+        touchSupport: false,
+        innerToggle: false,
+        hideToggleUntil: 'focus',
+        wrapperClass: 'hideShowPassword-wrapper',
+        toggleClass: 'hideShowPassword-toggle',
+        toggleEvent: 'click',
+        toggleTouchEvent: 'touchstart mousedown',
+        states: {
+          shown: {
+            toggleText: 'Hide',
+            eventName: 'passwordShown',
+            inputClass: 'hideShowPassword-shown',
+            toggleClass: 'hideShowPassword-toggle-hide',
+            attr: {
+              'type': 'text',
+              'autocapitalize': 'off',
+              'autocomplete': 'off',
+              'autocorrect': 'off',
+              'spellcheck': 'false'
+            }
+          },
+          hidden: {
+            toggleText: 'Show',
+            eventName: 'passwordHidden',
+            inputClass: 'hideShowPassword-hidden',
+            toggleClass: 'hideShowPassword-toggle-show',
+            attr: { 'type': 'password' }
+          }
         }
-        return;
-      }
+      };
+
+  function HideShowPassword(element, options) {
+    this.element = $(element);
+    if (typeof options !== 'object') options = { show: options };
+    if (options.show === 'toggle') {
+      options.show = (this.element.attr('type') === 'password');
     }
-  });
+    this.options = $.extend({}, defaults, options);
+    this.init();
+  }
+
+  HideShowPassword.prototype = {
+
+    init: function () {
+      this.updateState(this.element, this.currentStateKey(), this.options.states);
+      if (this.options.innerToggle) {
+        this.initInnerToggle(this.element, this.options);
+      }
+    },
+
+    update: function (options) {
+      var lastOptions = this.options;
+      if (typeof options !== 'object') options = { show: options };
+      if (options.show === 'toggle') options.show = !this.options.show;
+      this.options = $.extend({}, this.options, options);
+      this.updateState(this.element, this.currentStateKey(), this.options.states);
+    },
+
+    updateState: function (el, currentKey, states) {
+      $.each(states, function (thisKey, state) {
+        if (currentKey === thisKey) {
+          el.attr(state.attr).addClass(state.inputClass).trigger(state.eventName);
+        } else {
+          el.removeClass(state.inputClass);
+        }
+      });
+    },
+
+    toggle: function () {
+      this.update('toggle');
+    },
+
+    capitalize: function (str) {
+      return str.replace(/./, function(m) { return m[0].toUpperCase() });
+    },
+
+    currentStateKey: function () {
+      return this.options.show ? 'shown' : 'hidden';
+    },
+
+    initInnerToggle: function (el, options) {
+
+      // outer dimension addition for Zepto
+      // https://gist.github.com/pamelafox/1379704
+      $.each(['width', 'height'], $.proxy(function (index, dimension) {
+        var Dimension = this.capitalize(dimension)
+          , fnName = 'outer' + Dimension
+          , sides = {'width': ['left', 'right'], 'height': ['top', 'bottom']};
+        if ($.fn[fnName] === undef) {
+          $.fn[fnName] = function (margin) {
+            var elem = this;
+            if (elem) {
+              var size = elem[dimension]();
+              $.each(sides[dimension], function (index, side) {
+                if (margin) size+= parseInt(elem.css('margin-' + side), 10);
+              });
+              return size;
+            }
+            return;
+          }
+        }
+      }, this));
+
+      var attachment = (el.css('direction') === 'rtl') ? 'left' : 'right'
+        , elWidth = el.outerWidth()
+        , wrapperCSS = {
+            position: 'relative',
+            display: el.css('display'),
+            verticalAlign: el.css('verticalAlign'),
+            marginTop: el.css('marginTop'),
+            marginRight: el.css('marginRight'),
+            marginBottom: el.css('marginBottom'),
+            marginLeft: el.css('marginLeft')
+          }
+        , toggleCSS = {
+            position: 'absolute',
+            top: '50%',
+            mozUserSelect: 'none',
+            webkitUserSelect: 'none',
+            msUserSelect: 'none',
+            userSelect: 'none'
+          }
+        , elCSS = {
+            marginTop: 0,
+            marginRight: 0,
+            marginBottom: 0,
+            marginLeft: 0
+          }
+        , eventName = ''
+        , wrapper
+        , toggle;
+
+      el.wrap($('<div />').addClass(options.wrapperClass).css(wrapperCSS));
+      wrapper = el.parent();
+      if (wrapper.outerWidth() !== elWidth) {
+        wrapper.css('width', elWidth);
+      }
+
+      toggle = $('<div />').addClass(options.toggleClass);
+      this.updateInnerToggle(toggle, this.currentStateKey(), options.states);
+      toggleCSS[attachment] = 0;
+      toggle.css(toggleCSS);
+      toggle.appendTo(wrapper);
+      toggle.css('marginTop', (toggle.outerHeight() / -2));
+
+      elCSS['padding' + this.capitalize(attachment)] = toggle.outerWidth();
+      el.css(elCSS);
+
+      if (options.touchSupport) {
+        toggle.css('pointerEvents', 'none');
+        el.on(options.toggleTouchEvent, $.proxy(function (event) {
+          var minX = toggle.offset().left
+            , curX = event.pageX || event.originalEvent.pageX;
+          if (minX && curX >= minX) {
+            event.preventDefault();
+            this.toggle();
+          }
+        }, this));
+      } else {
+        toggle.on(options.toggleEvent, $.proxy(function () {
+          this.toggle();
+        }, this));
+      }
+
+      $.each(options.states, function (key, state) {
+        eventName += state.eventName + ' ';
+      });
+      el.on(eventName, $.proxy(function () {
+        this.updateInnerToggle(toggle, this.currentStateKey(), options.states);
+      }, this));
+
+
+      if (options.hideToggleUntil) {
+        toggle.hide();
+        el.one(options.hideToggleUntil, function () {
+          toggle.show();
+        });
+      }
+
+    },
+
+    updateInnerToggle: function (el, currentKey, states) {
+      $.each(states, function (thisKey, state) {
+        if (currentKey === thisKey) {
+          el.addClass(state.toggleClass).text(state.toggleText);
+        } else {
+          el.removeClass(state.toggleClass);
+        }
+      });
+    }
+
+  };
 
   $.fn.hideShowPassword = function (options) {
-    var dataKey = 'hideShowPasswordOptions';
-    if (typeof options === 'boolean') {
-      options = { show: options };
-    }
     return this.each(function () {
-      var $this = $(this)
-        , lastOpts = $this.data(dataKey)
-        , opts = $.extend(true, {}, $.fn.hideShowPassword.defaults, lastOpts, options)
-        , state = opts.show ? opts.state.shown : opts.state.hidden
-        , direction
-        , $wrapper
-        , $toggle;
-      $this.data(dataKey, opts);
-      $this.attr(state.attr);
-      if (!lastOpts) {
-        $this.on(opts.state.shown.eventName, function () {
-          $this.addClass(opts.state.shown.inputClass);
-          $this.removeClass(opts.state.hidden.inputClass);
-        });
-        $this.on(opts.state.hidden.eventName, function () {
-          $this.addClass(opts.state.hidden.inputClass);
-          $this.removeClass(opts.state.shown.inputClass);
-        });
+      var data = $.data(this, dataKey);
+      if (data) {
+        data.update(options);
+      } else {
+        $.data(this, dataKey, new HideShowPassword(this, options));
       }
-      if (opts.innerToggle && (!lastOpts || !lastOpts.innerToggle)) {
-        direction = $this.css('direction');
-        $this.wrap(
-          $('<div />').addClass(opts.wrapperClass).css({
-            position: 'relative',
-            display: $this.css('display'),
-            verticalAlign: $this.css('verticalAlign'),
-            marginTop: $this.css('marginTop'),
-            marginRight: $this.css('marginRight'),
-            marginBottom: $this.css('marginBottom'),
-            marginLeft: $this.css('marginLeft')
-          })
-        );
-        $wrapper = $this.parent();
-        if ($wrapper.outerWidth() !== $this.outerWidth()) {
-          $wrapper.css('width', $this.outerWidth());
-        }
-        $toggle = $('<div />').addClass(opts.toggleClass).text(state.toggleText).css({
-          position: 'absolute',
-          top: '50%',
-          mozUserSelect: 'none',
-          webkitUserSelect: 'none',
-          msUserSelect: 'none',
-          userSelect: 'none'
-        });
-        $toggle.css(direction === 'rtl' ? 'left' : 'right', 0);
-        $toggle.appendTo($wrapper);
-        $toggle.css('marginTop', ($toggle.outerHeight() / -2));
-        $this.css({
-          marginTop: 0,
-          marginRight: 0,
-          marginBottom: 0,
-          marginLeft: 0
-        });
-        $this.css(direction === 'rtl' ? 'paddingLeft' : 'paddingRight', $toggle.outerWidth());
-        if (opts.touchSupport) {
-          $toggle.css('pointerEvents', 'none');
-          $this.on(opts.toggleTouchEvent, function (event) {
-            var minX = $toggle.offset().left
-              , curX = event.pageX || event.originalEvent.pageX;
-            if (minX && curX >= minX) {
-              event.preventDefault();
-              $this.togglePassword();
-            }
-          });
-        } else {
-          $toggle.on(opts.toggleEvent, function () {
-            $this.togglePassword();
-          });
-        }
-        $this.on(opts.state.shown.eventName, function () {
-          $toggle.text(opts.state.shown.toggleText);
-          $toggle.addClass(opts.state.shown.toggleClass);
-          $toggle.removeClass(opts.state.hidden.toggleClass);
-        });
-        $this.on(opts.state.hidden.eventName, function () {
-          $toggle.text(opts.state.hidden.toggleText);
-          $toggle.addClass(opts.state.hidden.toggleClass);
-          $toggle.removeClass(opts.state.shown.toggleClass);
-        });
-        if (opts.hideToggleUntil) {
-          $toggle.hide();
-          $this.one(opts.hideToggleUntil, function () {
-            $toggle.show();
-          });
-        }
-      }
-      $this.trigger(state.eventName);
     });
   };
 
   $.fn.showPassword = function (options) {
-    var opts = $.extend({}, options, { show: true });
-    return this.hideShowPassword(opts);
+    return this.hideShowPassword($.extend({}, options, { show: true }));
   };
 
   $.fn.hidePassword = function (options) {
-    var opts = $.extend({}, options, { show: false });
-    return this.hideShowPassword(opts);
-  };
-
-  $.fn.isPasswordHidden = function () {
-    return ($(this).attr('type') === 'password');
-  };
-
-  $.fn.isPasswordShown = function () {
-    return !($(this).isPasswordHidden());
+    return this.hideShowPassword($.extend({}, options, { show: false }));
   };
 
   $.fn.togglePassword = function (options) {
-    return this.each(function () {
-      var $this = $(this)
-        , opts = $.extend({}, options, { show: $this.isPasswordHidden() });
-      $this.hideShowPassword(opts);
-    });
-  };
-
-  $.fn.hideShowPassword.defaults = {
-    show: false,
-    touchSupport: false,
-    innerToggle: false,
-    hideToggleUntil: 'focus',
-    wrapperClass: 'hideShowPassword-wrapper',
-    toggleClass: 'hideShowPassword-toggle',
-    toggleEvent: 'click',
-    toggleTouchEvent: 'touchstart mousedown',
-    state: {
-      shown: {
-        toggleText: 'Hide',
-        eventName: 'passwordShown',
-        inputClass: 'hideShowPassword-shown',
-        toggleClass: 'hideShowPassword-toggle-hide',
-        attr: {
-          'type': 'text',
-          'autocapitalize': 'off',
-          'autocomplete': 'off',
-          'autocorrect': 'off',
-          'spellcheck': 'false'
-        }
-      },
-      hidden: {
-        toggleText: 'Show',
-        eventName: 'passwordHidden',
-        inputClass: 'hideShowPassword-hidden',
-        toggleClass: 'hideShowPassword-toggle-show',
-        attr: { 'type': 'password' }
-      }
-    }
+    return this.hideShowPassword($.extend({}, options, { show: 'toggle' }));
   };
 
 })(window.jQuery || window.Zepto);
