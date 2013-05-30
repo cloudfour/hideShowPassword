@@ -61,6 +61,7 @@ input[type=password]:focus, input[type=text]:focus {
 
 <p><input type="password" id="password" value="hamfisted" class="input-block" /></p>
 <p><input type="checkbox" id="toggle" /> <label for="toggle">Show password</label></p>
+<p><button id="toggle-button">Toggle</button></p>
 
 <h2>Demo: Inner toggle</h2>
 
@@ -73,6 +74,10 @@ input[type=password]:focus, input[type=text]:focus {
 
 $('#toggle').on('change', function () {
   $('#password').hideShowPassword(this.checked);
+});
+
+$('#toggle-button').on('click', function () {
+  $('#password').togglePassword();
 });
 
 $('.with-toggle').hideShowPassword({

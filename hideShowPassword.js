@@ -1,7 +1,6 @@
 (function ($, undef) {
 
   // TODO:
-  // - Ability to set insetToggle to `false` to turn off
   // - Cleanup
   // - Comment code
 
@@ -132,10 +131,18 @@
     return this.hideShowPassword(opts);
   };
 
+  $.fn.isPasswordHidden = function () {
+    return ($(this).attr('type') === 'password');
+  };
+
+  $.fn.isPasswordShown = function () {
+    return !($(this).isPasswordHidden());
+  };
+
   $.fn.togglePassword = function (options) {
     return this.each(function () {
       var $this = $(this)
-        , opts = $.extend({}, options, { show: ($this.attr('type') === 'password') });
+        , opts = $.extend({}, options, { show: $this.isPasswordHidden() });
       $this.hideShowPassword(opts);
     });
   };
