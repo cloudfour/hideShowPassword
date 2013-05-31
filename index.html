@@ -6,22 +6,67 @@
   <title>hideShowPassword Demo</title>
   <style>
 
+html {
+  background-color: #f6f6f6;
+}
+
 body {
   color: #444;
   font-family: sans-serif;
+  line-height: 1.4em;
+  margin: 1em auto 2em;
+  padding: 0 1em;
+  max-width: 30em;
 }
 
-input[type=password], input[type=text] {
-  background-color: #f6f6f6;
+a {
+  color: #0088cc;
+  text-decoration: none;
+}
+
+h1, p, figcaption {
+  text-align: center;
+}
+
+h1 {
+  font-size: 1.25em;
+  line-height: 1em;
+  margin: 1.5em 0 1em;
+  padding: 0;
+}
+
+figure {
+  margin: 0 0 1em;
+}
+
+figcaption {
+  color: #999;
+  font-size: 0.875em;
+  margin-top: 0.25em;
+}
+
+.login, .login-field {
+  border-radius: 0.25em;
+}
+
+.login {
+  background-color: #e6e6e6;
+}
+
+.login-field {
+  background-color: #fff;
   border: 2px solid #ccc;
   border-radius: 0.25em;
   color: inherit;
+  display: block;
   font-family: inherit;
   font-size: inherit;
-  line-height: 1em;
+  line-height: 1.5em;
   margin: 0;
   padding: 0.5em;
+  position: relative;
   vertical-align: middle;
+  width: 100%;
 
   -webkit-appearance: none;
   -webkit-box-sizing: border-box;
@@ -29,28 +74,33 @@ input[type=password], input[type=text] {
   box-sizing: border-box;
 }
 
-input[type=password]:focus, input[type=text]:focus {
-  background-color: #fff;
+.login-field:focus {
   border-color: #0088cc;
   outline: transparent;
+  z-index: 2;
+}
+
+.login-field-username {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-bottom: -2px;
+}
+
+.login-field-password {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  margin-top: -2px;
+}
+
+.login-option {
+  padding: 0.25em 0.5em 0.5em;
+}
+
+.login-option input {
+  vertical-align: baseline;
 }
 
 .hideShowPassword-toggle {
-  color: #888;
-  cursor: pointer;
-  font-size: 0.75em;
-  font-weight: bold;
-  padding: 0.5em 1em;
-  text-align: right;
-  text-transform: uppercase;
-}
-
-.input-block {
-  display: block;
-  width: 100%;
-}
-
-.wink {
   background-image: url(img/wink.svg);
   background-position: 0 center;
   background-repeat: no-repeat;
@@ -59,14 +109,29 @@ input[type=password]:focus, input[type=text]:focus {
   overflow: hidden;
   text-indent: -9999em;
   width: 44px;
+  z-index: 3;
 }
 
-.wink.hideShowPassword-toggle-hide {
+.hideShowPassword-toggle-hide {
   background-position: -44px center;
 }
 
-#inner-rtl {
-  direction: rtl;
+.my-toggle-class {
+  color: #888;
+  cursor: pointer;
+  font-size: 0.75em;
+  font-weight: bold;
+  padding: 0.5em 1em;
+  text-transform: uppercase;
+  z-index: 3;
+}
+
+.btn {
+  background-color: #0088cc;
+  border-radius: 0.25em;
+  color: #fff;
+  display: inline-block;
+  padding: 0.5em 1em;
 }
 
   </style>
@@ -74,74 +139,55 @@ input[type=password]:focus, input[type=text]:focus {
 </head>
 <body>
 
-<h1>hideShowPassword</h1>
+<h1>hideShowPassword Demo</h1>
 
-<h2>Show, hide and toggle</h2>
+<figure>
+  <div class="login">
+    <input class="login-field login-field-username" type="text" placeholder="Username" autocapitalize="off" autocomplete="off" autocorrect="off" />
+    <input class="login-field login-field-password" id="password-1" type="password" placeholder="Password" />
+  </div>
+  <figcaption>Inner toggle styled as icon.</figcaption>
+</figure>
 
-<div>
-  <input type="password" id="basic" value="password" class="input-block" />
-  <p><button id="show">Show</button>
-  <button id="hide">Hide</button>
-  <button id="toggle">Toggle</button></p>
-</div>
+<figure>
+  <div class="login">
+    <input class="login-field login-field-username" type="text" placeholder="Username" autocapitalize="off" autocomplete="off" autocorrect="off" />
+    <input class="login-field login-field-password" id="password-2" type="password" placeholder="Password" />
+  </div>
+  <figcaption>Password visible by default, toggle styled as text and shows on focus.</figcaption>
+</figure>
 
-<h2>Based on other element value</h2>
+<figure>
+  <div class="login">
+    <input class="login-field login-field-username" type="text" placeholder="Username" autocapitalize="off" autocomplete="off" autocorrect="off" />
+    <input class="login-field login-field-password" id="password-3" type="password" placeholder="Password" value="example password" />
+    <div class="login-option"><input type="checkbox" id="show-password" /> <label for="show-password">Show password</label></div>
+  </div>
+  <figcaption>Checkbox toggles password visibility.</figcaption>
+</figure>
 
-<div>
-  <input type="password" id="toggleme" value="password" class="input-block" />
-  <p><input type="checkbox" id="checkme" /> <label for="checkme">Show password</label></p>
-</div>
-
-<h2>Inner toggle</h2>
-
-<p>Focus to see, tap/click to toggle.</p>
-
-<div>
-  <input type="password" id="inner" class="input-block" placeholder="Password" />
-</div>
-
-<p>It also supports right-to-left text direction.</p>
-
-<div>
-  <input type="password" id="inner-rtl" class="input-block" placeholder="Password" />
-</div>
-
-<p>Customize the CSS class names to style the elements as you like.</p>
-
-<div>
-  <input type="password" id="inner-wink" class="input-block" placeholder="Password" />
-</div>
+<p><a href="" class="btn">More info and source</a></p>
 
 <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
 <!-- <script src="vendor/zepto.min.js"></script> -->
 <script src="hideShowPassword.js"></script>
 <script>
 
-$('#show').on('click', function () {
-  $('#basic').showPassword();
-});
-$('#hide').on('click', function () {
-  $('#basic').hidePassword();
-});
-$('#toggle').on('click', function () {
-  $('#basic').togglePassword();
-});
-
-$('#checkme').on('change', function () {
-  $('#toggleme').hideShowPassword(this.checked);
-});
-
-$('#inner, #inner-rtl').hideShowPassword({
-  show: true,
+$('#password-1').hideShowPassword({
   innerToggle: true,
   touchSupport: Modernizr.touch
 });
 
-$('#inner-wink').hideShowPassword({
+$('#password-2').hideShowPassword({
+  show: true,
   innerToggle: true,
-  touchSupport: Modernizr.touch,
-  toggleClass: 'wink',
-  hideToggleUntil: false
+  toggleClass: 'my-toggle-class',
+  hideToggleUntil: 'focus',
+  touchSupport: Modernizr.touch
+});
+
+$('#show-password').on('change', function () {
+  $('#password-3').hideShowPassword(this.checked);
 });
 
 </script>

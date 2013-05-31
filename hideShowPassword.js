@@ -5,7 +5,7 @@
         show: false,
         touchSupport: false,
         innerToggle: false,
-        hideToggleUntil: 'focus',
+        hideToggleUntil: false,
         wrapperClass: 'hideShowPassword-wrapper',
         toggleClass: 'hideShowPassword-toggle',
         toggleEvent: 'click',
