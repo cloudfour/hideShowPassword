@@ -1,4 +1,4 @@
-# Hide/show password plugin for jQuery (and Zepto)
+# Hide/show password plugin for jQuery/Zepto
 
 Because life's too short to waste time re-typing passwords.
 
