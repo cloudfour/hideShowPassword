@@ -4,7 +4,8 @@ Because life's too short to waste time re-typing passwords.
 
 This plugin lets you easily hide and reveal the contents of a password input field. It's based on a mobile design pattern documented [in this post by Luke Wroblewski](http://www.lukew.com/ff/entry.asp?1653).
 
-**[Check out a demo &rarr;]()**
+* [Explanatory blog post]()
+* [Check out a demo]()
 
 ## Dependencies
 
@@ -145,3 +146,13 @@ Here are all the options and their defaults:
         widthMethod: ($.fn.outerWidth === undef) ? 'width' : 'outerWidth',
         heightMethod: ($.fn.outerHeight === undef) ? 'height' : 'outerHeight'
     });
+
+## Known issues
+
+### Competing control in IE10
+
+Internet Explorer 10 includes its own control for toggling password visibility that can compete with this plugin when enabled.
+
+You can disable this control for any element by specifying a style for the `::ms-reveal` pseudo-class:
+
+    ::-ms-reveal { display: none !important; }
