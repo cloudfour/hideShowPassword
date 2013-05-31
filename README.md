@@ -5,7 +5,7 @@ Because life's too short to waste time re-typing passwords.
 This plugin lets you easily hide and reveal the contents of a password input field. It's based on a mobile design pattern documented [in this post by Luke Wroblewski](http://www.lukew.com/ff/entry.asp?1653) and seen in apps like [Polar](http://www.polarb.com/).
 
 * [Explanatory blog post]()
-* [Check out a demo]()
+* [Check out a demo](http://cloudfour.github.io/hideShowPassword/)
 
 ## Dependencies
 
@@ -44,7 +44,7 @@ If you want to tweak more than the visibility, you can pass an object to `hideSh
         touchSupport: Modernizr.touch // Enable touch enhancements
     });
 
-See the options section for detailed descriptions of what's available, and [check out the demo]() for examples.
+See the options section for detailed descriptions of what's available, and the demo for examples.
 
 ### Events
 
