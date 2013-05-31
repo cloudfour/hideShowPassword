@@ -1,21 +1,59 @@
 (function ($, undef) {
 
   var dataKey = 'plugin_hideShowPassword' // Where to store instances
-    , defaults = { // Default configuration (see README)
+    , defaults = {
+        // Visibility of the password text. Can be true, false or 'toggle'.
         show: false,
-        touchSupport: false,
+
+        // Set to true to create an inner toggle for this input.
         innerToggle: false,
+
+        // Specify an event for the input that should make the innerToggle
+        // visible. If false, the toggle will be immediately visible.
+        // Example: 'focus'
         hideToggleUntil: false,
-        wrapperClass: 'hideShowPassword-wrapper',
-        toggleClass: 'hideShowPassword-toggle',
+
+        // By default, the innerToggle will work like any old clickable
+        // element. If this is set to true, it will use touch-optimized
+        // events so you can tap it on a touch device without losing
+        // your input focus.
+        touchSupport: false,
+
+        // Event to use for inner toggle when touchSupport is false.
         toggleEvent: 'click',
+
+        // ...and when touchSupport is true.
         toggleTouchEvent: 'touchstart mousedown',
+
+        // When innerToggle is true, the input needs to be wrapped in
+        // a containing element. You can specify the class name of this
+        // element here. Useful for custom styles.
+        wrapperClass: 'hideShowPassword-wrapper',
+
+        // Class name for the inner toggle.
+        toggleClass: 'hideShowPassword-toggle',
+
+        // The states object includes settings specific to the "shown"
+        // or "hidden" states of the input field.
         states: {
+
+          // These settings are applied when the password text is
+          // visible (show: true).
           shown: {
-            toggleText: 'Hide',
-            eventName: 'passwordShown',
+
+            // Class to apply to the input element.
             inputClass: 'hideShowPassword-shown',
+
+            // Event to trigger on the input.
+            eventName: 'passwordShown',
+
+            // Class to apply to the toggle.
             toggleClass: 'hideShowPassword-toggle-hide',
+
+            // Text of the toggle element.
+            toggleText: 'Hide',
+
+            // Attributes to apply to the input element.
             attr: {
               'type': 'text',
               'autocapitalize': 'off',
@@ -24,14 +62,23 @@
               'spellcheck': 'false'
             }
           },
+
+          // Settings when text is hidden (show: false).
           hidden: {
-            toggleText: 'Show',
-            eventName: 'passwordHidden',
             inputClass: 'hideShowPassword-hidden',
+            eventName: 'passwordHidden',
             toggleClass: 'hideShowPassword-toggle-show',
+            toggleText: 'Show',
             attr: { 'type': 'password' }
           }
         },
+
+        // When innerToggle is true, some elements are styled based
+        // on their width. Unless box-sizing is set to border-box,
+        // outerWidth() is a more reliable method than width(), but it is
+        // not included with Zepto. If you plan to include your own plugin
+        // for determining width, you can specify its key as a string to
+        // override these defaults.
         widthMethod: ($.fn.outerWidth === undef) ? 'width' : 'outerWidth',
         heightMethod: ($.fn.outerHeight === undef) ? 'height' : 'outerHeight'
       };
