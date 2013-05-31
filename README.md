@@ -2,7 +2,7 @@
 
 Because life's too short to waste time re-typing passwords.
 
-This plugin lets you easily hide and reveal the contents of a password input field. It's based on a mobile design pattern documented [in this post by Luke Wroblewski](http://www.lukew.com/ff/entry.asp?1653).
+This plugin lets you easily hide and reveal the contents of a password input field. It's based on a mobile design pattern documented [in this post by Luke Wroblewski](http://www.lukew.com/ff/entry.asp?1653) and seen in apps like [Polar](http://www.polarb.com/).
 
 * [Explanatory blog post]()
 * [Check out a demo]()

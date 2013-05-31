@@ -1,3 +1,4 @@
+/* https://github.com/cloudfour/hideShowPassword */
 (function ($, undef) {
 
   var dataKey = 'plugin_hideShowPassword' // Where to store instances
