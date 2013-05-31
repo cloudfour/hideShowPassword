@@ -7,6 +7,16 @@
   <style>
 
   /*
+   * Add this if you want to disable IE10's implementation
+   * of the winking eye in favor of your own.
+   * Alternatively, you could set the 'innerToggle' option to
+   * false for that browser only.
+   */
+  ::-ms-reveal {
+    display:none !important;
+  }
+
+  /*
    * This toggle style shows a winking "eye-con" (nyuk, nyuk).
    * Open eye means "show," closed eye means "hide."
    */
