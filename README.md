@@ -149,10 +149,12 @@ Here are all the options and their defaults:
 
 ## Known issues
 
-### Competing control in IE10
+### Competing control in IE10 (Windows 8)
 
 Internet Explorer 10 includes its own control for toggling password visibility that can compete with this plugin when enabled.
 
 You can disable this control for any element by specifying a style for the `::ms-reveal` pseudo-class:
 
     ::-ms-reveal { display: none !important; }
+
+More info [on MSDN](http://msdn.microsoft.com/en-us/library/windows/apps/hh465773.aspx).
