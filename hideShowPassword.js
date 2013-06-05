@@ -3,8 +3,11 @@
 
   var dataKey = 'plugin_hideShowPassword' // Where to store instances
     , defaults = {
-        // Visibility of the password text. Can be true, false or 'toggle'.
-        show: false,
+        // Visibility of the password text. Can be true, false, 'toggle'
+        // or 'infer'. If 'toggle', it will be the opposite of whatever
+        // it currently is. If 'infer', it will be based on the input
+        // type (false if 'password', otherwise true).
+        show: 'infer',
 
         // Set to true to create an inner toggle for this input.
         innerToggle: false,
@@ -108,12 +111,15 @@
       if (typeof options !== 'object') {
         options = { show: options };
       }
-      // Allow toggle
-      if (options.show === 'toggle') {
-        options.show = toggleFallback;
-      }
       // Update the options
       this.options = $.extend({}, base, options);
+      // Interpret strings
+      if (this.options.show === 'toggle') {
+        this.options.show = toggleFallback;
+      }
+      if (this.options.show === 'infer') {
+        this.options.show = (this.element.attr('type') !== 'password');
+      }
       // Apply and remove attributes based on the new state
       this.ifCurrentOrNot($.proxy(function (state) {
         this.element.attr(state.attr).addClass(state.inputClass).trigger(state.eventName);

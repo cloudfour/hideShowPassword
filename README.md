@@ -65,8 +65,11 @@ You can pass an options object to the `hideShowPassword` method to customize it 
 Here are all the options and their defaults:
 
     .hideShowPassword({
-        // Visibility of the password text. Can be true, false or 'toggle'.
-        show: false,
+        // Visibility of the password text. Can be true, false, 'toggle'
+        // or 'infer'. If 'toggle', it will be the opposite of whatever
+        // it currently is. If 'infer', it will be based on the input
+        // type (false if 'password', otherwise true).
+        show: 'infer',
 
         // Set to true to create an inner toggle for this input.
         innerToggle: false,
