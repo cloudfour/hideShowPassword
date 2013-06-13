@@ -57,7 +57,7 @@
             // Text of the toggle element.
             toggleText: 'Hide',
 
-            // Attributes to apply to the input element.
+            // Property values to apply to the input element.
             attr: {
               'type': 'text',
               'autocapitalize': 'off',
@@ -97,7 +97,7 @@
 
     // Initialization logic (only runs first time)
     init: function (options) {
-      this.update(options, defaults, (this.element.attr('type') === 'password'));
+      this.update(options, defaults, (this.element.prop('type') === 'password'));
       if (this.options.innerToggle) {
         this.initInnerToggle(this.element, this.options);
       }
@@ -118,11 +118,16 @@
         this.options.show = toggleFallback;
       }
       if (this.options.show === 'infer') {
-        this.options.show = (this.element.attr('type') !== 'password');
+        this.options.show = (this.element.prop('type') !== 'password');
       }
       // Apply and remove attributes based on the new state
       this.ifCurrentOrNot($.proxy(function (state) {
-        this.element.attr(state.attr).addClass(state.inputClass).trigger(state.eventName);
+        // This is a loop because Zepto's prop method does not
+        // support an object of key/value pairs.
+        $.each(state.attr, $.proxy(function (key, value) {
+          this.element.prop(key, value);
+        }, this));
+        this.element.addClass(state.inputClass).trigger(state.eventName);
       }, this), $.proxy(function (state) {
         this.element.removeClass(state.inputClass);
       }, this));

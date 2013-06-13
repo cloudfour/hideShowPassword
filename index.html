@@ -248,7 +248,7 @@ $('#show-password').on('change', function () {
   // When the '#show-password' checkbox changes its value,
   // set the visibility of the password field to whatever
   // its 'checked' attribute is.
-  $('#password-3').hideShowPassword(this.checked);
+  $('#password-3').hideShowPassword($(this).prop('checked'));
 });
 
 </script>

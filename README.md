@@ -120,7 +120,7 @@ Here are all the options and their defaults:
             // Text of the toggle element.
             toggleText: 'Hide',
 
-            // Attributes to apply to the input element.
+            // Property values to apply to the input element.
             attr: {
               'type': 'text',
               'autocapitalize': 'off',
