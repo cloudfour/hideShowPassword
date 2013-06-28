@@ -185,7 +185,7 @@ There are two remedies to this issue. One is to use CSS to overtly adjust the po
 .hideShowPassword-toggle { margin-top: -19px !important }
 ```
 
-The other is to defer instantiation of the plugin until you know its container will be available. Here's a hypothetical [Bootstrap](http://twitter.github.io/bootstrap/) example (see issue #2):
+The other is to defer instantiation of the plugin until you know its container will be available. Here's a hypothetical [Bootstrap tabs](http://twitter.github.io/bootstrap/javascript.html#tabs) example:
 
 ```javascript
 $('a[data-toggle="tab"]').on('shown', function (e) {
