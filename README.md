@@ -192,3 +192,13 @@ $('a[data-toggle="tab"]').on('shown', function (e) {
   $(e.target).find('[type="password"]').hideShowPassword({ innerToggle: true });
 });
 ```
+
+## License
+
+Released under the [MIT License](http://www.opensource.org/licenses/MIT).
+
+This repository contains other libraries that may or may not fall under the same license:
+
+* [jQuery](https://github.com/jquery/jquery)
+* [Modernizr](https://github.com/Modernizr/Modernizr)
+* [Zepto](https://github.com/madrobby/zepto)
