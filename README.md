@@ -7,6 +7,8 @@ This plugin lets you easily hide and reveal the contents of a password input fie
 * [Explanatory blog post](http://blog.cloudfour.com/hide-show-passwords-plugin/)
 * [Check out a demo](http://cloudfour.github.io/hideShowPassword/)
 
+If [Bower](http://bower.io/)'s your thing, you can install this plugin by running `bower install hideShowPassword` in your project directory.
+
 ## Dependencies
 
 hideShowPassword.js requires either [jQuery](http://jquery.com/) or [Zepto](http://zeptojs.com/), the latter with a few caveats...
