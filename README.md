@@ -7,14 +7,12 @@ This plugin lets you easily hide and reveal the contents of a password input fie
 * [Explanatory blog post](http://blog.cloudfour.com/hide-show-passwords-plugin/)
 * [Check out a demo](http://cloudfour.github.io/hideShowPassword/)
 
-<<<<<<< HEAD
 If [Bower](http://bower.io/)'s your thing, you can install this plugin by running `bower install hideShowPassword` in your project directory.
-=======
+
 ## History
 
 * **1.0.1**: Added AMD support
 * **1.0.0**: _Voila!_
->>>>>>> added and documented AMD support (#4)
 
 ## Dependencies
 
