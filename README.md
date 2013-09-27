@@ -7,7 +7,14 @@ This plugin lets you easily hide and reveal the contents of a password input fie
 * [Explanatory blog post](http://blog.cloudfour.com/hide-show-passwords-plugin/)
 * [Check out a demo](http://cloudfour.github.io/hideShowPassword/)
 
+<<<<<<< HEAD
 If [Bower](http://bower.io/)'s your thing, you can install this plugin by running `bower install hideShowPassword` in your project directory.
+=======
+## History
+
+* **1.0.1**: Added AMD support
+* **1.0.0**: _Voila!_
+>>>>>>> added and documented AMD support (#4)
 
 ## Dependencies
 
@@ -22,6 +29,22 @@ If you plan on using the inner toggle feature of this plugin, be aware that Zept
 ### Enabling touch enhancements
 
 The plugin will not assume that touch is supported unless you tell it by specifying a value for the `touchSupport` option. Refer to the demo and usage examples to see how you can do this using [Modernizr](http://modernizr.com/).
+
+### AMD support
+
+As of 1.0.1, the plugin supports [AMD](http://requirejs.org/docs/whyamd.html) and will not assume a jQuery global.
+
+If you plan on using hideShowPassword as an asynchronous module with Zepto, you'll want to map Zepto to the name `jquery` in your path config:
+
+```javascript
+require.config({
+  paths: {
+    jquery: 'path/to/zepto'
+  }
+});
+```
+
+See [this issue](https://github.com/cloudfour/hideShowPassword/issues/4#issuecomment-25258931) for more info.
 
 ## Usage
 
