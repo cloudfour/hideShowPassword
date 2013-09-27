@@ -1,5 +1,14 @@
 /* https://github.com/cloudfour/hideShowPassword */
-(function ($, undef) {
+(function (factory, global) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    // To use Zepto, map Zepto to the the name 'jquery' in your paths config
+    define(['jquery'], factory);
+  } else {
+    // Browser globals
+    factory(global.jQuery || global.Zepto);
+  }
+}(function ($, undef) {
 
   var dataKey = 'plugin_hideShowPassword' // Where to store instances
     , defaults = {
@@ -278,4 +287,4 @@
     };
   });
 
-})(this.jQuery || this.Zepto);
+}, this));

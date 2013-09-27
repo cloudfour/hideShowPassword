@@ -1,6 +1,6 @@
 {
   "name": "hideShowPassword",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": [ "hideShowPassword.js", "hideShowPassword.min.js", "img/*" ],
   "ignore": [
     "**/.*",
