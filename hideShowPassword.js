@@ -121,7 +121,7 @@
         options = { show: options };
       }
       // Update the options
-      this.options = $.extend({}, base, options);
+      this.options = $.extend(true, {}, base, options);
       // Interpret strings
       if (this.options.show === 'toggle') {
         this.options.show = toggleFallback;

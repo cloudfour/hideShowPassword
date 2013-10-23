@@ -11,6 +11,7 @@ If [Bower](http://bower.io/)'s your thing, you can install this plugin by runnin
 
 ## History
 
+* **1.0.2**: Uses deep merge for options
 * **1.0.1**: Added AMD support
 * **1.0.0**: _Voila!_
 
