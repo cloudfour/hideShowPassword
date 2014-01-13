@@ -43,6 +43,14 @@
         // element here. Useful for custom styles.
         wrapperClass: 'hideShowPassword-wrapper',
 
+        // If innerToggle is true, this will set the wrapper's width.
+        // If true, it will be set to the input element's computed width
+        // only if that width differs from its own.
+        // If any other non-false or non-null value, the width will be
+        // set to the value.
+        // If false, the width will never be set.
+        wrapperWidth: true,
+
         // Class name for the inner toggle.
         toggleClass: 'hideShowPassword-toggle',
 
@@ -190,14 +198,16 @@
             marginLeft: 0
           }
         , eventName = ''
-        , elWidth
         , wrapper
         , toggle;
 
       el.wrap($('<div />').addClass(options.wrapperClass).css(wrapperCSS));
       wrapper = el.parent();
-      if (wrapper[options.widthMethod]() !== elWidth) {
+
+      if (options.wrapperWidth === true && wrapper[options.widthMethod]() !== elWidth) {
         wrapper.css('width', elWidth);
+      } else if (options.wrapperWidth !== false && options.wrapperWidth !== null) {
+        wrapper.css('width', options.wrapperWidth);
       }
 
       toggle = $('<div />').addClass(options.toggleClass);

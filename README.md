@@ -11,6 +11,7 @@ If [Bower](http://bower.io/)'s your thing, you can install this plugin by runnin
 
 ## History
 
+* **1.0.3**: Added wrapperWidth option
 * **1.0.2**: Uses deep merge for options
 * **1.0.1**: Added AMD support
 * **1.0.0**: _Voila!_
@@ -129,6 +130,14 @@ Here are all the options and their defaults:
     // a containing element. You can specify the class name of this
     // element here. Useful for custom styles.
     wrapperClass: 'hideShowPassword-wrapper',
+
+    // If innerToggle is true, this will set the wrapper's width.
+    // If true, it will be set to the input element's computed width
+    // only if that width differs from its own.
+    // If any other non-false or non-null value, the width will be
+    // set to the value.
+    // If false, the width will never be set.
+    wrapperWidth: true,
 
     // Class name for the inner toggle.
     toggleClass: 'hideShowPassword-toggle',
