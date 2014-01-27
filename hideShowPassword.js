@@ -123,7 +123,7 @@
     // Processes fresh options and updates the input state
     update: function (options, base, toggleFallback) {
       base = base || this.options;
-      toggleFallback = toggleFallback || !this.options.show;
+      toggleFallback = toggleFallback || (this.options && !this.options.show);
       // Allow show/hide shorthand
       if (typeof options !== 'object') {
         options = { show: options };
