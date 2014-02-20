@@ -26,16 +26,59 @@
       spellcheck: 'false'
     },
 
+    innerToggle: false,
+
+    toggle: {
+      element: '<button>',
+      className: 'hideShowPassword-toggle',
+      hideUntil: null,
+      attachToEvent: 'click',
+      styles: { position: 'absolute' },
+      position: 'infer',
+      verticalAlign: 'middle'
+    },
+
+    wrapper: {
+      element: '<div>',
+      className: 'hideShowPassword-wrapper',
+      enforceWidth: true,
+      styles: { position: 'relative' },
+      inheritStyles: [
+        'display',
+        'vertical-align',
+        'margin-top',
+        'margin-right',
+        'margin-bottom',
+        'margin-left'
+      ],
+      innerElementStyles: {
+        marginTop: 0,
+        marginRight: 0,
+        marginBottom: 0,
+        marginLeft: 0
+      }
+    },
+
     states: {
       shown: {
         className: 'hideShowPassword-shown',
         eventName: 'passwordShown',
-        props: { type: 'text' }
+        props: { type: 'text' },
+        toggle: {
+          className: 'hideShowPassword-toggle-hide',
+          content: 'Hide',
+          attr: { 'aria-pressed': 'true' }
+        }
       },
       hidden: {
         className: 'hideShowPassword-hidden',
         eventName: 'passwordHidden',
-        props: { type: 'password' }
+        props: { type: 'password' },
+        toggle: {
+          className: 'hideShowPassword-toggle-show',
+          content: 'Show',
+          attr: { 'aria-pressed': 'false' }
+        }
       }
     }
 
@@ -43,6 +86,8 @@
 
   function HideShowPassword (element, options) {
     this.element = $(element);
+    this.wrapperElement = $();
+    this.toggleElement = $();
     this.init(options);
   }
 
@@ -50,6 +95,10 @@
 
     init: function (options) {
       this.update(options, defaults);
+      if (this.options.innerToggle) {
+        this.initWrapper();
+        this.initToggle();
+      }
     },
 
     update: function (options, base) {
@@ -67,6 +116,9 @@
       if (options.show === 'infer') {
         options.show = (currentType === options.states.shown.props.type);
       }
+      if (options.toggle.position === 'infer') {
+        options.toggle.position = (this.element.css('text-direction') === 'rtl') ? 'left' : 'right';
+      }
       this.options = options;
       // update element
       if (currentType !== this.state().props.type) {
@@ -79,6 +131,10 @@
           .removeClass(this.otherState().className);
         if (this.options.replaceElement) {
           this.element.replaceWith(element);
+          this.element = element;
+        }
+        if (this.toggleElement.length) {
+          this.updateToggle();
         }
         this.element
           .trigger(this.options.eventName)
@@ -101,224 +157,73 @@
 
     otherState: function (key) {
       return this.state(key, true);
+    },
+
+    initWrapper: function () {
+      var wrapperStyles = this.options.wrapper.styles
+        , enforceWidth = this.options.wrapper.enforceWidth
+        , elementWidth = this.element.outerWidth();
+
+      $.each(this.options.wrapper.inheritStyles, $.proxy(function (index, prop) {
+        wrapperStyles[prop] = this.element.css(prop);
+      }, this));
+
+      this.element.wrap(
+        $(this.options.wrapper.element)
+          .addClass(this.options.wrapper.className)
+          .css(wrapperStyles)
+      );
+      this.wrapperElement = this.element.parent();
+
+      this.element.css(this.options.wrapper.innerElementStyles);
+
+      if (enforceWidth === true) {
+        enforceWidth = (this.wrapperElement.outerWidth() === elementWidth) ? false : elementWidth;
+      }
+      if (enforceWidth !== false) {
+        this.wrapperElement.css('width', enforceWidth);
+      }
+    },
+
+    initToggle: function () {
+      this.toggleElement = $(this.options.toggle.element)
+        .addClass(this.options.toggle.className)
+        .css(this.options.toggle.styles)
+        .appendTo(this.wrapperElement);
+      this.updateToggle();
+      if (this.options.toggle.position) {
+        this.toggleElement.css(this.options.toggle.position, 0);
+        this.element.css('padding-' + this.options.toggle.position, this.toggleElement.outerWidth());
+      }
+      switch (this.options.toggle.verticalAlign) {
+        case 'top':
+        case 'bottom':
+          this.toggleElement.css(this.options.toggle.verticalAlign, 0);
+          break;
+        case 'middle':
+          this.toggleElement.css({
+            top: '50%',
+            marginTop: (this.toggleElement.outerHeight() / -2)
+          });
+          break;
+      }
+      if (this.options.toggle.attachToEvent) {
+        this.toggleElement.on(this.options.toggle.attachToEvent, $.proxy(function (event) {
+          event.preventDefault();
+          this.update('toggle');
+        }, this));
+      }
+    },
+
+    updateToggle: function () {
+      this.toggleElement
+        .attr(this.state().toggle.attr)
+        .addClass(this.state().toggle.className)
+        .removeClass(this.otherState().toggle.className)
+        .html(this.state().toggle.content);
     }
 
   };
-
-/*  //   updateElement: function () {
-  //     var element = (this.options.replaceInput) ? this.element.clone(true) : this.element;
-  //     element
-  //       .prop(this.state().props)
-  //       .addClass(this.options.inputClass + ' ' + this.state().inputClass)
-  //       .removeClass(this.otherState().inputClass);
-  //     if (this.options.replaceInput)
-  //       this.element.replaceWith(element);
-  //     element.trigger(this.options.eventName).trigger(this.state().eventName);
-  //   }*/
-
-  // var dataKey = 'plugin_hideshowPassword';
-
-  // var defaults = {
-
-  //   show: 'infer',
-
-  //   touchSupport: false,
-  //   replaceInput: false,
-
-  //   inputClass: 'hideShowPassword-field',
-
-  //   innerToggle: false,
-  //   toggleElement: '<button>',
-  //   toggleClass: 'hideShowPassword-toggle',
-  //   hideToggleUntil: false,
-  //   toggleEvent: 'click',
-  //   toggleTouchEvent: 'touchstart mousedown',
-  //   toggleKeyCodes: [
-  //     13, // ENTER
-  //     32  // SPACE
-  //   ],
-  //   toggleAttachment: 'infer',
-  //   toggleValign: 'middle',
-  //   toggleStyles: { position: 'absolute' },
-  //   wrapperElement: '<div>',
-  //   wrapperClass: 'hideShowPassword-wrapper',
-  //   wrapperWidth: true,
-  //   wrapperStyles: { position: 'relative' },
-  //   wrapperStylePropsFromInput: [
-  //     'display',
-  //     'vertical-align',
-  //     'margin-top',
-  //     'margin-right',
-  //     'margin-bottom',
-  //     'margin-left'
-  //   ],
-  //   wrappedInputStyles: {
-  //     'margin-top': 0,
-  //     'margin-right': 0,
-  //     'margin-bottom': 0,
-  //     'margin-left': 0
-  //   },
-
-  //   eventName: 'passwordVisibilityChanged',
-
-  //   states: {
-  //     shown: {
-  //       eventName: 'passwordShown',
-  //       inputClass: 'hideShowPassword-shown',
-  //       props: {
-  //         'type': 'text',
-  //         'autocapitalize': 'off',
-  //         'autocomplete': 'off',
-  //         'autocorrect': 'off',
-  //         'spellcheck': 'false'
-  //       },
-  //       toggleClass: 'hideShowPassword-toggle-hide',
-  //       toggleText: 'Hide',
-  //       toggleAttr: { 'aria-pressed': 'true' }
-  //     },
-  //     hidden: {
-  //       eventName: 'passwordHidden',
-  //       inputClass: 'hideShowPassword-hidden',
-  //       props: { 'type': 'password' },
-  //       toggleClass: 'hideShowPassword-toggle-show',
-  //       toggleText: 'Show',
-  //       toggleAttr: { 'aria-pressed': 'false' }
-  //     }
-  //   }
-
-  // };
-
-  // function HideShowPassword (element, options) {
-  //   this.element = $(element);
-  //   this.init(options);
-  // }
-
-  // HideShowPassword.prototype = {
-
-  //   init: function (options) {
-  //     this.update(options, defaults);
-  //     if (this.options.innerToggle)
-  //       this.initInnerToggle();
-  //   },
-
-  //   update: function (options, base) {
-  //     var currentType = this.element.prop('type');
-  //     // update options
-  //     base = base || this.options;
-  //     if (typeof options !== 'object')
-  //       options = { show: options };
-  //     options = $.extend(true, {}, base, options);
-  //     if (options.show === 'toggle')
-  //       options.show = currentType === options.states.hidden.props.type;
-  //     if (options.show === 'infer')
-  //       options.show = currentType === options.states.shown.props.type;
-  //     if (options.toggleAttachment === 'infer')
-  //       options.toggleAttachment = (this.element.css('direction') === 'rtl') ? 'left' : 'right';
-  //     this.options = options;
-  //     // update element (if necessary)
-  //     if (currentType !== this.state().props.type)
-  //       this.updateElement();
-  //   },
-
-  //   updateElement: function () {
-  //     var element = (this.options.replaceInput) ? this.element.clone(true) : this.element;
-  //     element
-  //       .prop(this.state().props)
-  //       .addClass(this.options.inputClass + ' ' + this.state().inputClass)
-  //       .removeClass(this.otherState().inputClass);
-  //     if (this.options.replaceInput)
-  //       this.element.replaceWith(element);
-  //     element.trigger(this.options.eventName).trigger(this.state().eventName);
-  //   },
-
-  //   toggle: function () {
-  //     this.update('toggle');
-  //   },
-
-  //   stateKey: function () {
-  //     return this.options.show ? 'shown' : 'hidden';
-  //   },
-
-  //   otherStateKey: function () {
-  //     return this.options.show ? 'hidden' : 'shown';
-  //   },
-
-  //   state: function () {
-  //     return this.options.states[this.stateKey()];
-  //   },
-
-  //   otherState: function () {
-  //     return this.options.states[this.otherStateKey()];
-  //   },
-
-  //   initInnerToggle: function () {
-  //     var wrapperStyles = this.options.wrapperStyles
-  //       , toggleStyles = this.options.toggleStyles
-  //       , inputStyles = this.options.wrappedInputStyles
-  //       , inputWidth = this.element.outerWidth()
-  //       , eventName = ''
-  //       , wrapper
-  //       , toggle;
-
-  //     $.each(this.options.wrapperStylePropsFromInput, $.proxy(function (index, prop) {
-  //       wrapperStyles[prop] = this.element.css(prop);
-  //     }, this));
-
-  //     wrapper = $(this.options.wrapperElement).addClass(this.options.wrapperClass).css(wrapperStyles);
-  //     this.element.wrap(wrapper);
-  //     wrapper = this.element.parent();
-
-  //     this.element.css(inputStyles);
-
-  //     if (this.options.wrapperWidth === true && wrapper.outerWidth() !== inputWidth) {
-  //       wrapper.css('width', inputWidth);
-  //     } else if (this.options.wrapperWidth !== false) {
-  //       wrapper.css('width', this.options.wrapperWidth);
-  //     }
-
-  //     toggle = $(this.options.toggleElement).addClass(this.options.toggleClass);
-
-  //     toggle.css(toggleStyles).appendTo(wrapper);
-
-  //     this.updateInnerToggle(toggle);
-
-  //     if (this.options.toggleAttachment) {
-  //       toggle.css(this.options.toggleAttachment, 0);
-  //       this.element.css('padding-' + this.options.toggleAttachment, toggle.outerWidth());
-  //     }
-
-  //     switch (this.options.toggleValign) {
-  //       case 'top':
-  //       case 'bottom':
-  //         toggle.css(this.options.toggleValign, 0);
-  //         break;
-  //       case 'middle':
-  //         toggle.css({
-  //           'top': '50%',
-  //           'margin-top': (toggle.outerHeight() / -2)
-  //         });
-  //         break;
-  //     }
-
-  //     toggle.on(this.options.toggleEvent, $.proxy(function (event) {
-  //       event.preventDefault();
-  //       this.toggle();
-  //     }, this));
-
-  //     this.element.on(this.options.eventName, $.proxy(function () {
-  //       this.updateInnerToggle(toggle);
-  //     }, this));
-  //   },
-
-  //   updateInnerToggle: function (toggle) {
-  //     toggle
-  //       .attr(this.state().toggleAttr)
-  //       .addClass(this.state().toggleClass)
-  //       .removeClass(this.state().removeClass)
-  //       .text(this.state().toggleText);
-  //   }
-
-  // };
 
   $.fn.hideShowPassword = function (options) {
     return this.each(function(){
