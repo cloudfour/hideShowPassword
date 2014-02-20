@@ -206,6 +206,12 @@
             marginTop: (this.toggleElement.outerHeight() / -2)
           });
           break;
+        case 'stretch':
+          this.toggleElement.css({
+            top: 0,
+            bottom: 0
+          });
+          break;
       }
 
       if (this.options.touchSupport) {
