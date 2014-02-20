@@ -15,6 +15,7 @@
   var defaults = {
 
     show: 'infer',
+    touchSupport: false,
     replaceElement: false,
     className: 'hideShowPassword-field',
     eventName: 'passwordVisibilityChange',
@@ -33,6 +34,7 @@
       className: 'hideShowPassword-toggle',
       hideUntil: null,
       attachToEvent: 'click',
+      attachToTouchEvent: 'touchstart mousedown',
       styles: { position: 'absolute' },
       position: 'infer',
       verticalAlign: 'middle'
@@ -104,7 +106,6 @@
     update: function (options, base) {
       var element = this.element
         , currentType = element.prop('type');
-      // update options
       base = base || this.options;
       if (typeof options !== 'object') {
         options = { show: options };
@@ -120,7 +121,6 @@
         options.toggle.position = (this.element.css('text-direction') === 'rtl') ? 'left' : 'right';
       }
       this.options = options;
-      // update element
       if (currentType !== this.state().props.type) {
         if (this.options.replaceElement) {
           element = element.clone(true);
@@ -191,10 +191,10 @@
         .css(this.options.toggle.styles)
         .appendTo(this.wrapperElement);
       this.updateToggle();
-      if (this.options.toggle.position) {
-        this.toggleElement.css(this.options.toggle.position, 0);
-        this.element.css('padding-' + this.options.toggle.position, this.toggleElement.outerWidth());
-      }
+
+      this.toggleElement.css(this.options.toggle.position, 0);
+      this.element.css('padding-' + this.options.toggle.position, this.toggleElement.outerWidth());
+
       switch (this.options.toggle.verticalAlign) {
         case 'top':
         case 'bottom':
@@ -207,7 +207,31 @@
           });
           break;
       }
-      if (this.options.toggle.attachToEvent) {
+
+      if (this.options.touchSupport) {
+        this.toggleElement.css('pointer-events', 'none');
+        this.element.on(this.options.toggle.attachToTouchEvent, $.proxy(function (event) {
+          var toggleX = this.toggleElement.offset().left
+            , eventX
+            , lesser
+            , greater;
+          if (toggleX) {
+            eventX = event.pageX || event.originalEvent.pageX;
+            if (this.options.toggle.position === 'left') {
+              toggleX+= this.toggleElement.outerWidth();
+              lesser = eventX;
+              greater = toggleX;
+            } else {
+              lesser = toggleX;
+              greater = eventX;
+            }
+            if (greater >= lesser) {
+              event.preventDefault();
+              this.update('toggle');
+            }
+          }
+        }, this));
+      } else {
         this.toggleElement.on(this.options.toggle.attachToEvent, $.proxy(function (event) {
           event.preventDefault();
           this.update('toggle');
@@ -236,5 +260,11 @@
       }
     });
   };
+
+  $.each({ 'show':true, 'hide':false, 'toggle':'toggle' }, function (verb, showVal) {
+    $.fn[verb + 'Password'] = function (options) {
+      return this.hideShowPassword($.extend({}, options, { show: showVal }));
+    };
+  });
 
 }, this));
