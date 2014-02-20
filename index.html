@@ -37,7 +37,18 @@
 
 <p><a href="https://github.com/cloudfour/hideShowPassword" class="btn">More info and source</a></p>
 
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="hideShowPassword.js"></script>
+<script>
 
+$('#password-1').hideShowPassword({
+  innerToggle: true
+});
+
+$('#show-password').on('change', function () {
+  $('#password-3').hideShowPassword($(this).prop('checked'));
+});
+</script>
 
 </body>
 </html>
