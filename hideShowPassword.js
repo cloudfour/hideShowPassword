@@ -104,9 +104,6 @@
     update: function (options, base) {
       var currentType = this.element.prop('type');
       base = base || this.options;
-      if (typeof options !== 'object') {
-        options = { show: options };
-      }
       options = $.extend(true, {}, base, options);
       if (options.show === 'toggle') {
         options.show = (currentType === options.states.hidden.props.type);
@@ -223,14 +220,14 @@
             }
             if (greater >= lesser) {
               event.preventDefault();
-              this.update('toggle');
+              this.update({ show: 'toggle' });
             }
           }
         }, this));
       } else {
         this.toggleElement.on(this.options.toggle.attachToEvent, $.proxy(function (event) {
           event.preventDefault();
-          this.update('toggle');
+          this.update({ show: 'toggle' });
         }, this));
       }
     },
@@ -245,7 +242,20 @@
 
   };
 
-  $.fn.hideShowPassword = function (options) {
+  $.fn.hideShowPassword = function () {
+    var options = (arguments[0] === undef) ? {} : arguments[0];
+    if (typeof options !== 'object') {
+      options = { show: options };
+    }
+    if (arguments[1] !== undef) {
+      $.extend(
+        options,
+        typeof arguments[1] === 'object' ? arguments[1] : { innerToggle: arguments[1] }
+      );
+    }
+    if (typeof arguments[2] === 'object') {
+      $.extend(options, arguments[2]);
+    }
     return this.each(function(){
       var $this = $(this);
       var data = $this.data(dataKey);
@@ -258,8 +268,8 @@
   };
 
   $.each({ 'show':true, 'hide':false, 'toggle':'toggle' }, function (verb, showVal) {
-    $.fn[verb + 'Password'] = function (options) {
-      return this.hideShowPassword($.extend({}, options, { show: showVal }));
+    $.fn[verb + 'Password'] = function (innerToggle, options) {
+      return this.hideShowPassword(showVal, innerToggle, options);
     };
   });
 

@@ -41,9 +41,9 @@
 <script src="hideShowPassword.js"></script>
 <script>
 
-$('#password-1').hideShowPassword({
-  innerToggle: true
-});
+$('#password-1').hideShowPassword(false, true, { touchSupport: true });
+
+// $('#password-1').hidePassword(true);
 
 $('#show-password').on('change', function () {
   $('#password-3').hideShowPassword($(this).prop('checked'));
