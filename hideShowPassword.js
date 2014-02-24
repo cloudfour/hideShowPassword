@@ -15,19 +15,17 @@
   var defaults = {
 
     show: 'infer',
+    innerToggle: false,
     touchSupport: false,
-    replaceElement: false,
+
     className: 'hideShowPassword-field',
     eventName: 'passwordVisibilityChange',
-
     props: {
       autocapitalize: 'off',
       autocomplete: 'off',
       autocorrect: 'off',
       spellcheck: 'false'
     },
-
-    innerToggle: false,
 
     toggle: {
       element: '<button>',
@@ -104,8 +102,7 @@
     },
 
     update: function (options, base) {
-      var element = this.element
-        , currentType = element.prop('type');
+      var currentType = this.element.prop('type');
       base = base || this.options;
       if (typeof options !== 'object') {
         options = { show: options };
@@ -122,17 +119,10 @@
       }
       this.options = options;
       if (currentType !== this.state().props.type) {
-        if (this.options.replaceElement) {
-          element = element.clone(true);
-        }
-        element
+        this.element
           .prop($.extend({}, this.options.props, this.state().props))
           .addClass(this.options.className + ' ' + this.state().className)
           .removeClass(this.otherState().className);
-        if (this.options.replaceElement) {
-          this.element.replaceWith(element);
-          this.element = element;
-        }
         if (this.toggleElement.length) {
           this.updateToggle();
         }
