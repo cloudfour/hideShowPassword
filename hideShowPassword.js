@@ -10,13 +10,15 @@
 
 }(function ($, undef) {
 
-  var dataKey = 'plugin_hideShowPassword';
+  var dataKey = 'plugin_hideShowPassword'
+  var shorthandArgs = ['show', 'innerToggle'];
 
   var defaults = {
 
     show: 'infer',
     innerToggle: false,
     touchSupport: false,
+    enable: true,
 
     className: 'hideShowPassword-field',
     eventName: 'passwordVisibilityChange',
@@ -95,38 +97,40 @@
 
     init: function (options) {
       this.update(options, defaults);
-      if (this.options.innerToggle) {
+      if (this.options.enable && this.options.innerToggle) {
         this.initWrapper();
         this.initToggle();
       }
     },
 
     update: function (options, base) {
-      var currentType = this.element.prop('type');
       base = base || this.options;
-      options = $.extend(true, {}, base, options);
-      if (options.show === 'toggle') {
-        options.show = (currentType === options.states.hidden.props.type);
+      this.options = $.extend(true, {}, base, options);
+      if (! this.options.enable) return;
+      switch (this.options.show) {
+        case 'toggle': this.options.show = this.isType('hidden'); break;
+        case 'infer':  this.options.show = this.isType('shown');  break;
       }
-      if (options.show === 'infer') {
-        options.show = (currentType === options.states.shown.props.type);
+      if (this.options.toggle.position === 'infer') {
+        this.options.toggle.position = (this.element.css('text-direction') === 'rtl') ? 'left' : 'right';
       }
-      if (options.toggle.position === 'infer') {
-        options.toggle.position = (this.element.css('text-direction') === 'rtl') ? 'left' : 'right';
-      }
-      this.options = options;
-      if (currentType !== this.state().props.type) {
+      if (! this.isType()) {
         this.element
           .prop($.extend({}, this.options.props, this.state().props))
           .addClass(this.options.className + ' ' + this.state().className)
           .removeClass(this.otherState().className);
-        if (this.toggleElement.length) {
-          this.updateToggle();
-        }
         this.element
           .trigger(this.options.eventName)
           .trigger(this.state().eventName);
       }
+    },
+
+    isType: function (comparison) {
+      comparison = comparison || this.state().props.type;
+      if (this.options.states[comparison]) {
+        comparison = this.options.states[comparison].props.type;
+      }
+      return this.element.prop('type') === comparison;
     },
 
     state: function (key, invert) {
@@ -265,25 +269,22 @@
   //   return supported;
   // }());
 
-  // console.log(getSetInputPropSupport);
-
   $.fn.hideShowPassword = function () {
-    var options = (arguments[0] === undef) ? {} : arguments[0];
-    if (typeof options !== 'object') {
-      options = { show: options };
-    }
-    if (arguments[1] !== undef) {
-      $.extend(
-        options,
-        typeof arguments[1] === 'object' ? arguments[1] : { innerToggle: arguments[1] }
-      );
-    }
-    if (typeof arguments[2] === 'object') {
-      $.extend(options, arguments[2]);
-    }
+    var options = {};
+    $.each(arguments, function (index, value) {
+      var newOptions = {};
+      if (typeof value === 'object') {
+        newOptions = value;
+      } else if (shorthandArgs[index]) {
+        newOptions[shorthandArgs[index]] = value;
+      } else {
+        return false;
+      }
+      $.extend(true, options, newOptions);
+    });
     return this.each(function(){
-      var $this = $(this);
-      var data = $this.data(dataKey);
+      var $this = $(this)
+        , data = $this.data(dataKey);
       if (data) {
         data.update(options);
       } else {
