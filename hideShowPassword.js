@@ -48,7 +48,7 @@
     },
 
     toggle: {
-      element: '<button>',
+      element: '<button type="button">',
       className: 'hideShowPassword-toggle',
       hideUntil: null,
       attachToEvent: 'click',
