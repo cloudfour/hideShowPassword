@@ -158,6 +158,10 @@
       }
     },
 
+    toggle: function () {
+      this.update({ show: 'toggle' });
+    },
+
     isType: function (comparison) {
       comparison = comparison || this.state().props.type;
       if (this.options.states[comparison]) {
@@ -261,14 +265,14 @@
             }
             if (greater >= lesser) {
               event.preventDefault();
-              this.update({ show: 'toggle' });
+              this.toggle();
             }
           }
         }, this));
       } else {
         this.toggleElement.on(this.options.toggle.attachToEvent, $.proxy(function (event) {
           event.preventDefault();
-          this.update({ show: 'toggle' });
+          this.toggle();
         }, this));
       }
 
@@ -294,7 +298,7 @@
             for (var i = 0; i < keyCodes.length; i++) {
               if (event.which === keyCodes[i]) {
                 event.preventDefault();
-                this.update({ show: 'toggle' });
+                this.toggle();
                 break;
               }
             }
