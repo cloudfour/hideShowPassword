@@ -18,7 +18,23 @@
     show: 'infer',
     innerToggle: false,
     touchSupport: false,
-    enable: (typeof Modernizr === 'undefined' || Modernizr.inputchangeattr === undef) ? true : Modernizr.inputchangeattr,
+    hideMsReveal: true,
+    enable: (function(){
+      var body = document.body
+        , input = document.createElement('input')
+        , result = true;
+      if (! body) {
+        body = document.createElement('body');
+      }
+      input = body.appendChild(input);
+      try {
+        input.setAttribute('type', 'text');
+      } catch (e) {
+        result = false;
+      }
+      body.removeChild(input);
+      return result;
+    }()),
 
     className: 'hideShowPassword-field',
     eventName: 'passwordVisibilityChange',
@@ -98,9 +114,14 @@
 
     init: function (options) {
       this.update(options, defaults);
-      if (this.options.enable && this.options.innerToggle) {
-        this.initWrapper();
-        this.initToggle();
+      if (this.options.enable) {
+        if (this.options.hideMsReveal) {
+          $('<style> ' + this.options.className + '::-ms-reveal { display: none !important; } </style>').appendTo('head');
+        }
+        if (this.options.innerToggle) {
+          this.initWrapper();
+          this.initToggle();
+        }
       }
     },
 
