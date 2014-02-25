@@ -11,9 +11,9 @@
 }(function ($, undef) {
 
   var dataKey = 'plugin_hideShowPassword'
-  var shorthandArgs = ['show', 'innerToggle'];
-  var SPACE = 32;
-  var ENTER = 13;
+    , shorthandArgs = ['show', 'innerToggle']
+    , SPACE = 32
+    , ENTER = 13;
 
   var defaults = {
 
@@ -208,15 +208,18 @@
     },
 
     initToggle: function () {
+      var comparisonWidth;
       this.toggleElement = $(this.options.toggle.element)
         .attr(this.options.toggle.attr)
         .addClass(this.options.toggle.className)
         .css(this.options.toggle.styles)
+        .css(this.options.toggle.position, 0)
         .appendTo(this.wrapperElement);
-      this.updateToggle();
 
-      this.toggleElement.css(this.options.toggle.position, 0);
-      this.element.css('padding-' + this.options.toggle.position, this.toggleElement.outerWidth());
+      this.updateToggle(true);
+      comparisonWidth = this.toggleElement.outerWidth();
+      this.updateToggle();
+      this.element.css('padding-' + this.options.toggle.position, Math.max(comparisonWidth, this.toggleElement.outerWidth()));
 
       switch (this.options.toggle.verticalAlign) {
         case 'top':
@@ -299,12 +302,14 @@
 
     },
 
-    updateToggle: function () {
+    updateToggle: function (invert) {
+      var state = invert ? this.otherState() : this.state()
+        , other = invert ? this.state() : this.otherState();
       this.toggleElement
-        .attr(this.state().toggle.attr)
-        .addClass(this.state().toggle.className)
-        .removeClass(this.otherState().toggle.className)
-        .html(this.state().toggle.content);
+        .attr(state.toggle.attr)
+        .addClass(state.toggle.className)
+        .removeClass(other.toggle.className)
+        .html(state.toggle.content);
     }
 
   };
