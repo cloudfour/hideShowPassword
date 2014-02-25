@@ -246,29 +246,6 @@
 
   };
 
-  // var getSetInputPropSupport = (function(){
-  //   var supported = true
-  //     , testElement = $('<input>')
-  //       .prop('type', 'password')
-  //       .css({
-  //         left: 0,
-  //         height: 1,
-  //         opacity: 0,
-  //         overflow: 'hidden',
-  //         position: 'absolute',
-  //         top: 0,
-  //         width: 1
-  //       })
-  //       .appendTo('body');
-  //   try {
-  //     testElement.prop('type', 'text');
-  //   } catch (error) {
-  //     supported = false;
-  //   }
-  //   // testElement.remove();
-  //   return supported;
-  // }());
-
   $.fn.hideShowPassword = function () {
     var options = {};
     $.each(arguments, function (index, value) {
