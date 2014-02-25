@@ -18,7 +18,7 @@
     show: 'infer',
     innerToggle: false,
     touchSupport: false,
-    enable: true,
+    enable: (typeof Modernizr === 'undefined' || Modernizr.inputchangeattr === undef) ? true : Modernizr.inputchangeattr,
 
     className: 'hideShowPassword-field',
     eventName: 'passwordVisibilityChange',
@@ -119,6 +119,7 @@
           .prop($.extend({}, this.options.props, this.state().props))
           .addClass(this.options.className + ' ' + this.state().className)
           .removeClass(this.otherState().className);
+        this.updateToggle();
         this.element
           .trigger(this.options.eventName)
           .trigger(this.state().eventName);
