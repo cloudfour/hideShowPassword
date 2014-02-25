@@ -36,6 +36,7 @@
       attachToEvent: 'click',
       attachToTouchEvent: 'touchstart mousedown',
       styles: { position: 'absolute' },
+      touchStyles: { pointerEvents: 'none' },
       position: 'infer',
       verticalAlign: 'middle'
     },
@@ -207,7 +208,7 @@
       }
 
       if (this.options.touchSupport) {
-        this.toggleElement.css('pointer-events', 'none');
+        this.toggleElement.css(this.options.toggle.touchStyles);
         this.element.on(this.options.toggle.attachToTouchEvent, $.proxy(function (event) {
           var toggleX = this.toggleElement.offset().left
             , eventX
