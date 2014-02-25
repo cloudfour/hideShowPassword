@@ -15,28 +15,30 @@
     , SPACE = 32
     , ENTER = 13;
 
+  var canSetInputAttribute = (function(){
+    var body = document.body
+      , input = document.createElement('input')
+      , result = true;
+    if (! body) {
+      body = document.createElement('body');
+    }
+    input = body.appendChild(input);
+    try {
+      input.setAttribute('type', 'text');
+    } catch (e) {
+      result = false;
+    }
+    body.removeChild(input);
+    return result;
+  }());
+
   var defaults = {
 
     show: 'infer',
     innerToggle: false,
     touchSupport: (typeof Modernizr === 'undefined') ? false : Modernizr.touch,
     hideMsReveal: true,
-    enable: (function(){
-      var body = document.body
-        , input = document.createElement('input')
-        , result = true;
-      if (! body) {
-        body = document.createElement('body');
-      }
-      input = body.appendChild(input);
-      try {
-        input.setAttribute('type', 'text');
-      } catch (e) {
-        result = false;
-      }
-      body.removeChild(input);
-      return result;
-    }()),
+    enable: canSetInputAttribute,
 
     className: 'hideShowPassword-field',
     eventName: 'passwordVisibilityChange',
