@@ -1,4 +1,4 @@
-Modernizr.addTest('inputsetattribute', function(){
+Modernizr.addTest('inputchangeattr', function(){
   var body = document.body
     , input = document.createElement('input')
     , result = true;
