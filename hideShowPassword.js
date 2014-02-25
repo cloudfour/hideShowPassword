@@ -60,6 +60,7 @@
       touchStyles: { pointerEvents: 'none' },
       position: 'infer',
       verticalAlign: 'middle',
+      offset: 0,
       attr: {
         role: 'button',
         'aria-label': 'Show Password',
@@ -219,7 +220,7 @@
         .attr(this.options.toggle.attr)
         .addClass(this.options.toggle.className)
         .css(this.options.toggle.styles)
-        .css(this.options.toggle.position, 0)
+        .css(this.options.toggle.position, this.options.toggle.offset)
         .appendTo(this.wrapperElement);
 
       this.updateToggle(true);
@@ -230,7 +231,7 @@
       switch (this.options.toggle.verticalAlign) {
         case 'top':
         case 'bottom':
-          this.toggleElement.css(this.options.toggle.verticalAlign, 0);
+          this.toggleElement.css(this.options.toggle.verticalAlign, this.options.toggle.offset);
           break;
         case 'middle':
           this.toggleElement.css({
@@ -240,8 +241,8 @@
           break;
         case 'stretch':
           this.toggleElement.css({
-            top: 0,
-            bottom: 0
+            top: this.options.toggle.offset,
+            bottom: this.options.toggle.offset
           });
           break;
       }

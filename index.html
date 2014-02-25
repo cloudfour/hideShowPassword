@@ -5,52 +5,45 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
   <title>hideShowPassword Demo</title>
+  <link rel="stylesheet" href="demo/styles.css">
   <script src="modernizr.custom.js"></script>
+  <script>if(Modernizr.input.placeholder)document.getElementsByTagName('html')[0].className+=' inputplaceholder';</script>
 </head>
 <body>
 
-<h1>hideShowPassword Demo</h1>
+<header>
+  <h1>hideShowPassword for jQuery</h1>
+  <!-- <p>Because life&rsquo;s too short to waste time re-typing passwords.</p> -->
+</header>
 
-<figure>
-  <div class="login">
-    <input class="login-field login-field-username" type="text" placeholder="Username" autocapitalize="off" autocomplete="off" autocorrect="off">
-    <input class="login-field login-field-password" id="password-1" type="password" placeholder="Password">
+<!-- <p>Inspired by a pattern seen in <a href="http://www.polarb.com/">Polar</a>, <a href="http://ie.microsoft.com">IE 10+</a> and <a href="http://www.linkedin.com/mobile">LinkedIn</a> and <a href="http://www.lukew.com/ff/entry.asp?1653">documented by Luke Wroblewski</a>, hideShowPassword lets you easily hide and show passwords via JavaScript or a nifty inset toggle button.</p>
+
+<h2>Demo</h2> -->
+
+<div class="login">
+  <label class="login-label" for="username-1">Username</label>
+  <input class="login-field  login-field-username" id="username-1" type="text" placeholder="Username">
+  <label class="login-label" for="password-1">Password</label>
+  <input class="login-field  login-field-password" id="password-1" type="password" placeholder="Password">
+  <div class="login-footer">
+    <label><input type="checkbox" id="show-password"> Show password</label>
   </div>
-  <figcaption>Inner toggle styled as icon.</figcaption>
-</figure>
+</div>
 
-<figure>
-  <div class="login">
-    <input class="login-field login-field-username" type="text" placeholder="Username" autocapitalize="off" autocomplete="off" autocorrect="off">
-    <input class="login-field login-field-password" id="password-2" type="password" placeholder="Password">
-  </div>
-  <figcaption>Password visible by default, toggle styled as text and shows on focus.</figcaption>
-</figure>
-
-<figure>
-  <div class="login">
-    <input class="login-field login-field-username" type="text" placeholder="Username" autocapitalize="off" autocomplete="off" autocorrect="off">
-    <input class="login-field login-field-password" id="password-3" type="password" placeholder="Password" value="example password">
-    <div class="login-option"><input type="checkbox" id="show-password"> <label for="show-password">Show password</label></div>
-  </div>
-  <figcaption>Checkbox toggles password visibility.</figcaption>
-</figure>
-
-<p><a href="https://github.com/cloudfour/hideShowPassword" class="btn">More info and source</a></p>
+<footer>
+  <p>Made by <a href="http://blog.cloudfour.com/simpleslideview/">Cloud Four</a></p>
+</footer>
 
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="hideShowPassword.js"></script>
 <script>
 
-$('#password-1').hideShowPassword(false, true);
+$('#password-1').hidePassword(true);
 
-$('#password-2').hideShowPassword(false, true, { toggle: { element: '<div>' } });
-
-// $('#password-1').hidePassword(true);
-
-$('#show-password').on('change', function () {
-  $('#password-3').hideShowPassword($(this).prop('checked'));
+$('#show-password').change(function(){
+  $('#password-1').hideShowPassword($(this).prop('checked'));
 });
+
 </script>
 
 </body>
