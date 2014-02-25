@@ -12,12 +12,14 @@
 
   var dataKey = 'plugin_hideShowPassword'
   var shorthandArgs = ['show', 'innerToggle'];
+  var SPACE = 32;
+  var ENTER = 13;
 
   var defaults = {
 
     show: 'infer',
     innerToggle: false,
-    touchSupport: false,
+    touchSupport: (typeof Modernizr === 'undefined') ? false : Modernizr.touch,
     hideMsReveal: true,
     enable: (function(){
       var body = document.body
@@ -51,10 +53,16 @@
       hideUntil: null,
       attachToEvent: 'click',
       attachToTouchEvent: 'touchstart mousedown',
+      attachToKeyCodes: true,
       styles: { position: 'absolute' },
       touchStyles: { pointerEvents: 'none' },
       position: 'infer',
-      verticalAlign: 'middle'
+      verticalAlign: 'middle',
+      attr: {
+        role: 'button',
+        'aria-label': 'Show Password',
+        tabIndex: 0
+      }
     },
 
     wrapper: {
@@ -64,11 +72,11 @@
       styles: { position: 'relative' },
       inheritStyles: [
         'display',
-        'vertical-align',
-        'margin-top',
-        'margin-right',
-        'margin-bottom',
-        'margin-left'
+        'verticalAlign',
+        'marginTop',
+        'marginRight',
+        'marginBottom',
+        'marginLeft'
       ],
       innerElementStyles: {
         marginTop: 0,
@@ -201,6 +209,7 @@
 
     initToggle: function () {
       this.toggleElement = $(this.options.toggle.element)
+        .attr(this.options.toggle.attr)
         .addClass(this.options.toggle.className)
         .css(this.options.toggle.styles)
         .appendTo(this.wrapperElement);
@@ -257,6 +266,37 @@
           this.update({ show: 'toggle' });
         }, this));
       }
+
+      if (this.options.toggle.attachToKeyCodes) {
+        var keyCodes = this.options.toggle.attachToKeyCodes;
+        if (keyCodes === true) {
+          keyCodes = [];
+          switch (this.toggleElement.prop('tagName').toLowerCase()) {
+            case 'button':
+            case 'input':
+              break;
+            case 'a':
+              if (this.toggleElement.filter('[href]').length) {
+                keyCodes.push(SPACE);
+                break;
+              }
+            default:
+              keyCodes.push(SPACE, ENTER); break;
+          }
+        }
+        if (keyCodes.length) {
+          this.toggleElement.on('keyup', $.proxy(function (event) {
+            for (var i = 0; i < keyCodes.length; i++) {
+              if (event.which === keyCodes[i]) {
+                event.preventDefault();
+                this.update({ show: 'toggle' });
+                break;
+              }
+            }
+          }, this))
+        }
+      }
+
     },
 
     updateToggle: function () {

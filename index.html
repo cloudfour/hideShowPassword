@@ -42,7 +42,9 @@
 <script src="hideShowPassword.js"></script>
 <script>
 
-$('#password-1').hideShowPassword(false, true, { touchSupport: true });
+$('#password-1').hideShowPassword(false, true);
+
+$('#password-2').hideShowPassword(false, true, { toggle: { element: '<div>' } });
 
 // $('#password-1').hidePassword(true);
 
