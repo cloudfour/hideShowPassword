@@ -135,7 +135,8 @@
             this.wrapper.init(this.element, this.options.wrapper),
             this.options.toggle,
             this.state().toggle, 
-            this.otherState().toggle
+            this.otherState().toggle,
+            (typeof this.options.innerToggle === 'string') ? this.options.innerToggle : undef
           );
         }
       }
@@ -231,7 +232,7 @@
 
     toggle: {
       element: $(),
-      init: function (action, target, wrapper, options, state, otherState) {
+      init: function (action, target, wrapper, options, state, otherState, hideUntil) {
         // element
         this.element = $(options.element)
           .attr(options.attr)
@@ -258,6 +259,11 @@
         }
         if (this.keyCodes.length) {
           this.element.on('keyup', this.proxies.keypress);
+        }
+        // optionally hide until event
+        if (hideUntil) {
+          this.element.hide();
+          target.one(hideUntil, $.proxy(function(){ this.element.show(); }, this));
         }
         // return element
         return this.element;

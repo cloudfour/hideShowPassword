@@ -60,16 +60,14 @@
 //   }
 // });
 
-$('#password-1').hidePassword(true, { toggle: { touchSupport: true, element: '<span>' } });
-
-// $('#password-1')
-//   .hidePassword(true, { touchSupport: true, toggle: { element: '<span>' } })
-//   .on('passwordShown', function(){
-//     $('#show-password').prop('checked', 'checked');
-//   })
-//   .on('passwordHidden', function(){
-//     $('#show-password').prop('checked', '');
-//   });
+$('#password-1')
+  .hidePassword(true, { touchSupport: true, toggle: { element: '<span>' } })
+  .on('passwordShown', function(){
+    $('#show-password').prop('checked', 'checked');
+  })
+  .on('passwordHidden', function(){
+    $('#show-password').prop('checked', '');
+  });
 
 $('#show-password').change(function(){
   $('#password-1').hideShowPassword($(this).prop('checked'));
