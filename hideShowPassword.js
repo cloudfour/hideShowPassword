@@ -255,7 +255,7 @@
           this.element.css(options.touchStyles);
           target.on(options.attachToTouchEvent, this.proxies.touch);
         } else {
-          this.element.on(options.attachToEvent, this.proxies.default);
+          this.element.on(options.attachToEvent, this.proxies.click);
         }
         if (this.keyCodes.length) {
           this.element.on('keyup', this.proxies.keypress);
@@ -317,11 +317,11 @@
         return $.isArray(keyCodes) ? keyCodes : [];
       },
       events: {
-        default: function (event) { this.action(event); },
+        click: function (event) { this.action(event); },
         keypress: function (event) {
           $.each(this.keyCodes, $.proxy(function(index, keyCode){
             if (event.which === keyCode) {
-              this.proxies.default(event);
+              this.proxies.click(event);
               return false;
             }
           }, this));
@@ -342,7 +342,7 @@
               greater = eventX;
             }
             if (greater >= lesser) {
-              this.proxies.default(event);
+              this.proxies.click(event);
             }
           }
         }
