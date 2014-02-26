@@ -61,7 +61,7 @@
 // });
 
 $('#password-1')
-  .hidePassword('focus')
+  .hidePassword(true, { touchSupport: true, toggle: { element: '<span>' } })
   .on('passwordShown', function(){
     $('#show-password').prop('checked', 'checked');
   })

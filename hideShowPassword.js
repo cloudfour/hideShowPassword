@@ -114,6 +114,9 @@
   };
 
   function HideShowPassword (element, options) {
+    $.each(this.toggleEvents, $.proxy(function(key, callback){
+      this.toggleEventProxies[key] = $.proxy(callback, this);
+    }, this));
     this.element = $(element);
     this.wrapperElement = $();
     this.toggleElement = $();
@@ -248,32 +251,9 @@
 
       if (this.options.touchSupport) {
         this.toggleElement.css(this.options.toggle.touchStyles);
-        this.element.on(this.options.toggle.attachToTouchEvent, $.proxy(function (event) {
-          var toggleX = this.toggleElement.offset().left
-            , eventX
-            , lesser
-            , greater;
-          if (toggleX) {
-            eventX = event.pageX || event.originalEvent.pageX;
-            if (this.options.toggle.position === 'left') {
-              toggleX+= this.toggleElement.outerWidth();
-              lesser = eventX;
-              greater = toggleX;
-            } else {
-              lesser = toggleX;
-              greater = eventX;
-            }
-            if (greater >= lesser) {
-              event.preventDefault();
-              this.toggle();
-            }
-          }
-        }, this));
+        this.element.on(this.options.toggle.attachToTouchEvent, this.toggleEventProxies.touch);
       } else {
-        this.toggleElement.on(this.options.toggle.attachToEvent, $.proxy(function (event) {
-          event.preventDefault();
-          this.toggle();
-        }, this));
+        this.toggleElement.on(this.options.toggle.attachToEvent, this.toggleEventProxies.click);
       }
 
       if (this.options.toggle.attachToKeyCodes) {
@@ -292,17 +272,10 @@
             default:
               keyCodes.push(SPACE, ENTER); break;
           }
+          this.options.toggle.attachToKeyCodes = keyCodes;
         }
         if (keyCodes.length) {
-          this.toggleElement.on('keyup', $.proxy(function (event) {
-            for (var i = 0; i < keyCodes.length; i++) {
-              if (event.which === keyCodes[i]) {
-                event.preventDefault();
-                this.toggle();
-                break;
-              }
-            }
-          }, this))
+          this.toggleElement.on('keyup', this.toggleEventProxies.keypress);
         }
       }
 
@@ -314,6 +287,43 @@
       }
 
     },
+
+    toggleEvents: {
+      click: function (event) {
+        event.preventDefault();
+        this.toggle();
+      },
+      touch: function (event) {
+        var toggleX = this.toggleElement.offset().left
+          , eventX
+          , lesser
+          , greater;
+        if (toggleX) {
+          eventX = event.pageX || event.originalEvent.pageX;
+          if (this.options.toggle.position === 'left') {
+            toggleX+= this.toggleElement.outerWidth();
+            lesser = eventX;
+            greater = toggleX;
+          } else {
+            lesser = toggleX;
+            greater = eventX;
+          }
+          if (greater >= lesser) {
+            this.toggleEventProxies.click(event);
+          }
+        }
+      },
+      keypress: function (event) {
+        $.each(this.options.toggle.attachToKeyCodes, $.proxy(function(index, keyCode){
+          if (event.which === keyCode) {
+            this.toggleEventProxies.click(event);
+            return false;
+          }
+        }, this));
+      }
+    },
+
+    toggleEventProxies: {},
 
     updateToggle: function (invert) {
       var state = invert ? this.otherState() : this.state()
