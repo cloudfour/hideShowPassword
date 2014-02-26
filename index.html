@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
   <title>hideShowPassword Demo</title>
   <link rel="stylesheet" href="demo/styles.css">
-  <script src="modernizr.custom.js"></script>
+  <link rel="stylesheet" href="toggle-styles/minimal.css">
+  <script src="demo/modernizr.custom.js"></script>
   <script>if(Modernizr.input.placeholder)document.getElementsByTagName('html')[0].className+=' inputplaceholder';</script>
 </head>
 <body>
@@ -30,15 +31,47 @@
   </div>
 </div>
 
+<div>
+  <label>Style:</label>
+  <select id="style-selector">
+    <option>None</option>
+    <option selected>Minimal</option>
+    <option>Wink</option>
+  </select>
+</div>
+
 <footer>
   <p>Made by <a href="http://blog.cloudfour.com/simpleslideview/">Cloud Four</a></p>
 </footer>
 
-<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="demo/jquery.js"></script>
 <script src="hideShowPassword.js"></script>
 <script>
 
-$('#password-1').hidePassword(true);
+// console.log($('#toggle-style').length);
+
+// var $toggleStyle = $('#toggle-style');
+
+$('#style-selector').change(function(){
+  var val = $(this).val().toLowerCase();
+  var $link = $('link[rel=stylesheet][href*="toggle-styles"]');
+  if (val === 'none') {
+    $link.remove();
+  } else if ($link.length) {
+    $link.prop('href', 'toggle-styles/' + val + '.css');
+  } else {
+    $link = $('<link rel="stylesheet" href="toggle-styles/' + val + '.css">').appendTo('head');
+  }
+});
+
+$('#password-1')
+  .hidePassword(true)
+  .on('passwordShown', function(){
+    $('#show-password').prop('checked', 'checked');
+  })
+  .on('passwordHidden', function(){
+    $('#show-password').prop('checked', '');
+  });
 
 $('#show-password').change(function(){
   $('#password-1').hideShowPassword($(this).prop('checked'));

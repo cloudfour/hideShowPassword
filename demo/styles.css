@@ -23,6 +23,14 @@ body {
 
 a {
   color: #0088cc;
+  text-decoration: none;
+}
+
+h1 {
+  font-size: 1.25em;
+  line-height: 1.25;
+  margin: 1.25em 0 1em;
+  text-align: center;
 }
 
 .login,
@@ -32,6 +40,7 @@ a {
 
 .login {
   background-color: #e6e6e6;
+  margin-bottom: 1em;
 }
 
 .login-label,
@@ -62,6 +71,7 @@ a {
   padding: 0.5em;
   position: relative;
   width: 100%;
+  -moz-appearance: none;
   -webkit-appearance: none;
 }
 
@@ -88,4 +98,9 @@ a {
 
 .hideShowPassword-toggle {
   z-index: 3;
+}
+
+footer {
+  color: #999;
+  font-size: 0.875em;
 }
