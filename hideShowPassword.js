@@ -52,7 +52,6 @@
     toggle: {
       element: '<button type="button">',
       className: 'hideShowPassword-toggle',
-      hideUntil: null,
       attachToEvent: 'click',
       attachToTouchEvent: 'touchstart mousedown',
       attachToKeyCodes: true,
@@ -307,9 +306,9 @@
         }
       }
 
-      if (this.options.toggle.hideUntil) {
+      if (typeof this.options.innerToggle === 'string') {
         this.toggleElement.hide();
-        this.element.one(this.options.toggle.hideUntil, $.proxy(function(){
+        this.element.one(this.options.innerToggle, $.proxy(function(){
           this.toggleElement.show();
         }, this));
       }
