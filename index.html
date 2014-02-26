@@ -25,7 +25,7 @@
   <label class="login-label" for="username-1">Username</label>
   <input class="login-field  login-field-username" id="username-1" type="text" placeholder="Username">
   <label class="login-label" for="password-1">Password</label>
-  <input class="login-field  login-field-password" id="password-1" type="password" placeholder="Password">
+  <input class="login-field  login-field-password" id="password-1" type="password" placeholder="Password" value="example">
   <div class="login-footer">
     <label><input type="checkbox" id="show-password"> Show password</label>
   </div>
@@ -60,14 +60,14 @@
 //   }
 // });
 
-$('#password-1')
-  .hidePassword(true, { touchSupport: true, toggle: { element: '<span>' } })
-  .on('passwordShown', function(){
-    $('#show-password').prop('checked', 'checked');
-  })
-  .on('passwordHidden', function(){
-    $('#show-password').prop('checked', '');
-  });
+// $('#password-1')
+//   .hidePassword(true, { touchSupport: true, toggle: { element: '<span>' } })
+//   .on('passwordShown', function(){
+//     $('#show-password').prop('checked', 'checked');
+//   })
+//   .on('passwordHidden', function(){
+//     $('#show-password').prop('checked', '');
+//   });
 
 $('#show-password').change(function(){
   $('#password-1').hideShowPassword($(this).prop('checked'));
