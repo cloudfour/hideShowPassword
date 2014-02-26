@@ -31,14 +31,14 @@
   </div>
 </div>
 
-<div>
+<!-- <div>
   <label>Style:</label>
   <select id="style-selector">
     <option>None</option>
     <option selected>Minimal</option>
     <option>Wink</option>
   </select>
-</div>
+</div> -->
 
 <footer>
   <p>Made by <a href="http://blog.cloudfour.com/simpleslideview/">Cloud Four</a></p>
@@ -48,21 +48,17 @@
 <script src="hideShowPassword.js"></script>
 <script>
 
-// console.log($('#toggle-style').length);
-
-// var $toggleStyle = $('#toggle-style');
-
-$('#style-selector').change(function(){
-  var val = $(this).val().toLowerCase();
-  var $link = $('link[rel=stylesheet][href*="toggle-styles"]');
-  if (val === 'none') {
-    $link.remove();
-  } else if ($link.length) {
-    $link.prop('href', 'toggle-styles/' + val + '.css');
-  } else {
-    $link = $('<link rel="stylesheet" href="toggle-styles/' + val + '.css">').appendTo('head');
-  }
-});
+// $('#style-selector').change(function(){
+//   var val = $(this).val().toLowerCase();
+//   var $link = $('link[rel=stylesheet][href*="toggle-styles"]');
+//   if (val === 'none') {
+//     $link.remove();
+//   } else if ($link.length) {
+//     $link.prop('href', 'toggle-styles/' + val + '.css');
+//   } else {
+//     $link = $('<link rel="stylesheet" href="toggle-styles/' + val + '.css">').appendTo('head');
+//   }
+// });
 
 $('#password-1')
   .hidePassword(true)
