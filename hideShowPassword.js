@@ -307,6 +307,13 @@
         }
       }
 
+      if (this.options.toggle.hideUntil) {
+        this.toggleElement.hide();
+        this.element.one(this.options.toggle.hideUntil, $.proxy(function(){
+          this.toggleElement.show();
+        }, this));
+      }
+
     },
 
     updateToggle: function (invert) {

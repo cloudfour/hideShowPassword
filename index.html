@@ -61,7 +61,7 @@
 // });
 
 $('#password-1')
-  .hidePassword(true)
+  .hidePassword(true, { toggle: { hideUntil: 'focus' } })
   .on('passwordShown', function(){
     $('#show-password').prop('checked', 'checked');
   })
