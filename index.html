@@ -5,9 +5,116 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
   <title>hideShowPassword Demo</title>
-  <link rel="stylesheet" href="demo/styles.css">
+  <style>
+    *, *:before, *:after {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+
+    html {
+      background-color: #f6f6f6;
+    }
+
+    body,
+    input,
+    button {
+      color: #444;
+      font: 100%/1.5 sans-serif;
+    }
+
+    body {
+      margin: 1em auto 2em;
+      max-width: 30em;
+      padding: 0 1em;
+    }
+
+    a {
+      color: #0088cc;
+      text-decoration: none;
+    }
+
+    h1 {
+      font-size: 1.25em;
+      line-height: 1.25;
+      margin: 1.25em 0 1em;
+      text-align: center;
+    }
+
+    .login,
+    .login-field {
+      border-radius: 0.25em;
+    }
+
+    .login {
+      background-color: #e6e6e6;
+      margin-bottom: 1em;
+    }
+
+    .login-label,
+    .login-field {
+      display: block;
+    }
+
+    .login-label {
+      font-size: 0.875em;
+      padding: 0.57142857142857em 0.57142857142857em 0.28571428571429em;*/
+    }
+
+    .inputplaceholder .login-label {
+      border: 0;
+      clip: rect(0 0 0 0);
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      padding: 0;
+      position: absolute;
+      width: 1px;
+    }
+
+    .login-field {
+      background-color: #fff;
+      border: 2px solid #ccc;
+      margin: 0;
+      padding: 0.5em;
+      position: relative;
+      width: 100%;
+      -moz-appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .login-field:focus {
+      border-color: #0088cc;
+      outline: transparent;
+      z-index: 2;
+    }
+
+    .inputplaceholder .login-field-username {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      margin-bottom: -2px;
+    }
+
+    .inputplaceholder .login-field-password {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    .login-footer {
+      padding: 0.25em 0.5em 0.5em;
+    }
+
+    .hideShowPassword-toggle {
+      z-index: 3;
+    }
+
+    footer {
+      color: #999;
+      font-size: 0.875em;
+    }
+  </style>
   <link rel="stylesheet" href="toggle-styles/minimal.css">
-  <script src="demo/modernizr.custom.js"></script>
+  <script src="vendor/modernizr.custom.js"></script>
   <script>if(Modernizr.input.placeholder)document.getElementsByTagName('html')[0].className+=' inputplaceholder';</script>
 </head>
 <body>
@@ -44,7 +151,7 @@
   <p>Made by <a href="http://blog.cloudfour.com/simpleslideview/">Cloud Four</a></p>
 </footer>
 
-<script src="demo/jquery.js"></script>
+<script src="vendor/jquery.js"></script>
 <script src="hideShowPassword.js"></script>
 <script>
 
