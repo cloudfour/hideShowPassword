@@ -40,7 +40,8 @@
     enable: canSetInputAttribute,
 
     className: 'hideShowPassword-field',
-    eventName: 'passwordVisibilityChange',
+    initEvent: 'hideShowPasswordInit',
+    changeEvent: 'passwordVisibilityChange',
     props: {
       autocapitalize: 'off',
       autocomplete: 'off',
@@ -91,7 +92,7 @@
     states: {
       shown: {
         className: 'hideShowPassword-shown',
-        eventName: 'passwordShown',
+        changeEvent: 'passwordShown',
         props: { type: 'text' },
         toggle: {
           className: 'hideShowPassword-toggle-hide',
@@ -101,7 +102,7 @@
       },
       hidden: {
         className: 'hideShowPassword-hidden',
-        eventName: 'passwordHidden',
+        changeEvent: 'passwordHidden',
         props: { type: 'password' },
         toggle: {
           className: 'hideShowPassword-toggle-show',
@@ -139,6 +140,7 @@
             (typeof this.options.innerToggle === 'string') ? this.options.innerToggle : undef
           );
         }
+        this.element.trigger(this.options.initEvent, [ this ]);
       }
     },
 
@@ -147,8 +149,8 @@
       if (this.updateElement()) {
         this.toggle.update(this.state().toggle, this.otherState().toggle);
         this.element
-          .trigger(this.options.eventName)
-          .trigger(this.state().eventName);
+          .trigger(this.options.changeEvent, [ this ])
+          .trigger(this.state().changeEvent, [ this ]);
       }
       return this.options.enable;
     },
