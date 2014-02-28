@@ -132,6 +132,16 @@
       z-index: 3;
     }
 
+    .btns {
+      list-style: none;
+      margin: 0 0 1.5em;
+      padding: 0;
+    }
+
+    .btns li {
+      display: inline-block;
+    }
+
     .btn {
       background: #0088cc;
       border-radius: 0.25em;
@@ -163,6 +173,12 @@
 </header>
 
 <p>Inspired by a pattern seen in <a href="http://www.polarb.com/">Polar</a>, <a href="http://ie.microsoft.com">IE 10+</a> and <a href="http://www.linkedin.com/mobile">LinkedIn</a> and <a href="http://www.lukew.com/ff/entry.asp?1653">documented by Luke W</a>, hideShowPassword lets you easily hide and show passwords via JavaScript or a nifty inset toggle.</p>
+
+<ul class="btns">
+  <li><a class="btn" href="">Download</a></li>
+  <li><a class="btn" href="">More info</a></li>
+  <li><a class="btn" href="">GitHub</a></li>
+</ul>
 
 <h2>Examples</h2>
 
@@ -215,19 +231,6 @@ $('#password-2').showPassword('focus');
 $('#show-password').change(function(){
   $('#password-3').hideShowPassword($(this).prop('checked'));
 });
-
-// $('#password-1')
-//   .hidePassword(true)
-//   .on('passwordShown', function(){
-//     $('#show-password').prop('checked', 'checked');
-//   })
-//   .on('passwordHidden', function(){
-//     $('#show-password').prop('checked', '');
-//   });
-
-// $('#show-password').change(function(){
-//   $('#password-1').hideShowPassword($(this).prop('checked'));
-// });
 
 </script>
 
