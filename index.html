@@ -37,7 +37,32 @@
     h1 {
       font-size: 1.25em;
       line-height: 1.25;
-      margin: 1.25em 0 1em;
+      margin: 1.5em 0 0.5em;
+    }
+
+    h2 {
+      font-size: 1.125em;
+      line-height: 1.5;
+      margin: 1.5em 0 1em;
+    }
+
+    .for {
+      font-weight: normal;
+      white-space: nowrap;
+    }
+
+    p {
+      margin: 0 0 1.5em;
+    }
+
+    figure {
+      margin: 0 0 1.5em;
+    }
+
+    figcaption {
+      color: #999;
+      font-size: 0.875em;
+      margin-top: 0.5em;
       text-align: center;
     }
 
@@ -48,7 +73,6 @@
 
     .login {
       background-color: #e6e6e6;
-      margin-bottom: 1em;
     }
 
     .login-label,
@@ -108,77 +132,102 @@
       z-index: 3;
     }
 
-    footer {
+    .btn {
+      background: #0088cc;
+      border-radius: 0.25em;
+      color: #fff;
+      display: inline-block;
+      padding: 0.5em 1em;
+    }
+
+    .btn:hover,
+    .btn:focus {
+      background-color: #0077b3;
+      outline: transparent;
+    }
+
+    .byline {
       color: #999;
       font-size: 0.875em;
     }
   </style>
-  <link rel="stylesheet" href="toggle-styles/example.minimal.css">
+  <link rel="stylesheet" href="example.minimal.css">
   <script src="vendor/modernizr.custom.js"></script>
   <script>if(Modernizr.input.placeholder)document.getElementsByTagName('html')[0].className+=' inputplaceholder';</script>
 </head>
 <body>
 
 <header>
-  <h1>hideShowPassword for jQuery</h1>
+  <h1>hideShowPassword<span class="for"> for jQuery</span></h1>
   <!-- <p>Because life&rsquo;s too short to waste time re-typing passwords.</p> -->
 </header>
 
-<!-- <p>Inspired by a pattern seen in <a href="http://www.polarb.com/">Polar</a>, <a href="http://ie.microsoft.com">IE 10+</a> and <a href="http://www.linkedin.com/mobile">LinkedIn</a> and <a href="http://www.lukew.com/ff/entry.asp?1653">documented by Luke Wroblewski</a>, hideShowPassword lets you easily hide and show passwords via JavaScript or a nifty inset toggle button.</p>
+<p>Inspired by a pattern seen in <a href="http://www.polarb.com/">Polar</a>, <a href="http://ie.microsoft.com">IE 10+</a> and <a href="http://www.linkedin.com/mobile">LinkedIn</a> and <a href="http://www.lukew.com/ff/entry.asp?1653">documented by Luke W</a>, hideShowPassword lets you easily hide and show passwords via JavaScript or a nifty inset toggle.</p>
 
-<h2>Demo</h2> -->
+<h2>Examples</h2>
 
-<div class="login">
-  <label class="login-label" for="username-1">Username</label>
-  <input class="login-field  login-field-username" id="username-1" type="text" placeholder="Username">
-  <label class="login-label" for="password-1">Password</label>
-  <input class="login-field  login-field-password" id="password-1" type="password" placeholder="Password" value="example">
-  <div class="login-footer">
-    <label><input type="checkbox" id="show-password"> Show password</label>
+<figure>
+  <div class="login">
+    <label class="login-label" for="username-1">Username</label>
+    <input class="login-field  login-field-username" id="username-1" type="text" placeholder="Username">
+    <label class="login-label" for="password-1">Password</label>
+    <input class="login-field  login-field-password" id="password-1" type="password" placeholder="Password">
   </div>
-</div>
+  <figcaption>Inner toggle with &ldquo;wink&rdquo; example style.</figcaption>
+</figure>
 
-<div>
-  <label>Style:</label>
-  <select id="style-selector">
-    <option>None</option>
-    <option selected>Minimal</option>
-    <option>Wink</option>
-  </select>
-</div>
+<figure>
+  <div class="login">
+    <label class="login-label" for="username-2">Username</label>
+    <input class="login-field  login-field-username" id="username-2" type="text" placeholder="Username">
+    <label class="login-label" for="password-2">Password</label>
+    <input class="login-field  login-field-password" id="password-2" type="password" placeholder="Password">
+  </div>
+  <figcaption>Password shown by default, toggle hidden till focus.</figcaption>
+</figure>
+
+<figure>
+  <div class="login">
+    <label class="login-label" for="username-3">Username</label>
+    <input class="login-field  login-field-username" id="username-3" type="text" placeholder="Username">
+    <label class="login-label" for="password-3">Password</label>
+    <input class="login-field  login-field-password" id="password-3" type="password" placeholder="Password" value="example password">
+    <div class="login-footer">
+      <input type="checkbox" id="show-password"> <label for="show-password">Show password</label>
+    </div>
+  </div>
+  <figcaption>Checkbox toggles password visibility.</figcaption>
+</figure>
 
 <footer>
-  <p>Made by <a href="http://blog.cloudfour.com/simpleslideview/">Cloud Four</a></p>
+  <a class="btn" href="https://github.com/cloudfour/hideShowPassword">Docs and Source</a>
+  <p class="byline">Made by <a href="http://blog.cloudfour.com/simpleslideview/">Cloud Four</a></p>
 </footer>
 
 <script src="vendor/jquery.js"></script>
 <script src="hideShowPassword.js"></script>
 <script>
 
-$('#style-selector').change(function(){
-  var val = $(this).val().toLowerCase();
-  var $link = $('link[rel=stylesheet][href*="toggle-styles"]');
-  if (val === 'none') {
-    $link.remove();
-  } else if ($link.length) {
-    $link.prop('href', 'toggle-styles/' + val + '.css');
-  } else {
-    $link = $('<link rel="stylesheet" href="toggle-styles/' + val + '.css">').appendTo('head');
-  }
-});
+$('#password-1').hideShowPassword(false, true);
 
-$('#password-1')
-  .hidePassword(true)
-  .on('passwordShown', function(){
-    $('#show-password').prop('checked', 'checked');
-  })
-  .on('passwordHidden', function(){
-    $('#show-password').prop('checked', '');
-  });
+$('#password-2').showPassword('focus');
 
 $('#show-password').change(function(){
-  $('#password-1').hideShowPassword($(this).prop('checked'));
+  $('#password-3').hideShowPassword($(this).prop('checked'));
 });
+
+// $('#password-1')
+//   .hidePassword(true)
+//   .on('passwordShown', function(){
+//     $('#show-password').prop('checked', 'checked');
+//   })
+//   .on('passwordHidden', function(){
+//     $('#show-password').prop('checked', '');
+//   });
+
+// $('#show-password').change(function(){
+//   $('#password-1').hideShowPassword($(this).prop('checked'));
+// });
 
 </script>
 

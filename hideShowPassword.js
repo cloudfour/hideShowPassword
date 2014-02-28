@@ -128,14 +128,14 @@
         }
         if (this.options.innerToggle) {
           this.toggle.init(
-            $.proxy(function (event) { 
-              event.preventDefault(); 
-              this.update({ show: 'toggle' }); 
+            $.proxy(function (event) {
+              event.preventDefault();
+              this.update({ show: 'toggle' });
             }, this),
             this.element,
             this.wrapper.init(this.element, this.options.wrapper),
             this.options.toggle,
-            this.state().toggle, 
+            this.state().toggle,
             this.otherState().toggle,
             (typeof this.options.innerToggle === 'string') ? this.options.innerToggle : undef
           );
