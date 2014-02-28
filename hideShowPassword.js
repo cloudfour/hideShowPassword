@@ -55,6 +55,7 @@
       touchSupport: (typeof Modernizr === 'undefined') ? false : Modernizr.touch,
       attachToEvent: 'click',
       attachToTouchEvent: 'touchstart mousedown',
+      attachToKeyEvent: 'keyup',
       attachToKeyCodes: true,
       styles: { position: 'absolute' },
       touchStyles: { pointerEvents: 'none' },
@@ -130,6 +131,13 @@
         }
         if (this.options.innerToggle) {
           this.wrapElement(this.options.wrapper);
+          this.initToggle(this.options.toggle);
+          if (typeof this.options.innerToggle === 'string') {
+            this.toggleElement.hide();
+            this.element.one(this.options.innerToggle, $.proxy(function(){
+              this.toggleElement.show();
+            }, this));
+          }
         }
         this.element.trigger(this.options.initEvent, [ this ]);
       }
@@ -146,7 +154,14 @@
       return this.options.enable;
     },
 
+    toggle: function (showVal) {
+      showVal = showVal || 'toggle';
+      return this.update({ show: showVal });
+    },
+
     prepareOptions: function (options, base) {
+      var keyCodes = []
+        , testElement;
       base = base || this.options;
       options = $.extend(true, {}, base, options);
       if (options.enable) {
@@ -158,6 +173,25 @@
         if (options.toggle.position === 'infer') {
           options.toggle.position = (this.element.css('text-direction') === 'rtl') ? 'left' : 'right';
         }
+        if (! $.isArray(options.toggle.attachToKeyCodes)) {
+          if (options.toggle.attachToKeyCodes === true) {
+            testElement = $(options.toggle.element);
+            switch(testElement.prop('tagName').toLowerCase()) {
+              case 'button':
+              case 'input':
+                break;
+              case 'a':
+                if (testElement.filter('[href]').length) {
+                  keyCodes.push(SPACE);
+                  break;
+                }
+              default:
+                keyCodes.push(SPACE, ENTER);
+                break;
+            }
+          }
+          options.toggle.attachToKeyCodes = keyCodes;
+        }
       }
       return options;
     },
@@ -168,6 +202,7 @@
         .prop($.extend({}, this.options.props, this.state().props))
         .addClass([this.options.className, this.state().className].join(' '))
         .removeClass(this.otherState().className);
+      this.updateToggle();
       return true;
     },
 
@@ -218,152 +253,105 @@
         }
       }
       return this.wrapperElement;
+    },
+
+    initToggle: function (options) {
+      if (! this.toggleElement.length) {
+        // Create element
+        this.toggleElement = $(options.element)
+          .attr(options.attr)
+          .addClass(options.className)
+          .css(options.styles)
+          .appendTo(this.wrapperElement);
+        // Update content/attributes
+        this.updateToggle();
+        // Position
+        this.positionToggle(options.position, options.verticalAlign, options.offset);
+        // Events
+        if (options.touchSupport) {
+          this.toggleElement.css(options.touchStyles);
+          this.element.on(options.attachToTouchEvent, $.proxy(this.toggleTouchEvent, this));
+        } else {
+          this.toggleElement.on(options.attachToEvent, $.proxy(this.toggleEvent, this));
+        }
+        if (options.attachToKeyCodes.length) {
+          this.toggleElement.on(options.attachToKeyEvent, $.proxy(this.toggleKeyEvent, this));
+        }
+      }
+      return this.toggleElement;
+    },
+
+    positionToggle: function (position, verticalAlign, offset) {
+      var styles = {};
+      styles[position] = offset;
+      switch (verticalAlign) {
+        case 'top':
+        case 'bottom':
+          styles[verticalAlign] = offset;
+          break;
+        case 'middle':
+          styles['top'] = '50%';
+          styles['marginTop'] = this.toggleElement.outerHeight() / -2;
+          break;
+      }
+      return this.toggleElement.css(styles);
+    },
+
+    updateToggle: function (state, otherState) {
+      var paddingProp
+        , targetPadding;
+      if (this.toggleElement.length) {
+        paddingProp = 'padding-' + this.options.toggle.position;
+        state = state || this.state().toggle;
+        otherState = otherState || this.otherState().toggle;
+        this.toggleElement
+          .attr(state.attr)
+          .addClass(state.className)
+          .removeClass(otherState.className)
+          .html(state.content);
+        targetPadding = this.toggleElement.outerWidth() + (this.options.toggle.offset * 2);
+        if (this.element.css(paddingProp) !== targetPadding) {
+          this.element.css(paddingProp, targetPadding);
+        }
+      }
+      return this.toggleElement;
+    },
+
+    toggleEvent: function (event) {
+      event.preventDefault();
+      this.toggle();
+    },
+
+    toggleKeyEvent: function (event) {
+      $.each(this.options.toggle.attachToKeyCodes, $.proxy(function(index, keyCode) {
+        if (event.which === keyCode) {
+          console.log('key event');
+          this.toggleEvent(event);
+          return false;
+        }
+      }, this));
+    },
+
+    toggleTouchEvent: function (event) {
+      var toggleX = this.toggleElement.offset().left
+        , eventX
+        , lesser
+        , greater;
+      if (toggleX) {
+        eventX = event.pageX || event.originalEvent.pageX;
+        if (this.options.toggle.position === 'left') {
+          toggleX+= this.toggleElement.outerWidth();
+          lesser = eventX;
+          greater = toggleX;
+        } else {
+          lesser = toggleX;
+          greater = eventX;
+        }
+        if (greater >= lesser) {
+          this.toggleEvent(event);
+        }
+      }
     }
-
-    // wrapper: {
-    //   element: $(),
-    //   init: function (target, options) {
-    //     var enforceWidth = options.enforceWidth
-    //       , targetWidth;
-    //     if (! this.element.length) {
-    //       targetWidth = target.outerWidth();
-    //       $.each(options.inheritStyles, $.proxy(function (index, prop) {
-    //         options.styles[prop] = target.css(prop);
-    //       }, this));
-    //       target.wrap(
-    //         $(options.element).addClass(options.className).css(options.styles)
-    //       );
-    //       this.element = target.parent();
-    //       if (enforceWidth === true) {
-    //         enforceWidth = (this.element.outerWidth() === targetWidth) ? false : targetWidth;
-    //       }
-    //       if (enforceWidth !== false) {
-    //         this.element.css('width', enforceWidth);
-    //       }
-    //     }
-    //     return this.element;
-    //   }
-    // },
-
-    // toggle: {
-    //   element: $(),
-    //   init: function (action, target, wrapper, options, state, otherState, hideUntil) {
-    //     // element
-    //     this.element = $(options.element)
-    //       .attr(options.attr)
-    //       .addClass(options.className)
-    //       .css(options.styles)
-    //       .appendTo(wrapper);
-    //     this.update(state, otherState);
-    //     target.css('padding-' + options.position, this.maxWidth(state, otherState) + (options.offset * 2));
-    //     this.position(options.position, options.verticalAlign, options.offset);
-    //     // saving some attributes for events
-    //     this.action = action;
-    //     this.position = options.position;
-    //     this.keyCodes = this.prepKeyCodes(options.attachToKeyCodes, this.element.prop('tagName'));
-    //     // initialize event proxies
-    //     $.each(this.events, $.proxy(function (key, handler) {
-    //       this.proxies[key] = $.proxy(handler, this);
-    //     }, this));
-    //     // attach events
-    //     if (options.touchSupport) {
-    //       this.element.css(options.touchStyles);
-    //       target.on(options.attachToTouchEvent, this.proxies.touch);
-    //     } else {
-    //       this.element.on(options.attachToEvent, this.proxies.click);
-    //     }
-    //     if (this.keyCodes.length) {
-    //       this.element.on('keyup', this.proxies.keypress);
-    //     }
-    //     // optionally hide until event
-    //     if (hideUntil) {
-    //       this.element.hide();
-    //       target.one(hideUntil, $.proxy(function(){ this.element.show(); }, this));
-    //     }
-    //     // return element
-    //     return this.element;
-    //   },
-    //   update: function (state, otherState) {
-    //     return this.element
-    //       .attr(state.attr)
-    //       .addClass(state.className)
-    //       .removeClass(otherState.className)
-    //       .html(state.content);
-    //   },
-    //   maxWidth: function (state, otherState) {
-    //     var result = this.element.outerWidth(true);
-    //     this.update(otherState, state);
-    //     result = Math.max(result, this.element.outerWidth(true));
-    //     this.update(state, otherState);
-    //     return result;
-    //   },
-    //   position: function (position, verticalAlign, offset) {
-    //     var styles = {};
-    //     styles[position] = offset;
-    //     switch (verticalAlign) {
-    //       case 'top':
-    //       case 'bottom':
-    //         styles[verticalAlign] = offset;
-    //         break;
-    //       case 'middle':
-    //         styles['top'] = '50%';
-    //         styles['marginTop'] = this.element.outerHeight() / -2;
-    //         break;
-    //     }
-    //     return this.element.css(styles);
-    //   },
-    //   prepKeyCodes: function (keyCodes, tagName) {
-    //     if (keyCodes === true) {
-    //       keyCodes = [];
-    //       switch(tagName.toLowerCase()) {
-    //         case 'button':
-    //         case 'input':
-    //           break;
-    //         case 'a':
-    //           if (this.element.filter('[href]').length) {
-    //             keyCodes.push(SPACE);
-    //             break;
-    //           }
-    //         default:
-    //           keyCodes.push(SPACE, ENTER);
-    //           break;
-    //       }
-    //     }
-    //     return $.isArray(keyCodes) ? keyCodes : [];
-    //   },
-    //   events: {
-    //     click: function (event) { this.action(event); },
-    //     keypress: function (event) {
-    //       $.each(this.keyCodes, $.proxy(function(index, keyCode){
-    //         if (event.which === keyCode) {
-    //           this.proxies.click(event);
-    //           return false;
-    //         }
-    //       }, this));
-    //     },
-    //     touch: function (event) {
-    //       var toggleX = this.element.offset().left
-    //         , eventX
-    //         , lesser
-    //         , greater;
-    //       if (toggleX) {
-    //         eventX = event.pageX || event.originalEvent.pageX;
-    //         if (this.position === 'left') {
-    //           toggleX+= this.element.outerWidth();
-    //           lesser = eventX;
-    //           greater = toggleX;
-    //         } else {
-    //           lesser = toggleX;
-    //           greater = eventX;
-    //         }
-    //         if (greater >= lesser) {
-    //           this.proxies.click(event);
-    //         }
-    //       }
-    //     }
-    //   },
-    //   proxies: {}
-    // }
 
   };
 
