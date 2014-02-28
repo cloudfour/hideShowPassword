@@ -116,6 +116,8 @@
 
   function HideShowPassword (element, options) {
     this.element = $(element);
+    this.wrapperElement = $();
+    this.toggleElement = $();
     this.init(options);
   }
 
@@ -127,18 +129,7 @@
           $('<style> ' + (this.options.className || '') + '::-ms-reveal { display: none !important; } </style>').appendTo('head');
         }
         if (this.options.innerToggle) {
-          // this.toggle.init(
-          //   $.proxy(function (event) {
-          //     event.preventDefault();
-          //     this.update({ show: 'toggle' });
-          //   }, this),
-          //   this.element,
-          //   this.wrapper.init(this.element, this.options.wrapper),
-          //   this.options.toggle,
-          //   this.state().toggle,
-          //   this.otherState().toggle,
-          //   (typeof this.options.innerToggle === 'string') ? this.options.innerToggle : undef
-          // );
+          this.wrapElement(this.options.wrapper);
         }
         this.element.trigger(this.options.initEvent, [ this ]);
       }
@@ -205,7 +196,29 @@
 
     otherState: function (key) {
       return this.state(key, true);
-    }//,
+    },
+
+    wrapElement: function (options) {
+      var enforceWidth = options.enforceWidth
+        , targetWidth;
+      if (! this.wrapperElement.length) {
+        targetWidth = this.element.outerWidth();
+        $.each(options.inheritStyles, $.proxy(function (index, prop) {
+          options.styles[prop] = this.element.css(prop);
+        }, this));
+        this.element.wrap(
+          $(options.element).addClass(options.className).css(options.styles)
+        );
+        this.wrapperElement = this.element.parent();
+        if (enforceWidth === true) {
+          enforceWidth = (this.wrapperElement.outerWidth() === targetWidth) ? false : targetWidth;
+        }
+        if (enforceWidth !== false) {
+          this.wrapperElement.css('width', enforceWidth);
+        }
+      }
+      return this.wrapperElement;
+    }
 
     // wrapper: {
     //   element: $(),
