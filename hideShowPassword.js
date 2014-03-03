@@ -36,7 +36,6 @@
 
     show: 'infer',
     innerToggle: false,
-    hideMsReveal: true,
     enable: canSetInputAttribute,
 
     className: 'hideShowPassword-field',
@@ -126,9 +125,6 @@
 
     init: function (options) {
       if (this.update(options, defaults)) {
-        if (this.options.hideMsReveal) {
-          $('<style> ' + (this.options.className || '') + '::-ms-reveal { display: none !important; } </style>').appendTo('head');
-        }
         if (this.options.innerToggle) {
           this.wrapElement(this.options.wrapper);
           this.initToggle(this.options.toggle);
@@ -146,7 +142,6 @@
     update: function (options, base) {
       this.options = this.prepareOptions(options, base);
       if (this.updateElement()) {
-        // this.toggle.update(this.state().toggle, this.otherState().toggle);
         this.element
           .trigger(this.options.changeEvent, [ this ])
           .trigger(this.state().changeEvent, [ this ]);

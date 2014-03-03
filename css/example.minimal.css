@@ -1,3 +1,8 @@
+::-ms-reveal,
+::-ms-clear {
+  display: none !important;
+}
+
 .hideShowPassword-toggle {
   background: transparent;
   border: 0;
