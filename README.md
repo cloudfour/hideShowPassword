@@ -1,230 +1,309 @@
-# Hide/show password plugin for jQuery/Zepto
+# Hide/show password plugin for jQuery
 
 Because life's too short to waste time re-typing passwords.
 
-This plugin lets you easily hide and reveal the contents of a password input field. It's based on a mobile design pattern documented [in this post by Luke Wroblewski](http://www.lukew.com/ff/entry.asp?1653) and seen in apps like [Polar](http://www.polarb.com/).
+Inspired by a pattern seen in [Polar](http://www.polarb.com/), [IE 10+](http://ie.microsoft.com) and [LinkedIn](http://www.linkedin.com/mobile) and [documented by Luke W](http://www.lukew.com/ff/entry.asp?1653), hideShowPassword lets you easily hide and show passwords via JavaScript or a nifty inset toggle.
 
 * [Explanatory blog post](http://blog.cloudfour.com/hide-show-passwords-plugin/)
-* [Check out a demo](http://cloudfour.github.io/hideShowPassword/)
+* [Live demo](http://cloudfour.github.io/hideShowPassword/)
+
+The plugin works in any browser that supports resetting the `type` attribute of `<input>` elements (pretty much everything newer than IE8). The plugin should fall back gracefully in cases where this is not supported.
 
 If [Bower](http://bower.io/)'s your thing, you can install this plugin by running `bower install hideShowPassword` in your project directory.
 
-## History
-
-* **1.0.3**: Added wrapperWidth option
-* **1.0.2**: Uses deep merge for options
-* **1.0.1**: Added AMD support
-* **1.0.0**: _Voila!_
-
 ## Dependencies
 
-hideShowPassword.js requires either [jQuery](http://jquery.com/) or [Zepto](http://zeptojs.com/), the latter with a few caveats...
+hideShowPassword requires [jQuery](http://jquery.com/).
 
-### Using Zepto
+### Optional: Modernizr
 
-Before you can use this plugin with Zepto, you'll need to make sure you've included the `data` module in your Zepto build (it is not included by default). You can do this by grabbing the `vendor/zepto.custom.js` file from this very repo, or [building Zepto yourself](https://github.com/madrobby/zepto#building).
+If [Modernizr](http://modernizr.com/) is included, the plugin's touch enhancements will default to the value of `Modernizr.touch`.
 
-If you plan on using the inner toggle feature of this plugin, be aware that Zepto does not include the same [methods for CSS dimensions](http://api.jquery.com/category/dimensions/) as jQuery. The plugin will fall back to the `.width()` and `.height()` methods if `.outerWidth()` and `.outerHeight()` are not available. Set your inputs' [box-sizing](https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing) to `border-box` to avoid any issues related to padding or incorrect dimensions, or include [your own outer dimension plugins](https://gist.github.com/pamelafox/1379704).
+### Optional: Example Styles
 
-### Enabling touch enhancements
+You can style the plugin's inner toggle feature any way you'd like. To help get you started, we've included a couple of example stylesheets located in this repository.
 
-The plugin will not assume that touch is supported unless you tell it by specifying a value for the `touchSupport` option. Refer to the demo and usage examples to see how you can do this using [Modernizr](http://modernizr.com/).
+## Usage
 
-### AMD support
+The plugin acts on `<input>` elements (typically password fields):
 
-As of 1.0.1, the plugin supports [AMD](http://requirejs.org/docs/whyamd.html) and will not assume a jQuery global.
+```html
+<input id="password" type="password">
+```
 
-If you plan on using hideShowPassword as an asynchronous module with Zepto, you'll want to map Zepto to the name `jquery` in your path config:
+### Showing, hiding and toggling
+
+You can quickly show, hide or toggle the visibility of the field's contents:
 
 ```javascript
-require.config({
-  paths: {
-    jquery: 'path/to/zepto'
+$('#password').showPassword();    // Reveal
+$('#password').hidePassword();    // Hide
+$('#password').togglePassword();  // Toggle
+```
+
+These are all shorthand versions of the `hideShowPassword` method:
+
+```javascript
+$('#password').hideShowPassword(true);      // Reveal
+$('#password').hideShowPassword(false);     // Hide
+$('#password').hideShowPassword('toggle');  // Toggle
+```
+
+### Enabling the inner toggle button
+
+The inner toggle functionality tends to steal the show for this plugin. You can pass it along as the second argument of the `hideShowPassword` method:
+
+```javascript
+// Reveal password by default and create an inner toggle
+$('#password').hideShowPassword(true, true);
+```
+
+Or as the first argument of any of the shorthand methods:
+
+``` javascript
+// Reveal password by default and create an inner toggle
+$('#password').showPassword(true);
+```
+
+If you would like the inner toggle to be hidden until a specific event, you can pass along that event as a string instead:
+
+``` javascript
+// Hide the inner toggle till the #password element is focused
+$('#password').showPassword('focus');
+```
+
+### Specifying more options
+
+Any additional options may be modified by passing along an object as the last argument of any of the aformentioned methods. Here's the previous example, but with a custom class for the toggle:
+
+```javascript
+$('#password').hideShowPassword(true, 'focus', {
+  toggle: {
+    className: 'my-toggle'
   }
 });
 ```
 
-See [this issue](https://github.com/cloudfour/hideShowPassword/issues/4#issuecomment-25258931) for more info.
-
-## Usage
-
-If all you need to do is change a password field's visibility, you can use the shorthand methods:
-
-```javascript
-$('#password').showPassword(); // Reveal
-$('#password').hidePassword(); // Hide
-$('#password').togglePassword(); // Toggle
-```
-
-You can do the same thing by passing `true`, `false` or `'toggle'` to the `hideShowPassword` method:
-
-```javascript
-$('#password').hideShowPassword(true); // Reveal
-$('#password').hideShowPassword(false); // Hide
-$('#password').hideShowPassword('toggle'); // Toggle
-```
-
-If you want to tweak more than the visibility, you can pass an object to `hideShowPassword`:
+In fact, we could pass along all of these arguments as a single object if we want:
 
 ```javascript
 $('#password').hideShowPassword({
-    show: true, // Reveal the password
-    innerToggle: true, // Create an inner toggle
-    hideToggleUntil: 'focus', // Hide the toggle till focus
-    touchSupport: Modernizr.touch // Enable touch enhancements
+  show: true,
+  innerToggle: 'focus',
+  toggle: {
+    className: 'my-toggle'
+  }
 });
 ```
 
-See the options section for detailed descriptions of what's available, and the demo for examples.
+There are [many options](#options) available if your project's needs are particularly unique.
 
 ### Events
 
-If you need to respond to changes to the password field's visibility, you can use the `passwordShown` and `passwordHidden` events:
+If you need to respond to changes to the password field's visibility, you can use any of the following events:
 
 ```javascript
-$('#password').on('passwordShown', function () {
-    console.log('password is visible');
-}).on('passwordHidden', function () {
-    console.log('password is hidden');
-});
+$('#password')
+  .on('hideShowPasswordInit', function(){
+    console.log('plugin initialized');
+  })
+  .on('passwordVisibilityChange', function(){
+    console.log('password shown or hidden');
+  })
+  .on('passwordShown', function(){
+    console.log('password shown');
+  })
+  .on('passwordHidden', function(){
+    console.log('password hidden');
+  });
 ```
 
-You can change the names of the events in the options.
+## Options
 
-### Options
-
-You can pass an options object to the `hideShowPassword` method to customize it to your liking.
-
-Here are all the options and their defaults:
+Here are all of the available options and their defaults:
 
 ```javascript
 .hideShowPassword({
-    // Visibility of the password text. Can be true, false, 'toggle'
-    // or 'infer'. If 'toggle', it will be the opposite of whatever
-    // it currently is. If 'infer', it will be based on the input
-    // type (false if 'password', otherwise true).
-    show: 'infer',
+  // Visibility of the password text. Can be true, false, 'toggle'
+  // or 'infer'. If 'toggle', it will be the opposite of whatever
+  // it currently is. If 'infer', it will be based on the input
+  // type (false if 'password', otherwise true).
+  show: 'infer',
 
-    // Set to true to create an inner toggle for this input.
-    innerToggle: false,
+  // Set to true to create an inner toggle for this input. Can
+  // also be sent to an event name to delay visibility of toggle
+  // until that event is triggered on the input element.
+  innerToggle: false,
 
-    // Specify an event for the input that should make the innerToggle
-    // visible. If false, the toggle will be immediately visible.
-    // Example: 'focus'
-    hideToggleUntil: false,
+  // If false, the plugin will be disabled entirely. Set to
+  // the outcome of a test to insure input attributes can be
+  // set after input has been inserted into the DOM.
+  enable: canSetInputAttribute,
 
-    // By default, the innerToggle will work like any old clickable
-    // element. If this is set to true, it will use touch-optimized
-    // events so you can tap it on a touch device without losing
-    // your input focus. If you've included Modernizr with the
-    // touchevents test, you should set this value to Modernizr.touch.
-    touchSupport: false,
+  // Class to add to input element when the plugin is enabled.
+  className: 'hideShowPassword-field',
 
-    // Event to use for inner toggle when touchSupport is false.
-    toggleEvent: 'click',
+  // Event to trigger when the plugin is initialized and enabled.
+  initEvent: 'hideShowPasswordInit',
 
-    // ...and when touchSupport is true.
-    toggleTouchEvent: 'touchstart mousedown',
+  // Event to trigger whenever the visibility changes.
+  changeEvent: 'passwordVisibilityChange',
 
-    // When innerToggle is true, the input needs to be wrapped in
-    // a containing element. You can specify the class name of this
-    // element here. Useful for custom styles.
-    wrapperClass: 'hideShowPassword-wrapper',
+  // Properties to add to the input element.
+  props: {
+    autocapitalize: 'off',
+    autocomplete: 'off',
+    autocorrect: 'off',
+    spellcheck: 'false'
+  },
 
-    // If innerToggle is true, this will set the wrapper's width.
-    // If true, it will be set to the input element's computed width
-    // only if that width differs from its own.
-    // If any other non-false or non-null value, the width will be
-    // set to the value.
-    // If false, the width will never be set.
-    wrapperWidth: true,
+  // Options specific to the inner toggle.
+  toggle: {
+    // The element to create.
+    element: '<button type="button">',
+    // Class name of element.
+    className: 'hideShowPassword-toggle',
+    // Whether or not to support touch-specific enhancements.
+    // Defaults to the value of Modernizr.touch if available,
+    // otherwise false.
+    touchSupport: (typeof Modernizr === 'undefined') ? false : Modernizr.touch,
+    // Non-touch event to bind to.
+    attachToEvent: 'click',
+    // Event to bind to when touchSupport is true.
+    attachToTouchEvent: 'touchstart mousedown',
+    // Key event to bind to if attachToKeyCodes is an array
+    // of at least one keycode.
+    attachToKeyEvent: 'keyup',
+    // Key codes to bind the toggle event to for accessibility.
+    // If false, this feature is disabled entirely.
+    // If true, the array of key codes will be determined based
+    // on the value of the element option.
+    attachToKeyCodes: true,
+    // Styles to add to the toggle element. Does not include
+    // positioning styles.
+    styles: { position: 'absolute' },
+    // Styles to add only when touchSupport is true.
+    touchStyles: { pointerEvents: 'none' },
+    // Where to position the inner toggle relative to the
+    // input element. Can be 'right', 'left' or 'infer'. If
+    // 'infer', it will be based on the text-direction of the
+    // input element.
+    position: 'infer',
+    // Where to position the inner toggle on the y-axis
+    // relative to the input element. Can be 'top', 'bottom'
+    // or 'middle'.
+    verticalAlign: 'middle',
+    // Amount by which to "offset" the toggle from the edge
+    // of the input element.
+    offset: 0,
+    // Attributes to add to the toggle element.
+    attr: {
+      role: 'button',
+      'aria-label': 'Show Password',
+      tabIndex: 0
+    }
+  },
 
-    // Class name for the inner toggle.
-    toggleClass: 'hideShowPassword-toggle',
+  // Options specific to the wrapper element, created
+  // when the innerToggle is initialized to help with
+  // positioning of that element.
+  wrapper: {
+    // The element to create.
+    element: '<div>',
+    // Class name of element.
+    className: 'hideShowPassword-wrapper',
+    // If true, the width of the wrapper will be set
+    // unless it is already the same width as the inner
+    // element. If false, the width will never be set. Any
+    // other value will be used as the width.
+    enforceWidth: true,
+    // Styles to add to the wrapper element. Does not
+    // include inherited styles or width if enforceWidth
+    // is not false.
+    styles: { position: 'relative' },
+    // Styles to "inherit" from the input element, allowing
+    // the wrapper to avoid disrupting page styles.
+    inheritStyles: [
+      'display',
+      'verticalAlign',
+      'marginTop',
+      'marginRight',
+      'marginBottom',
+      'marginLeft'
+    ],
+    // Styles for the input element when wrapped.
+    innerElementStyles: {
+      marginTop: 0,
+      marginRight: 0,
+      marginBottom: 0,
+      marginLeft: 0
+    }
+  },
 
-    // The states object includes settings specific to the "shown"
-    // or "hidden" states of the input field.
-    states: {
-
-      // These settings are applied when the password text is
-      // visible (show: true).
-      shown: {
-
-        // Class to apply to the input element.
-        inputClass: 'hideShowPassword-shown',
-
-        // Event to trigger on the input.
-        eventName: 'passwordShown',
-
-        // Class to apply to the toggle.
-        toggleClass: 'hideShowPassword-toggle-hide',
-
-        // Text of the toggle element.
-        toggleText: 'Hide',
-
-        // Property values to apply to the input element.
-        attr: {
-          'type': 'text',
-          'autocapitalize': 'off',
-          'autocomplete': 'off',
-          'autocorrect': 'off',
-          'spellcheck': 'false'
-        }
-      },
-
-      // Settings when text is hidden (show: false).
-      hidden: {
-        inputClass: 'hideShowPassword-hidden',
-        eventName: 'passwordHidden',
-        toggleClass: 'hideShowPassword-toggle-show',
-        toggleText: 'Show',
-        attr: { 'type': 'password' }
+  // Options specific to the 'shown' or 'hidden'
+  // states of the input element.
+  states: {
+    shown: {
+      className: 'hideShowPassword-shown',
+      changeEvent: 'passwordShown',
+      props: { type: 'text' },
+      toggle: {
+        className: 'hideShowPassword-toggle-hide',
+        content: 'Hide',
+        attr: { 'aria-pressed': 'true' }
       }
     },
+    hidden: {
+      className: 'hideShowPassword-hidden',
+      changeEvent: 'passwordHidden',
+      props: { type: 'password' },
+      toggle: {
+        className: 'hideShowPassword-toggle-show',
+        content: 'Show',
+        attr: { 'aria-pressed': 'false' }
+      }
+    }
+  }
 
-    // When innerToggle is true, some elements are styled based
-    // on their width. Unless box-sizing is set to border-box,
-    // outerWidth() is a more reliable method than width(), but it is
-    // not included with Zepto. If you plan to include your own plugin
-    // for determining width, you can specify its key as a string to
-    // override these defaults.
-    widthMethod: ($.fn.outerWidth === undef) ? 'width' : 'outerWidth',
-    heightMethod: ($.fn.outerHeight === undef) ? 'height' : 'outerHeight'
 });
 ```
 
-## Known issues
+## Known Issues
 
-### Competing control in IE10 (Windows 8)
+### Competing controls in IE10+ (Windows 8)
 
-Internet Explorer 10 includes its own control for toggling password visibility that can compete with this plugin when enabled.
-
-You can disable this control for any element by specifying a style for the `::ms-reveal` pseudo-class:
+Internet Explorer 10 introduced its own controls for password and text input fields that sometimes compete with the inner toggle functionality of this plugin. Thankfully, they are easily overwritten using CSS:
 
 ```css
-::-ms-reveal { display: none !important; }
+::-ms-reveal,
+::-ms-clear {
+  display: none !important;
+}
 ```
 
-More info [on MSDN](http://msdn.microsoft.com/en-us/library/windows/apps/hh465773.aspx).
+### Error when debugging IE8 or earlier in IE9+ Developer Tools
+
+For some reason the plugin returns a false positive when feature-testing unless honest-to-goodness IE8 or earlier is used.
 
 ### Toggle quirks in invisible elements
 
-If you attach the plugin to an input element in an invisible container with `inputToggle` set to `true`, when the container becomes visible the width and toggle position may be off. This is because the plugin can't read any width, height or position values, which prevents it from doing the small amount of adjustments it needs.
+If you use the inner toggle feature on an invisible element, it may not have enough information to correctly style the wrapper and toggle elements. It's recommended that you delay instantiation of the plugin until the elements are visible.
 
-There are two remedies to this issue. One is to use CSS to overtly adjust the position of the elements:
-
-```css
-.hideShowPassword-wrapper { width: 100% }
-.hideShowPassword-toggle { margin-top: -19px !important }
-```
-
-The other is to defer instantiation of the plugin until you know its container will be available. Here's a hypothetical [Bootstrap tabs](http://twitter.github.io/bootstrap/javascript.html#tabs) example:
+Here's a hypothetical example using a [Bootstrap modal](http://getbootstrap.com/javascript/#modals):
 
 ```javascript
-$('a[data-toggle="tab"]').on('shown', function (e) {
-  $(e.target).find('[type="password"]').hideShowPassword({ innerToggle: true });
+$('#my-modal').on('shown.bs.modal', function (event) {
+  $('#password').showPassword(true);
 });
 ```
+
+## History
+
+* **2.0.0**: Major rewrite with better accessibility and deeper options
+* **1.0.3**: Added wrapperWidth option
+* **1.0.2**: Uses deep merge for options
+* **1.0.1**: Added AMD support
+* **1.0.0**: _Voila!_
 
 ## License
 
@@ -234,4 +313,3 @@ This repository contains other libraries that may or may not fall under the same
 
 * [jQuery](https://github.com/jquery/jquery)
 * [Modernizr](https://github.com/Modernizr/Modernizr)
-* [Zepto](https://github.com/madrobby/zepto)

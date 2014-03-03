@@ -33,14 +33,32 @@
   }());
 
   var defaults = {
-
+    // Visibility of the password text. Can be true, false, 'toggle'
+    // or 'infer'. If 'toggle', it will be the opposite of whatever
+    // it currently is. If 'infer', it will be based on the input
+    // type (false if 'password', otherwise true).
     show: 'infer',
+
+    // Set to true to create an inner toggle for this input. Can
+    // also be sent to an event name to delay visibility of toggle
+    // until that event is triggered on the input element.
     innerToggle: false,
+
+    // If false, the plugin will be disabled entirely. Set to
+    // the outcome of a test to insure input attributes can be
+    // set after input has been inserted into the DOM.
     enable: canSetInputAttribute,
 
+    // Class to add to input element when the plugin is enabled.
     className: 'hideShowPassword-field',
+
+    // Event to trigger when the plugin is initialized and enabled.
     initEvent: 'hideShowPasswordInit',
+
+    // Event to trigger whenever the visibility changes.
     changeEvent: 'passwordVisibilityChange',
+
+    // Properties to add to the input element.
     props: {
       autocapitalize: 'off',
       autocomplete: 'off',
@@ -48,19 +66,46 @@
       spellcheck: 'false'
     },
 
+    // Options specific to the inner toggle.
     toggle: {
+      // The element to create.
       element: '<button type="button">',
+      // Class name of element.
       className: 'hideShowPassword-toggle',
+      // Whether or not to support touch-specific enhancements.
+      // Defaults to the value of Modernizr.touch if available,
+      // otherwise false.
       touchSupport: (typeof Modernizr === 'undefined') ? false : Modernizr.touch,
+      // Non-touch event to bind to.
       attachToEvent: 'click',
+      // Event to bind to when touchSupport is true.
       attachToTouchEvent: 'touchstart mousedown',
+      // Key event to bind to if attachToKeyCodes is an array
+      // of at least one keycode.
       attachToKeyEvent: 'keyup',
+      // Key codes to bind the toggle event to for accessibility.
+      // If false, this feature is disabled entirely.
+      // If true, the array of key codes will be determined based
+      // on the value of the element option.
       attachToKeyCodes: true,
+      // Styles to add to the toggle element. Does not include
+      // positioning styles.
       styles: { position: 'absolute' },
+      // Styles to add only when touchSupport is true.
       touchStyles: { pointerEvents: 'none' },
+      // Where to position the inner toggle relative to the
+      // input element. Can be 'right', 'left' or 'infer'. If
+      // 'infer', it will be based on the text-direction of the
+      // input element.
       position: 'infer',
+      // Where to position the inner toggle on the y-axis
+      // relative to the input element. Can be 'top', 'bottom'
+      // or 'middle'.
       verticalAlign: 'middle',
+      // Amount by which to "offset" the toggle from the edge
+      // of the input element.
       offset: 0,
+      // Attributes to add to the toggle element.
       attr: {
         role: 'button',
         'aria-label': 'Show Password',
@@ -68,11 +113,25 @@
       }
     },
 
+    // Options specific to the wrapper element, created
+    // when the innerToggle is initialized to help with
+    // positioning of that element.
     wrapper: {
+      // The element to create.
       element: '<div>',
+      // Class name of element.
       className: 'hideShowPassword-wrapper',
+      // If true, the width of the wrapper will be set
+      // unless it is already the same width as the inner
+      // element. If false, the width will never be set. Any
+      // other value will be used as the width.
       enforceWidth: true,
+      // Styles to add to the wrapper element. Does not
+      // include inherited styles or width if enforceWidth
+      // is not false.
       styles: { position: 'relative' },
+      // Styles to "inherit" from the input element, allowing
+      // the wrapper to avoid disrupting page styles.
       inheritStyles: [
         'display',
         'verticalAlign',
@@ -81,6 +140,7 @@
         'marginBottom',
         'marginLeft'
       ],
+      // Styles for the input element when wrapped.
       innerElementStyles: {
         marginTop: 0,
         marginRight: 0,
@@ -89,6 +149,8 @@
       }
     },
 
+    // Options specific to the 'shown' or 'hidden'
+    // states of the input element.
     states: {
       shown: {
         className: 'hideShowPassword-shown',
