@@ -75,11 +75,11 @@ h1 {
 }
 
 h2 {
-  border-top: 2px solid #e6e6e6;
+  border-top: 3px solid #e6e6e6;
   font-size: 1.125em;
   line-height: 1.5;
   margin: 1.5em 0 1em;
-  padding-top: 0.5em;
+  padding-top: 1em;
 }
 
 .for {
@@ -99,7 +99,7 @@ figcaption {
   color: #999;
   font-size: 0.875em;
   margin-top: 0.5em;
-  text-align: center;
+  /*text-align: center;*/
 }
 
 .login,
@@ -177,6 +177,11 @@ figcaption {
 
 .btns li {
   display: inline-block;
+  margin-left: 0.5em;
+}
+
+.btns li:first-child {
+  margin-left: 0;
 }
 
 .btn {
@@ -195,5 +200,7 @@ figcaption {
 
 .byline {
   color: #999;
+  border-top: 3px solid #e6e6e6;
   font-size: 0.875em;
+  padding-top: 1em;
 }
