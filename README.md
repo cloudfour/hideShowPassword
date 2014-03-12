@@ -5,7 +5,7 @@ Because life's too short to waste time re-typing passwords.
 Inspired by a pattern seen in [Polar](http://www.polarb.com/), [IE 10+](http://ie.microsoft.com) and [LinkedIn](http://www.linkedin.com/mobile) and [documented by Luke W](http://www.lukew.com/ff/entry.asp?1653), hideShowPassword lets you easily hide and show passwords via JavaScript or a nifty inset toggle.
 
 * [Explanatory blog post](http://blog.cloudfour.com/hide-show-passwords-plugin/)
-* [What's new in Version 2]()
+* [What's new in Version 2](http://blog.cloudfour.com/hideshowpassword-2/)
 * [Live demo](http://cloudfour.github.io/hideShowPassword/)
 
 The plugin works in any browser that supports resetting the `type` attribute of `<input>` elements (pretty much everything newer than IE8). The plugin should fall back gracefully in cases where this is not supported.
