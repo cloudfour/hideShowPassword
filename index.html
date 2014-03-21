@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <title>hideShowPassword for jQuery</title>
+  <!-- demo-specific styles -->
+  <link rel="stylesheet" href="css/demo.css">
+  <!-- example style for inner toggle -->
+  <link rel="stylesheet" href="css/example.wink.css">
+  <!-- custom modernizr build -->
+  <script src="vendor/modernizr.custom.js"></script>
+  <!--
+  For the sake of accessibility, we're including label elements
+  and showing them if placeholder support isn't available. To
+  make this easier, we're appending a class to the html element
+  (since Modernizr does not do that by default for many form tests).
+  This is *not* required for hideShowPassword to work... it's just
+  a nicety of the demo.
+  -->
+  <script>if(Modernizr.input.placeholder)document.getElementsByTagName('html')[0].className+=' inputplaceholder';</script>
+</head>
+<body>
+
+<header>
+  <h1>hideShowPassword<span class="for"> for jQuery</span></h1>
+</header>
+
+<p>Inspired by a pattern seen in <a href="http://www.polarb.com/">Polar</a>, <a href="http://ie.microsoft.com">IE 10+</a> and <a href="http://www.linkedin.com/mobile">LinkedIn</a> and <a href="http://www.lukew.com/ff/entry.asp?1653">documented by Luke W</a>, hideShowPassword lets you easily hide and show passwords via JavaScript or a nifty inset toggle.</p>
+
+<ul class="btns">
+  <li><a class="btn" href="https://github.com/cloudfour/hideShowPassword/archive/master.zip">Download</a></li>
+  <li><a href="https://github.com/cloudfour/hideShowPassword">Source &amp; Docs</a></li>
+</ul>
+
+<h2>Examples</h2>
+
+<figure>
+  <div class="login">
+    <label class="login-label" for="username-1">Username</label>
+    <input class="login-field  login-field-username" id="username-1" type="text" placeholder="Username">
+    <label class="login-label" for="password-1">Password</label>
+    <input class="login-field  login-field-password" id="password-1" type="password" placeholder="Password">
+  </div>
+  <figcaption>Inner toggle with &ldquo;wink&rdquo; example style.</figcaption>
+</figure>
+
+<figure>
+  <div class="login">
+    <label class="login-label" for="username-2">Username</label>
+    <input class="login-field  login-field-username" id="username-2" type="text" placeholder="Username">
+    <label class="login-label" for="password-2">Password</label>
+    <input class="login-field  login-field-password" id="password-2" type="password" placeholder="Password">
+  </div>
+  <figcaption>Password shown by default, toggle hidden till focus.</figcaption>
+</figure>
+
+<figure>
+  <div class="login">
+    <label class="login-label" for="username-3">Username</label>
+    <input class="login-field  login-field-username" id="username-3" type="text" placeholder="Username">
+    <label class="login-label" for="password-3">Password</label>
+    <input class="login-field  login-field-password" id="password-3" type="password" placeholder="Password" value="example password">
+    <div class="login-footer">
+      <input type="checkbox" id="show-password"> <label for="show-password">Show password</label>
+    </div>
+  </div>
+  <figcaption>Checkbox toggles password visibility.</figcaption>
+</figure>
+
+<footer class="byline">
+  <p>Made by your friends at <a href="http://blog.cloudfour.com/hide-show-passwords-plugin/">Cloud Four</a></p>
+</footer>
+
+<!-- including the jQuery dependency -->
+<script src="vendor/jquery.min.js"></script>
+<!-- including the plugin -->
+<script src="hideShowPassword.min.js"></script>
+<script>
+
+// Example 1:
+// - Password hidden by default
+// - Inner toggle shown
+$('#password-1').hidePassword(true);
+
+// Example 2:
+// - Password shown by default
+// - Toggle shown on 'focus' of element
+// - Custom toggle class
+$('#password-2').showPassword('focus', {
+  toggle: { className: 'my-toggle' }
+});
+
+// Example 3:
+// - When checkbox changes, toggle password
+//   visibility based on its 'checked' property
+$('#show-password').change(function(){
+  $('#password-3').hideShowPassword($(this).prop('checked'));
+});
+
+</script>
+
+</body>
+</html>
