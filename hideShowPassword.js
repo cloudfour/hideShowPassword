@@ -298,7 +298,7 @@
         $.each(options.inheritStyles, $.proxy(function (index, prop) {
           options.styles[prop] = this.element.css(prop);
         }, this));
-        this.element.wrap(
+        this.element.css(options.innerElementStyles).wrap(
           $(options.element).addClass(options.className).css(options.styles)
         );
         this.wrapperElement = this.element.parent();
