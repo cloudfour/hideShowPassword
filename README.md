@@ -300,6 +300,7 @@ $('#my-modal').on('shown.bs.modal', function (event) {
 
 ## History
 
+* **2.0.1**: Fix for missing [innerElementStyles](https://github.com/cloudfour/hideShowPassword/pull/10)
 * **2.0.0**: Major rewrite with better accessibility and deeper options
 * **1.0.3**: Added wrapperWidth option
 * **1.0.2**: Uses deep merge for options
