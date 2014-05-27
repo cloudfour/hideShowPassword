@@ -187,6 +187,7 @@
 
     init: function (options) {
       if (this.update(options, defaults)) {
+        this.element.addClass(this.options.className);
         if (this.options.innerToggle) {
           this.wrapElement(this.options.wrapper);
           this.initToggle(this.options.toggle);
@@ -257,7 +258,7 @@
       if (! this.options.enable || this.isType()) return false;
       this.element
         .prop($.extend({}, this.options.props, this.state().props))
-        .addClass([this.options.className, this.state().className].join(' '))
+        .addClass(this.state().className)
         .removeClass(this.otherState().className);
       this.updateToggle();
       return true;
