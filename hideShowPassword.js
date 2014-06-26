@@ -383,7 +383,6 @@
     toggleKeyEvent: function (event) {
       $.each(this.options.toggle.attachToKeyCodes, $.proxy(function(index, keyCode) {
         if (event.which === keyCode) {
-          console.log('key event');
           this.toggleEvent(event);
           return false;
         }
