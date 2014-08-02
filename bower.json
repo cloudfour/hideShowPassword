@@ -2,7 +2,10 @@
   "name": "hideShowPassword",
   "description": "Easily reveal or hide password field contents via JavaScript or a nifty inner toggle button. Supports touch quite nicely!",
   "version": "2.0.3",
-  "main": "hideShowPassword.js",
+  "main": [
+    "hideShowPassword.js",
+    "css/example.minimal.css"
+  ],
   "ignore": [
     "**/.*",
     "node_modules",
@@ -16,5 +19,8 @@
     "type": "git",
     "url": "git://github.com/cloudfour/hideShowPassword.git"
   },
-  "keywords": ["form", "forms", "input", "inputs", "password", "visibility"]
+  "keywords": ["form", "forms", "input", "inputs", "password", "visibility"],
+  "dependencies": {
+    "jquery": ">= 2.0.0"
+  }
 }
