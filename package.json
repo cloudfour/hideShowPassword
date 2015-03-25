@@ -1,0 +1,35 @@
+{
+  "name": "hideShowPassword",
+  "version": "2.0.4",
+  "description": "Easily reveal or hide password field contents via JavaScript or a nifty inner toggle button. Supports touch quite nicely!",
+  "main": "hideShowPassword.js",
+  "scripts": {
+    "minify": "uglifyjs hideShowPassword.js -o hideShowPassword.min.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cloudfour/hideShowPassword.git"
+  },
+  "keywords": [
+    "form",
+    "forms",
+    "input",
+    "inputs",
+    "password",
+    "visibility",
+    "jquery-plugin",
+    "ecosystem:jquery"
+  ],
+  "author": "Cloud Four",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cloudfour/hideShowPassword/issues"
+  },
+  "homepage": "http://cloudfour.github.io/hideShowPassword/",
+  "dependencies": {
+    "jquery": "^2.1.3"
+  },
+  "devDependencies": {
+    "uglify-js": "^2.4.17"
+  }
+}
