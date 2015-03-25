@@ -77,9 +77,9 @@
       // otherwise false.
       touchSupport: (typeof Modernizr === 'undefined') ? false : Modernizr.touch,
       // Non-touch event to bind to.
-      attachToEvent: 'click',
+      attachToEvent: 'click.hideShowPassword',
       // Event to bind to when touchSupport is true.
-      attachToTouchEvent: 'touchstart mousedown',
+      attachToTouchEvent: 'touchstart.hideShowPassword mousedown.hideShowPassword',
       // Key event to bind to if attachToKeyCodes is an array
       // of at least one keycode.
       attachToKeyEvent: 'keyup',
