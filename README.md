@@ -10,19 +10,38 @@ Inspired by a pattern seen in [Polar](http://www.polarb.com/), [IE 10+](http://i
 
 The plugin works in any browser that supports resetting the `type` attribute of `<input>` elements (pretty much everything newer than IE8). The plugin should fall back gracefully in cases where this is not supported.
 
-If [Bower](http://bower.io/)'s your thing, you can install this plugin by running `bower install hideShowPassword` in your project directory.
+## Installation
 
-## Dependencies
+Simply include the plugin after you've included [jQuery](http://jquery.com/):
 
-hideShowPassword requires [jQuery](http://jquery.com/).
+```html
+<script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+<script src="path/to/hideShowPassword.min.js"></script>
+```
 
-### Optional: Modernizr
+If [Modernizr](http://modernizr.com/) is also included, the plugin's touch enhancements will default to the value of `Modernizr.touch`.
 
-If [Modernizr](http://modernizr.com/) is included, the plugin's touch enhancements will default to the value of `Modernizr.touch`.
+### Using [npm](https://www.npmjs.com/) and [Browserify](http://browserify.org/)
 
-### Optional: Example Styles
+```
+npm install --save jquery
+npm install --save hideShowPassword
+```
 
-You can style the plugin's inner toggle feature any way you'd like. To help get you started, we've included a couple of example stylesheets located in this repository.
+```javascript
+var $ = require('jquery');
+require('hideShowPassword');
+```
+
+### Using [Bower](http://bower.io/)
+
+```
+bower install hideShowPassword
+```
+```html
+<script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+<script src="bower_components/hideShowPassword/hideShowPassword.min.js"></script>
+```
 
 ## Usage
 
@@ -169,9 +188,9 @@ Here are all of the available options and their defaults:
     // otherwise false.
     touchSupport: (typeof Modernizr === 'undefined') ? false : Modernizr.touch,
     // Non-touch event to bind to.
-    attachToEvent: 'click',
+    attachToEvent: 'click.hideShowPassword',
     // Event to bind to when touchSupport is true.
-    attachToTouchEvent: 'touchstart mousedown',
+    attachToTouchEvent: 'touchstart.hideShowPassword mousedown.hideShowPassword',
     // Key event to bind to if attachToKeyCodes is an array
     // of at least one keycode.
     attachToKeyEvent: 'keyup',
@@ -300,8 +319,9 @@ $('#my-modal').on('shown.bs.modal', function (event) {
 
 ## History
 
-* **2.0.3**: Removed errant `console.log` call ([see issue](https://github.com/cloudfour/hideShowPassword/issues/13))
-* **2.0.2**: `className` option now instantiates on `init` ([see issue](https://github.com/cloudfour/hideShowPassword/issues/11))
+* **2.0.4**: Namespaced events ([#20](https://github.com/cloudfour/hideShowPassword/issues/20)), [npm](https://www.npmjs.com/) support ([#21](https://github.com/cloudfour/hideShowPassword/issues/21))
+* **2.0.3**: Removed errant `console.log` call ([#13](https://github.com/cloudfour/hideShowPassword/issues/13))
+* **2.0.2**: `className` option now instantiates on `init` ([#11](https://github.com/cloudfour/hideShowPassword/issues/11))
 * **2.0.1**: Fix for missing [innerElementStyles](https://github.com/cloudfour/hideShowPassword/pull/10)
 * **2.0.0**: Major rewrite with better accessibility and deeper options
 * **1.0.3**: Added wrapperWidth option
