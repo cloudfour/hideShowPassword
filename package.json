@@ -16,7 +16,9 @@
     "input",
     "inputs",
     "password",
-    "visibility"
+    "visibility",
+    "jquery-plugin",
+    "ecosystem:jquery"
   ],
   "author": "Cloud Four",
   "license": "MIT",
