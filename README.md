@@ -319,6 +319,7 @@ $('#my-modal').on('shown.bs.modal', function (event) {
 
 ## History
 
+* **2.0.5**: Fixing `npm install` issue ([#28](https://github.com/cloudfour/hideShowPassword/issues/28))
 * **2.0.4**: Namespaced events ([#20](https://github.com/cloudfour/hideShowPassword/issues/20)), [npm](https://www.npmjs.com/) support ([#21](https://github.com/cloudfour/hideShowPassword/issues/21))
 * **2.0.3**: Removed errant `console.log` call ([#13](https://github.com/cloudfour/hideShowPassword/issues/13))
 * **2.0.2**: `className` option now instantiates on `init` ([#11](https://github.com/cloudfour/hideShowPassword/issues/11))
