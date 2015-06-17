@@ -1,4 +1,4 @@
-# Hide/show password plugin for jQuery
+# hideShowPassword
 
 Because life's too short to waste time re-typing passwords.
 
@@ -319,6 +319,7 @@ $('#my-modal').on('shown.bs.modal', function (event) {
 
 ## History
 
+* **2.0.7**: Fixing `inheritStyles` bug ([#34](https://github.com/cloudfour/hideShowPassword/issues/34))
 * **2.0.6**: Revising npm package name ([#28](https://github.com/cloudfour/hideShowPassword/issues/28))
 * **2.0.5**: Revising npm package repo URL ([#28](https://github.com/cloudfour/hideShowPassword/issues/28))
 * **2.0.4**: Namespaced events ([#20](https://github.com/cloudfour/hideShowPassword/issues/20)), [npm](https://www.npmjs.com/) support ([#21](https://github.com/cloudfour/hideShowPassword/issues/21))
