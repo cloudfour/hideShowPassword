@@ -221,10 +221,15 @@
     },
 
     prepareOptions: function (options, base) {
-      var keyCodes = [],
+      var original = options || {},
+        keyCodes = [],
         testElement;
       base = base || this.options;
       options = $.extend(true, {}, base, options);
+      // Ugly conditional to resolve #34 in a backwards-compatible way (for now)
+      if (original.hasOwnProperty('wrapper') && original.wrapper.hasOwnProperty('inheritStyles')) {
+        options.wrapper.inheritStyles = original.wrapper.inheritStyles;
+      }
       if (options.enable) {
         if (options.show === 'toggle') {
           options.show = this.isType('hidden', options.states);

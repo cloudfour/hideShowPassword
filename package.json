@@ -1,6 +1,6 @@
 {
   "name": "hideshowpassword",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Easily reveal or hide password field contents via JavaScript or a nifty inner toggle button. Supports touch quite nicely!",
   "main": "hideShowPassword.js",
   "scripts": {
