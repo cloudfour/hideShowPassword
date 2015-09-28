@@ -319,6 +319,7 @@ $('#my-modal').on('shown.bs.modal', function (event) {
 
 ## History
 
+* **2.0.8**: Fixing bloated bundles bug ([#39](https://github.com/cloudfour/hideShowPassword/issues/39))
 * **2.0.7**: Fixing `inheritStyles` bug ([#34](https://github.com/cloudfour/hideShowPassword/issues/34))
 * **2.0.6**: Revising npm package name ([#28](https://github.com/cloudfour/hideShowPassword/issues/28))
 * **2.0.5**: Revising npm package repo URL ([#28](https://github.com/cloudfour/hideShowPassword/issues/28))
