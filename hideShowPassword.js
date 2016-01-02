@@ -112,6 +112,7 @@
       attr: {
         role: 'button',
         'aria-label': 'Show Password',
+        'title': 'Show Password',
         tabIndex: 0
       }
     },
@@ -162,7 +163,10 @@
         toggle: {
           className: 'hideShowPassword-toggle-hide',
           content: 'Hide',
-          attr: { 'aria-pressed': 'true' }
+          attr: { 
+            'aria-pressed': 'true',
+            'title': 'Hide Password' 
+          }
         }
       },
       hidden: {
@@ -172,7 +176,10 @@
         toggle: {
           className: 'hideShowPassword-toggle-show',
           content: 'Show',
-          attr: { 'aria-pressed': 'false' }
+          attr: { 
+            'aria-pressed': 'false',
+            'title': 'Show Password'
+          }
         }
       }
     }
