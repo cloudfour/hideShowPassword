@@ -112,7 +112,7 @@
       attr: {
         role: 'button',
         'aria-label': 'Show Password',
-        'title': 'Show Password',
+        title: 'Show Password',
         tabIndex: 0
       }
     },
@@ -165,7 +165,7 @@
           content: 'Hide',
           attr: { 
             'aria-pressed': 'true',
-            'title': 'Hide Password' 
+            title: 'Hide Password' 
           }
         }
       },
@@ -178,7 +178,7 @@
           content: 'Show',
           attr: { 
             'aria-pressed': 'false',
-            'title': 'Show Password'
+            title: 'Show Password'
           }
         }
       }
