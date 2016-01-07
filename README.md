@@ -271,7 +271,7 @@ Here are all of the available options and their defaults:
       toggle: {
         className: 'hideShowPassword-toggle-hide',
         content: 'Hide',
-        attr: { 
+        attr: {
           'aria-pressed': 'true'
           title: 'Hide Password',
         }
@@ -284,7 +284,7 @@ Here are all of the available options and their defaults:
       toggle: {
         className: 'hideShowPassword-toggle-show',
         content: 'Show',
-        attr: { 
+        attr: {
           'aria-pressed': 'false',
           title: 'Show Password',
         }
@@ -326,6 +326,7 @@ $('#my-modal').on('shown.bs.modal', function (event) {
 
 ## History
 
+* **2.0.9**: Add `title` attributes to toggle by default ([#41](https://github.com/cloudfour/hideShowPassword/pull/41))
 * **2.0.8**: Fixing bloated bundles bug ([#39](https://github.com/cloudfour/hideShowPassword/issues/39))
 * **2.0.7**: Fixing `inheritStyles` bug ([#34](https://github.com/cloudfour/hideShowPassword/issues/34))
 * **2.0.6**: Revising npm package name ([#28](https://github.com/cloudfour/hideShowPassword/issues/28))
