@@ -220,6 +220,7 @@ Here are all of the available options and their defaults:
     attr: {
       role: 'button',
       'aria-label': 'Show Password',
+      title: 'Show Password',
       tabIndex: 0
     }
   },
@@ -270,7 +271,10 @@ Here are all of the available options and their defaults:
       toggle: {
         className: 'hideShowPassword-toggle-hide',
         content: 'Hide',
-        attr: { 'aria-pressed': 'true' }
+        attr: { 
+          'aria-pressed': 'true'
+          title: 'Hide Password',
+        }
       }
     },
     hidden: {
@@ -280,7 +284,10 @@ Here are all of the available options and their defaults:
       toggle: {
         className: 'hideShowPassword-toggle-show',
         content: 'Show',
-        attr: { 'aria-pressed': 'false' }
+        attr: { 
+          'aria-pressed': 'false',
+          title: 'Show Password',
+        }
       }
     }
   }
