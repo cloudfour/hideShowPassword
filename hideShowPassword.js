@@ -76,9 +76,9 @@
       // Class name of element.
       className: 'hideShowPassword-toggle',
       // Whether or not to support touch-specific enhancements.
-      // Defaults to the value of Modernizr.touch if available,
+      // Defaults to the value of Modernizr.touchevents if available,
       // otherwise false.
-      touchSupport: (typeof Modernizr === 'undefined') ? false : Modernizr.touch,
+      touchSupport: (typeof Modernizr === 'undefined') ? false : Modernizr.touchevents,
       // Non-touch event to bind to.
       attachToEvent: 'click.hideShowPassword',
       // Event to bind to when touchSupport is true.
