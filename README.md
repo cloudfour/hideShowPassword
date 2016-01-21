@@ -19,7 +19,7 @@ Include the plugin after you've included [jQuery](http://jquery.com/):
 <script src="path/to/hideShowPassword.min.js"></script>
 ```
 
-If [Modernizr](http://modernizr.com/) is also included, the plugin's touch enhancements will default to the value of `Modernizr.touch`.
+If [Modernizr](http://modernizr.com/) is also included, the plugin's touch enhancements will default to the value of `Modernizr.touchevents`.
 
 ### Using [npm](https://www.npmjs.com/) and [Browserify](http://browserify.org/)
 
@@ -184,9 +184,9 @@ Here are all of the available options and their defaults:
     // Class name of element.
     className: 'hideShowPassword-toggle',
     // Whether or not to support touch-specific enhancements.
-    // Defaults to the value of Modernizr.touch if available,
+    // Defaults to the value of Modernizr.touchevents if available,
     // otherwise false.
-    touchSupport: (typeof Modernizr === 'undefined') ? false : Modernizr.touch,
+    touchSupport: (typeof Modernizr === 'undefined') ? false : Modernizr.touchevents,
     // Non-touch event to bind to.
     attachToEvent: 'click.hideShowPassword',
     // Event to bind to when touchSupport is true.
@@ -326,6 +326,7 @@ $('#my-modal').on('shown.bs.modal', function (event) {
 
 ## History
 
+* **2.0.10**: Update Modernizr test ([#42](https://github.com/cloudfour/hideShowPassword/issues/42))
 * **2.0.9**: Add `title` attributes to toggle by default ([#41](https://github.com/cloudfour/hideShowPassword/pull/41))
 * **2.0.8**: Fixing bloated bundles bug ([#39](https://github.com/cloudfour/hideShowPassword/issues/39))
 * **2.0.7**: Fixing `inheritStyles` bug ([#34](https://github.com/cloudfour/hideShowPassword/issues/34))
