@@ -1,10 +1,11 @@
 {
   "name": "hideshowpassword",
-  "version": "2.0.10",
+  "version": "2.0.11",
   "description": "Easily reveal or hide password field contents via JavaScript or a nifty inner toggle button. Supports touch quite nicely!",
   "main": "hideShowPassword.js",
   "scripts": {
-    "minify": "uglifyjs hideShowPassword.js -o hideShowPassword.min.js"
+    "minify": "uglifyjs hideShowPassword.js -o hideShowPassword.min.js",
+    "update:bower": "cp package.json bower.json"
   },
   "repository": {
     "type": "git",
