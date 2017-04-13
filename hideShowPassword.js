@@ -121,10 +121,8 @@
     // when the innerToggle is initialized to help with
     // positioning of that element.
     wrapper: {
-      // if true then existing parent is used as wrapper.
-      // if false then new wrapper is created.
-      useExistingParent: false,
-      // The element to create.
+      // The element to create or use.
+      // If it's valid jquery object then is used as wrapper element and no object is created
       element: '<div>',
       // Class name of element.
       className: 'hideShowPassword-wrapper',
@@ -318,12 +316,14 @@
           options.styles[prop] = this.element.css(prop);
         }, this));
         this.element.css(options.innerElementStyles);
-        if (!options.useExistingParent) {
+        if (!options.element.jquery) {
           this.element.wrap(
             $(options.element)
           );
+          this.wrapperElement = this.element.parent();
+        } else {
+          this.wrapperElement = options.element;
         }
-        this.wrapperElement = this.element.parent();
         this.wrapperElement.addClass(options.className).css(options.styles);
 
         if (enforceWidth === true) {

@@ -229,10 +229,8 @@ Here are all of the available options and their defaults:
   // when the innerToggle is initialized to help with
   // positioning of that element.
   wrapper: {
-    // if true then existing parent is used as wrapper.
-    // if false then new wrapper is created.
-    useExistingParent: false,
-    // The element to create.
+    // The element to create or use.
+    // If it's valid jquery object then is used as wrapper element and no object is created
     element: '<div>',
     // Class name of element.
     className: 'hideShowPassword-wrapper',
