@@ -121,6 +121,9 @@
     // when the innerToggle is initialized to help with
     // positioning of that element.
     wrapper: {
+      // if true then existing parent is used as wrapper.
+      // if false then new wrapper is created.
+      useExistingParent: false,
       // The element to create.
       element: '<div>',
       // Class name of element.
@@ -163,9 +166,9 @@
         toggle: {
           className: 'hideShowPassword-toggle-hide',
           content: 'Hide',
-          attr: { 
+          attr: {
             'aria-pressed': 'true',
-            title: 'Hide Password' 
+            title: 'Hide Password'
           }
         }
       },
@@ -176,7 +179,7 @@
         toggle: {
           className: 'hideShowPassword-toggle-show',
           content: 'Show',
-          attr: { 
+          attr: {
             'aria-pressed': 'false',
             title: 'Show Password'
           }
@@ -314,10 +317,15 @@
         $.each(options.inheritStyles, $.proxy(function (index, prop) {
           options.styles[prop] = this.element.css(prop);
         }, this));
-        this.element.css(options.innerElementStyles).wrap(
-          $(options.element).addClass(options.className).css(options.styles)
-        );
+        this.element.css(options.innerElementStyles);
+        if (!options.useExistingParent) {
+          this.element.wrap(
+            $(options.element)
+          );
+        }
         this.wrapperElement = this.element.parent();
+        this.wrapperElement.addClass(options.className).css(options.styles);
+
         if (enforceWidth === true) {
           enforceWidth = (this.wrapperElement.outerWidth() === targetWidth) ? false : targetWidth;
         }
