@@ -52,6 +52,12 @@
     // set after input has been inserted into the DOM.
     enable: canSetInputAttribute,
 
+    // Set to true to focus the cursor in the input element after
+    // the element has been toggled. Benefitial for those who are
+    // typing out a password and just want to check their value
+    // and retain the focus of the input.
+    focusAfterToggle: false,
+
     // Class to add to input element when the plugin is enabled.
     className: 'hideShowPassword-field',
 
@@ -163,9 +169,9 @@
         toggle: {
           className: 'hideShowPassword-toggle-hide',
           content: 'Hide',
-          attr: { 
+          attr: {
             'aria-pressed': 'true',
-            title: 'Hide Password' 
+            title: 'Hide Password'
           }
         }
       },
@@ -176,7 +182,7 @@
         toggle: {
           className: 'hideShowPassword-toggle-show',
           content: 'Show',
-          attr: { 
+          attr: {
             'aria-pressed': 'false',
             title: 'Show Password'
           }
@@ -275,6 +281,11 @@
         .prop($.extend({}, this.options.props, this.state().props))
         .addClass(this.state().className)
         .removeClass(this.otherState().className);
+
+      if (this.options.focusAfterToggle) {
+        this.element.focus();
+      }
+
       this.updateToggle();
       return true;
     },
