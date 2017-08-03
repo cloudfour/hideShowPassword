@@ -163,7 +163,7 @@ Here are all of the available options and their defaults:
   // Event to trigger whenever the element is toggled.
   // For example, if 'focus' it will focus the cursor in the
   // input element after toggling.
-  triggerOnToggle: '',
+  triggerOnToggle: false,
 
   // Class to add to input element when the plugin is enabled.
   className: 'hideShowPassword-field',

@@ -55,7 +55,7 @@
     // Event to trigger whenever the element is toggled.
     // For example, if 'focus' it will focus the cursor in the
     // input element after toggling.
-    triggerOnToggle: '',
+    triggerOnToggle: false,
 
     // Class to add to input element when the plugin is enabled.
     className: 'hideShowPassword-field',
@@ -280,7 +280,9 @@
         .prop($.extend({}, this.options.props, this.state().props))
         .addClass(this.state().className)
         .removeClass(this.otherState().className);
-      this.element.trigger(this.options.triggerOnToggle, [ this ]);
+      if (this.options.triggerOnToggle) {
+        this.element.trigger(this.options.triggerOnToggle, [ this ]);
+      }
       this.updateToggle();
       return true;
     },
