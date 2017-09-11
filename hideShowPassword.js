@@ -52,6 +52,11 @@
     // set after input has been inserted into the DOM.
     enable: canSetInputAttribute,
 
+    // Event to trigger whenever the element is toggled.
+    // For example, if 'focus' it will focus the cursor in the
+    // input element after toggling.
+    triggerOnToggle: false,
+
     // Class to add to input element when the plugin is enabled.
     className: 'hideShowPassword-field',
 
@@ -163,9 +168,9 @@
         toggle: {
           className: 'hideShowPassword-toggle-hide',
           content: 'Hide',
-          attr: { 
+          attr: {
             'aria-pressed': 'true',
-            title: 'Hide Password' 
+            title: 'Hide Password'
           }
         }
       },
@@ -176,7 +181,7 @@
         toggle: {
           className: 'hideShowPassword-toggle-show',
           content: 'Show',
-          attr: { 
+          attr: {
             'aria-pressed': 'false',
             title: 'Show Password'
           }
@@ -275,6 +280,9 @@
         .prop($.extend({}, this.options.props, this.state().props))
         .addClass(this.state().className)
         .removeClass(this.otherState().className);
+      if (this.options.triggerOnToggle) {
+        this.element.trigger(this.options.triggerOnToggle, [ this ]);
+      }
       this.updateToggle();
       return true;
     },

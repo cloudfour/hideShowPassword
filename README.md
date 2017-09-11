@@ -160,6 +160,11 @@ Here are all of the available options and their defaults:
   // set after input has been inserted into the DOM.
   enable: canSetInputAttribute,
 
+  // Event to trigger whenever the element is toggled.
+  // For example, if 'focus' it will focus the cursor in the
+  // input element after toggling.
+  triggerOnToggle: false,
+
   // Class to add to input element when the plugin is enabled.
   className: 'hideShowPassword-field',
 
