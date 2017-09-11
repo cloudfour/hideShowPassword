@@ -331,6 +331,7 @@ $('#my-modal').on('shown.bs.modal', function (event) {
 
 ## History
 
+* **2.1.0**: Add `triggerOnToggle` feature ([#56](https://github.com/cloudfour/hideShowPassword/pull/56))
 * **2.0.11**: Fix for Bower install on Windows ([#44](https://github.com/cloudfour/hideShowPassword/issues/44))
 * **2.0.10**: Update Modernizr test ([#42](https://github.com/cloudfour/hideShowPassword/issues/42))
 * **2.0.9**: Add `title` attributes to toggle by default ([#41](https://github.com/cloudfour/hideShowPassword/pull/41))
