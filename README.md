@@ -300,6 +300,25 @@ Here are all of the available options and their defaults:
 });
 ```
 
+You may override these defaults by manipulating the `$.fn.hideShowPassword.defaults` object:
+
+```javascript
+$.extend(true, $.fn.hideShowPassword.defaults, {
+  states: {
+    shown: {
+      toggle: {
+        content: "esconder"
+      }
+    },
+    hidden: {
+      toggle: {
+        content: "espectáculo"
+      }
+    }
+  }
+});
+```
+
 ## Known Issues
 
 ### Competing controls in IE10+ (Windows 8)
@@ -331,6 +350,7 @@ $('#my-modal').on('shown.bs.modal', function (event) {
 
 ## History
 
+* **2.2.0**: Expose defaults for easier overrides ([#60](https://github.com/cloudfour/hideShowPassword/issues/60), [#61](https://github.com/cloudfour/hideShowPassword/pull/61))
 * **2.1.0**: Add `triggerOnToggle` feature ([#56](https://github.com/cloudfour/hideShowPassword/pull/56))
 * **2.0.11**: Fix for Bower install on Windows ([#44](https://github.com/cloudfour/hideShowPassword/issues/44))
 * **2.0.10**: Update Modernizr test ([#42](https://github.com/cloudfour/hideShowPassword/issues/42))
