@@ -28,7 +28,7 @@
   },
   "homepage": "http://cloudfour.github.io/hideShowPassword/",
   "dependencies": {
-    "jquery": ">=1.11"
+    "jquery": ">=3.5.0"
   },
   "devDependencies": {
     "uglify-js": "^2.4.17"
