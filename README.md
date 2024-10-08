@@ -1,5 +1,8 @@
 # hideShowPassword
 
+> [!IMPORTANT]
+> This plugin is no longer maintained. See our article [Hide/Show Passwords: Ten Years Later](https://cloudfour.com/thinks/hide-show-passwords-ten-years-later/) for more info.
+
 Because life's too short to waste time re-typing passwords.
 
 Inspired by a pattern seen in [Polar](http://www.polarb.com/), [IE 10+](http://ie.microsoft.com) and [LinkedIn](http://www.linkedin.com/mobile) and [documented by Luke W](http://www.lukew.com/ff/entry.asp?1653), hideShowPassword lets you easily hide and show passwords via JavaScript or a nifty inset toggle.
